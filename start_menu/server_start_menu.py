@@ -8,12 +8,12 @@ import time
 
 HEADER: int = 64
 PORT: int = 5050
-SERVER = socket.gethostbyname(socket.gethostname())
+SERVER: socket.gethostbyname = socket.gethostbyname(socket.gethostname())
 ADDR: set = (SERVER, PORT)
 FORMAT: str = 'utf-8'
 DISCONNECT_MESSAGE: str = '!DISCONNECT'
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
 
@@ -29,7 +29,7 @@ class User(TypedDict):
     style: BoxStyle
 
 
-console = Console()
+console: Console = Console()
 
 
 def handle_client(conn, addr):
@@ -51,7 +51,7 @@ def start():
     console.print(f'{SERVER}')
     while True:
         conn, addr = server.accept()
-        thread = threading.Thread(target=handle_client, args=(conn, addr))
+        thread: threading.thread = threading.Thread(target=handle_client, args=(conn, addr))
         thread.start()
 
 

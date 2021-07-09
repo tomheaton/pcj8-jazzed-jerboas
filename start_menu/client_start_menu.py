@@ -17,7 +17,7 @@ $$$$$$$$\ $$\                 $$$$$$$\                                       $$$
    '''
 
 
-console = Console()
+console: Console = Console()
 
 HEADER: int = 64
 PORT: int = 5050
@@ -31,7 +31,7 @@ SERVER: str = console.input('Server IP:')
 ADDR: set = (SERVER, PORT)
 
 
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
 
 
@@ -45,7 +45,7 @@ def join(name: str):
     print(client.recv(1000).decode(FORMAT))
 
 
-name = console.input('What is your name?:')
+name: str = console.input('What is your name?:')
 join(name)
 
 time.sleep(10)
