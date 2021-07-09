@@ -35,7 +35,7 @@ client: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
 
 
-def join(name: str):
+def join(name: str) -> NoneType:
     name: bytes = name.encode(FORMAT)
     name_length: int = len(name)
     send_length: str = str(name_length).encode(FORMAT)

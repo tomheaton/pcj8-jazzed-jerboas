@@ -32,7 +32,7 @@ class User(TypedDict):
 console: Console = Console()
 
 
-def handle_client(conn, addr):
+def handle_client(conn, addr) -> NoneType:
     connected: bool = True
     while connected:
         name_length: int = conn.recv(HEADER).decode(FORMAT)
@@ -46,7 +46,7 @@ def handle_client(conn, addr):
     conn.close()
 
 
-def start():
+def start() -> NoneType:
     server.listen()
     console.print(f'{SERVER}')
     while True:
