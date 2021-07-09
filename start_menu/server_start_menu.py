@@ -18,12 +18,18 @@ server.bind(ADDR)
 
 
 class BoxStyle(TypedDict):
+    """
+    Storing user preferences for the box.
+    """
     username_color: str
     outline_color: str
     text_color: str
 
 
 class User(TypedDict):
+    """
+    Storing username and user-preferences.
+    """
     username: str
     uuid: str
     style: BoxStyle
@@ -32,7 +38,7 @@ class User(TypedDict):
 console: Console = Console()
 
 
-def handle_client(conn, addr) -> NoneType:
+def handle_client(conn, addr) -> None:
     connected: bool = True
     while connected:
         name_length: int = conn.recv(HEADER).decode(FORMAT)
@@ -46,7 +52,7 @@ def handle_client(conn, addr) -> NoneType:
     conn.close()
 
 
-def start() -> NoneType:
+def start() -> None:
     server.listen()
     console.print(f'{SERVER}')
     while True:
