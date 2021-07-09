@@ -5,7 +5,7 @@ from rich.panel import Panel
 import os
 import time
 
-main_title = '''
+main_title = r'''
 $$$$$$$$\ $$\                 $$$$$$$\                                     
 \__$$  __|$$ |                $$  __$$\                                     
    $$ |   $$$$$$$\   $$$$$$\  $$ |  $$ | $$$$$$\  $$\   $$\       
