@@ -25,7 +25,7 @@ FORMAT: str = 'utf-8'
 DISCONNECT_MESSAGE: str = '!DISCONNECT'
 
 os.system('cls' if os.name == 'nt' else 'clear')
-console.print(Panel(main_title))
+console.print(Panel.fit(main_title))
 SERVER: str = console.input('Server IP:')
 
 ADDR: set = (SERVER, PORT)
