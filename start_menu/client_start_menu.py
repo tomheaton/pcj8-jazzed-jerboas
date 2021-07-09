@@ -1,20 +1,26 @@
 import socket
 from rich import print
+from rich.text import Text
 from rich.console import Console
 from rich.panel import Panel
 import os
 import time
 
-main_title = r'''
-$$$$$$$$\\ $$\\                 $$$$$$$\\                                     
-\\__$$  __|$$ |                $$  __$$\\                                     
-   $$ |   $$$$$$$\\   $$$$$$\\  $$ |  $$ | $$$$$$\\  $$\\   $$\\       
-   $$ |   $$  __$$\\  \\____$$\\ $$$$$$$\\ |$$  __$$\\ \\$$\\ $$  |      
-   $$ |   $$ |  $$ | $$$$$$$ |$$  __$$\ $$ /  $$ | \\$$$$  /        
-   $$ |   $$ |  $$ |$$  __$$ |$$ |  $$ |$$ |  $$ | $$  $$<           
-   $$ |   $$ |  $$ |\\$$$$$$$ |$$$$$$$  |\\$$$$$$  |$$  /\\$$\\          
-   \\__|   \\__|  \\__| \\_______|\\_______/  \\______/ \\__/  \\__| 
-   '''
+main_title = Text.assemble(("""$$$$$$$$\\ $$\\                 
+\\__$$  __|$$ |                
+   $$ |   $$$$$$$\\   $$$$$$\\   
+   $$ |   $$  __$$\\  \\____$$\\ 
+   $$ |   $$ |  $$ | $$$$$$$ |
+   $$ |   $$ |  $$ |$$  __$$ |
+   $$ |   $$ |  $$ |\\$$$$$$$ |
+   \\__|   \\__|  \\__| \\_______|\n""", "bold magenta"), ("""$$$$$$$\\                      
+$$  __$$\\                     
+$$ |  $$ | $$$$$$\  $$\   $$\\ 
+$$$$$$$\ |$$  __$$\ \$$\ $$  |
+$$  __$$\ $$ /  $$ | \$$$$  / 
+$$ |  $$ |$$ |  $$ | $$  $$<  
+$$$$$$$  |\$$$$$$  |$$  /\$$\\ 
+\\_______/  \\______/ \\__/  \\__|""", "bold cyan"))
 
 
 console: Console = Console()
@@ -25,7 +31,7 @@ FORMAT: str = 'utf-8'
 DISCONNECT_MESSAGE: str = '!DISCONNECT'
 
 os.system('cls' if os.name == 'nt' else 'clear')
-console.print(Panel.fit(main_title))
+console.print(Panel.fit(main_title, border_style="red"))
 SERVER: str = console.input('Server IP:')
 
 ADDR: set = (SERVER, PORT)
