@@ -2,18 +2,12 @@ import os
 import socket
 import threading
 import time
-
 from rich import print
 from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
+from utils import clear
 
-
-def clear() -> int:
-    """
-    Clears terminal
-    """
-    return os.system('cls' if os.name == 'nt' else 'clear')
 
 
 main_title = Text.assemble(
