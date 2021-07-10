@@ -41,5 +41,5 @@ def render_box(rows: list):
         new_rows.append(Text.assemble(logo_rows[i], rows[i]+"\n"))
     return Text.assemble(*new_rows)
 
-
+    
 
