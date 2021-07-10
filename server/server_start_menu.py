@@ -9,40 +9,21 @@ from rich.panel import Panel
 import os
 import time
 import threading
+from typing import Union
 
 
 def clear(): return os.system('cls' if os.name == 'nt' else 'clear')
 
 
-main_title = Text.assemble(("""$$$$$$$$\\ $$\\                 
-\\__$$  __|$$ |                
-   $$ |   $$$$$$$\\   $$$$$$\\   
-   $$ |   $$  __$$\\  \\____$$\\ 
-   $$ |   $$ |  $$ | $$$$$$$ |
-   $$ |   $$ |  $$ |$$  __$$ |
-   $$ |   $$ |  $$ |\\$$$$$$$ |
-   \\__|   \\__|  \\__| \\_______|\n""", "bold magenta"), ("""$$$$$$$\\                      
-$$  __$$\\                     
-$$ |  $$ | $$$$$$\  $$\   $$\\ 
-$$$$$$$\ |$$  __$$\ \$$\ $$  |
-$$  __$$\ $$ /  $$ | \$$$$  / 
-$$ |  $$ |$$ |  $$ | $$  $$<  
-$$$$$$$  |\$$$$$$  |$$  /\$$\\ 
-\\_______/  \\______/ \\__/  \\__|""", "bold cyan"))
+HEADER_LENGTH: int = 10
 
-
-console: Console = Console()
-
-
-HEADER_LENGTH = 10
-
-IP = socket.gethostbyname(socket.gethostname())
-PORT = 1234
+IP: str = socket.gethostbyname(socket.gethostname())
+PORT: int = 8000
 
 # Create a socket
 # socket.AF_INET - address family, IPv4, some otehr possible are AF_INET6, AF_BLUETOOTH, AF_UNIX
 # socket.SOCK_STREAM - TCP, conection-based, socket.SOCK_DGRAM - UDP, connectionless, datagrams, socket.SOCK_RAW - raw IP packets
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # SO_ - socket option
 # SOL_ - socket option level
@@ -57,29 +38,29 @@ server_socket.bind((IP, PORT))
 server_socket.listen()
 
 # List of sockets for select.select()
-sockets_list = [server_socket]
+sockets_list: list = [server_socket]
 
 # List of connected clients - socket as a key, user header and name as data
-clients = {}
+clients: dict = {}
 
 print(f'Listening for connections on {IP}:{PORT}...')
 
 # Handles message receiving
 
 
-def receive_message(client_socket):
+def receive_message(client_socket) -> Union[bool, dict]:
 
     try:
 
         # Receive our "header" containing message length, it's size is defined and constant
-        message_header = client_socket.recv(HEADER_LENGTH)
+        message_header: bytes = client_socket.recv(HEADER_LENGTH)
 
         # If we received no data, client gracefully closed a connection, for example using socket.close() or socket.shutdown(socket.SHUT_RDWR)
         if not len(message_header):
             return False
 
         # Convert header to int value
-        message_length = int(message_header.decode('utf-8').strip())
+        message_length: int = int(message_header.decode('utf-8').strip())
 
         # Return an object of message header and message data
         return {'header': message_header, 'data': client_socket.recv(message_length)}
@@ -118,7 +99,7 @@ while True:
             client_socket, client_address = server_socket.accept()
 
             # Client should send his name right away, receive it
-            user = receive_message(client_socket)
+            user: Union[dict, bool] = receive_message(client_socket)
 
             # If False - client disconnected before he sent his name
             if user is False:
@@ -137,7 +118,7 @@ while True:
         else:
 
             # Receive message
-            message = receive_message(notified_socket)
+            message: Union[bool, dict] = receive_message(notified_socket)
 
             # If False, client disconnected, cleanup
             if message is False:
@@ -152,7 +133,7 @@ while True:
                 continue
 
             # Get user by notified socket, so we will know who sent the message
-            user = clients[notified_socket]
+            user: dict = clients[notified_socket]
 
             print(f'Received message from {user["data"].decode("utf-8")}: {message["data"].decode("utf-8")}')
 
