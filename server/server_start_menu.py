@@ -48,12 +48,12 @@ console: Console = Console()
 messages = []
 
 
-def handle_client(conn: any, address: any) -> None:
+def handle_client(conn: any, addr: any) -> None:
     """
     Function to handle the client connection.
 
     :param conn: the connection.
-    :param address: the address.
+    :param addr: the address.
     :return: None.
     """
     connected: bool = True
