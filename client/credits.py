@@ -229,7 +229,7 @@ def credits() -> None:
             vertical=height[0],
         )
         screen.update(Panel(text))
-        sleep(0.5)
+        sleep(1)
 
         text: Text = Align.center(
             Text.from_markup(
@@ -237,7 +237,7 @@ def credits() -> None:
             vertical=height[1],
         )
         screen.update(Panel(text))
-        sleep(0.5)
+        sleep(1)
 
         text: Text = Align.center(
             Text.from_markup(
@@ -245,7 +245,7 @@ def credits() -> None:
             vertical=height[2],
         )
         screen.update(Panel(text))
-        sleep(0.5)
+        sleep(1)
 
         text: Text = Align.center(
             Text.from_markup(
