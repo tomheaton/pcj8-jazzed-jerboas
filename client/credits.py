@@ -254,6 +254,3 @@ def credits() -> None:
         )
         screen.update(Panel(text))
         sleep(0.5)
-
-
-credits()
