@@ -1,3 +1,5 @@
+# NOTE: NOT MY CODE
+
 import socket
 import select
 import errno

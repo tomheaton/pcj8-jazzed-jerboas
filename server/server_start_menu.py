@@ -1,5 +1,38 @@
+# NOTE: NOT MY CODE
+
 import socket
 import select
+from rich import print
+from rich.text import Text
+from rich.console import Console
+from rich.panel import Panel
+import os
+import time
+import threading
+
+
+def clear(): return os.system('cls' if os.name == 'nt' else 'clear')
+
+
+main_title = Text.assemble(("""$$$$$$$$\\ $$\\                 
+\\__$$  __|$$ |                
+   $$ |   $$$$$$$\\   $$$$$$\\   
+   $$ |   $$  __$$\\  \\____$$\\ 
+   $$ |   $$ |  $$ | $$$$$$$ |
+   $$ |   $$ |  $$ |$$  __$$ |
+   $$ |   $$ |  $$ |\\$$$$$$$ |
+   \\__|   \\__|  \\__| \\_______|\n""", "bold magenta"), ("""$$$$$$$\\                      
+$$  __$$\\                     
+$$ |  $$ | $$$$$$\  $$\   $$\\ 
+$$$$$$$\ |$$  __$$\ \$$\ $$  |
+$$  __$$\ $$ /  $$ | \$$$$  / 
+$$ |  $$ |$$ |  $$ | $$  $$<  
+$$$$$$$  |\$$$$$$  |$$  /\$$\\ 
+\\_______/  \\______/ \\__/  \\__|""", "bold cyan"))
+
+
+console: Console = Console()
+
 
 HEADER_LENGTH = 10
 
