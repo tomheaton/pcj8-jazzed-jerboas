@@ -54,10 +54,8 @@ SERVER: str = console.input('Server IP:')
 
 ADDR: set = (SERVER, PORT)
 
-<< << << < HEAD
+
 '''Creates a connection to the server'''
-== == == =
->>>>>> > aa90e8818fe14e5d8a283e244645f0beb968518f
 client: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
 
@@ -94,16 +92,12 @@ join(name)
 
 def send_message_loop() -> None:
     while True:
-        time.sleep(0.5)
         send_message(console.input('Type something: '))
-        time.sleep(0.5)
 
 
 def receive_messages_loop() -> None:
     while True:
-        time.sleep(0.5)
         print(client.recv(1000).decode(FORMAT))
-        time.sleep(0.5)
 
 
 receive_messages_thread = threading.Thread(target=receive_messages_loop).start()
