@@ -1,7 +1,6 @@
 # NOTE: NOT MY CODE
 
 import socket
-<<<<<<< HEAD
 import select
 from rich import print
 from rich.text import Text
@@ -13,24 +12,6 @@ import threading
 
 
 def clear(): return os.system('cls' if os.name == 'nt' else 'clear')
-=======
-import threading
-import time
-from typing import TypedDict
-
-from rich import print
-from rich.console import Console
-
-# Variables used later on
-HEADER: int = 64
-PORT: int = 5050
-
-# Creates a server address
-SERVER: socket.gethostbyname = socket.gethostbyname(socket.gethostname())
-ADDR: set = (SERVER, PORT)
-FORMAT: str = "utf-8"
-DISCONNECT_MESSAGE: str = "!DISCONNECT"
->>>>>>> 78d6652c53a630635fdd23c29241ea781c7f6ebf
 
 
 main_title = Text.assemble(("""$$$$$$$$\\ $$\\                 
@@ -50,31 +31,10 @@ $$$$$$$  |\$$$$$$  |$$  /\$$\\
 \\_______/  \\______/ \\__/  \\__|""", "bold cyan"))
 
 
-<<<<<<< HEAD
 console: Console = Console()
 
 
 HEADER_LENGTH = 10
-=======
-class BoxStyle(TypedDict):
-    """
-    Storing user preferences for the box.
-    """
-
-    username_color: str
-    outline_color: str
-    text_color: str
-
-
-class User(TypedDict):
-    """
-    Storing username and user-preferences.
-    """
-
-    username: str
-    uuid: str
-    style: BoxStyle
->>>>>>> 78d6652c53a630635fdd23c29241ea781c7f6ebf
 
 IP = socket.gethostbyname(socket.gethostname())
 PORT = 1234
@@ -186,50 +146,15 @@ while True:
                 # Remove from list for socket.socket()
                 sockets_list.remove(notified_socket)
 
-<<<<<<< HEAD
                 # Remove from our list of users
                 del clients[notified_socket]
 
                 continue
-=======
-def handle_client(conn: any, addr: any) -> None:
-    """
-    Function to handle the client connection.
-
-    :param conn: the connection.
-    :param addr: the address.
-    :return: None.
-    """
-    connected: bool = True
-
-    # Receives name from the client
-    name_length: int = conn.recv(HEADER).decode(FORMAT)
-    if name_length:
-        name_length = int(name_length)
-        name: str = str(conn.recv(name_length).decode(FORMAT))
-        print(f"{name} connected")
-        clients.append(conn)
-        for client in clients:
-            client.send(f"{name} joined".encode(FORMAT))
->>>>>>> 78d6652c53a630635fdd23c29241ea781c7f6ebf
 
             # Get user by notified socket, so we will know who sent the message
             user = clients[notified_socket]
 
-<<<<<<< HEAD
             print(f'Received message from {user["data"].decode("utf-8")}: {message["data"].decode("utf-8")}')
-=======
-        # Receives messages from the client
-        msg_length: int = conn.recv(HEADER).decode(FORMAT)
-        if msg_length:
-            msg_length = int(msg_length)
-            message: str = str(conn.recv(msg_length).decode(FORMAT))
-            print(f"{name}: {message}")
-            messages.append([name, message])
-            print(messages)
-            for client in clients:
-                client.send(f"{messages[-1][0]}: {messages[-1][1]}".encode(FORMAT))
->>>>>>> 78d6652c53a630635fdd23c29241ea781c7f6ebf
 
             # Iterate over connected clients and broadcast message
             for client_socket in clients:
@@ -238,30 +163,10 @@ def handle_client(conn: any, addr: any) -> None:
                 if client_socket != notified_socket:
                     client_socket.send(user['header'] + user['data'] + message['header'] + message['data'])
 
-<<<<<<< HEAD
     for notified_socket in exception_sockets:
-=======
-def start() -> None:
-    """
-    Starts the server menu.
-    """
-    server.listen()
-    console.print(f'{SERVER}')
-    while True:
-        # Accepts connection to the server
-        conn, addr = server.accept()
-        # Creates a thread to handle each individual connection
-        thread: threading.thread = threading.Thread(target=handle_client, args=(conn, addr))
-        thread.start()
->>>>>>> 78d6652c53a630635fdd23c29241ea781c7f6ebf
 
         # Remove from list for socket.socket()
         sockets_list.remove(notified_socket)
 
-<<<<<<< HEAD
         # Remove from our list of users
         del clients[notified_socket]
-=======
-console.print("Starting server")
-start()
->>>>>>> 78d6652c53a630635fdd23c29241ea781c7f6ebf
