@@ -5,13 +5,14 @@ from rich.prompt import Prompt
 from rich.text import Text
 console: Console = Console()
 
-def make_style_prompt(choices: list, default: str = None, main_stlye="none", frame_style="none", frame_border_style="none"):
+def make_style_prompt(choices: list, default: str = None, prompt_msg: str = "What would you like to do:", main_stlye="none", frame_style="none", frame_border_style="none"):
     """
     Prompts user in a cool way and retrieves what the user picked.
 
     :choices: A list of choices. 
     :default: The value that gets returned if user doesn't type anything in.
-    
+    :prompt_msg: The message being sent before the options. Example: What is your favourite food:
+
     Styling: 
     :main_style: The main theme/color of the prompt.
     :frame_style: The theme/color for the text in the panels.
@@ -33,7 +34,7 @@ def make_style_prompt(choices: list, default: str = None, main_stlye="none", fra
         c+=1
         choices_styled.append(Panel(str(c)+". "+i, style=frame_style, border_style=frame_border_style))
     
-    console.print(Panel(Markdown("**Would you like to:**"), style=main_stlye, border_style=main_stlye))
+    console.print(Panel(Markdown("**"+prompt_msg+"**"), style=main_stlye, border_style=main_stlye))
     for i in choices_styled:
         console.print(i)
     
