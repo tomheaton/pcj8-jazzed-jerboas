@@ -6,6 +6,7 @@ from rich.panel import Panel
 import os
 import time
 import threading
+import errno
 
 '''Clears terminal'''
 
