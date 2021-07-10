@@ -21,6 +21,21 @@ printable_chars = list(string.printable.replace("\n", "").replace(" ", "").repla
 
 console = Console()
 
+def add_salt(hash_no_salt):       
+    for i in range(9):
+        hash_no_salt+=random.choice(printable_chars)
+    return hash_no_salt
+
+
+def remove_salt(hash_and_salt):
+    back_hash_removed = hash_and_salt[:-9]
+    return back_hash_removed
+
+def hash_pass(passwrd: str):
+    hashed = sha256(bytes(passwrd, "utf8")).hexdigest()
+    return add_salt(hashed)
+
+
 
 def create_account(username: str, password: str):
     global secrets
@@ -28,6 +43,9 @@ def create_account(username: str, password: str):
     secrets.append(User(username=username, paswrd=password, preferences=Preferences()))
     with open("server\\secrets.pkl", "wb") as fp:
         pickle.dump(secrets, fp)
+    
+    user_ob = [x for x in secrets if x.username==username][0]
+    return user_ob
 
 def sign_up():
     global secrets
@@ -41,7 +59,6 @@ def sign_up():
        
         usernames_taken = [x.username for x in secrets]
         username = Prompt.ask(Text.assemble(("╰→", "bold red")))
-        secrets.append(User(username, "test", Preferences()))
         
         if username in usernames_taken:
             clear()
@@ -144,27 +161,57 @@ def sign_up():
     for i in progress_visual:
         console.print(i) 
     
+    a = create_account(username, password2)
+    
+    console.print(Panel(Text.assemble(("Successfully created an account!")),style="bold green", border_style="green"))
+    time.sleep(2.1)
+    clear()
+    return a
+    
+    
+
+def log_in():
+    status = "working"
+    while status != "done":
+        clear()
+        console.print(Panel(Text.assemble(("Username", "bold purple")), style="bold magenta", border_style="bold purple"))
+        username = Prompt.ask(Text.assemble(("╰→", "bold red")))
+
+        console.print(Panel(Text.assemble(("Password", "bold purple")), style="bold cyan", border_style="bold cyan"))
+        password = Prompt.ask(Text.assemble(("╰→", "bold red")), password=True)
+
+        user_target = [x for x in secrets if x.username == username]
+        
+        if len(user_target) == 0:
+            clear()
+            console.print(Panel(Text.assemble(("Invalid username or pasword. Please try again.", "bold red")), style="bold red", border_style="bold red"))
+            time.sleep(2.1)
+            continue
+
+        user_target = user_target[0]
+
+        if not sha256(bytes(password, "utf-8")).hexdigest() == remove_salt(user_target.hashed_pass):
+            clear()
+            console.print(Panel(Text.assemble(("Invalid username or pasword. Please try again.", "bold red")), style="bold red", border_style="bold red"))
+            time.sleep(2.1)
+            continue
+        clear()
+        console.print(Panel(Text.assemble(("Success! Logged in as "+username+".", "bold green")),style="bold green", border_style="green"))
+        time.sleep(2.1)
+        clear()
+        return user_target
 
 
-def add_salt(hash_no_salt):       
-    for i in range(9):
-        hash_no_salt+=random.choice(printable_chars)
-    return hash_no_salt
+
+        
 
 
-def remove_salt(hash_and_salt):
-    back_hash_removed = hash_and_salt[:-9]
-    return back_hash_removed
-
-def hash_pass(passwrd: str):
-    hashed = sha256(bytes(passwrd, "utf8")).hexdigest()
-    return add_salt(hashed)
 
 
 def login():
     choice = utils.make_style_prompt(choices=["Log in", "Sign up"], prompt_msg="Please log-in/sign up:",main_style="bold purple", frame_border_style="bold cyan", frame_style="bold red")
     if choice == "Log in":
-        pass
+        log_in()
     if choice == "Sign up":
         sign_up()
 

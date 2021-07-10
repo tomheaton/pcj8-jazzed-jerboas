@@ -61,3 +61,5 @@ def clear() -> int:
     Clears terminal
     """
     return os.system('cls' if os.name == 'nt' else 'clear')
+
+
