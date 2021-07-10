@@ -1,8 +1,9 @@
-import time
 import socket
 import threading
-from rich import print
+import time
 from typing import TypedDict
+
+from rich import print
 from rich.console import Console
 
 # Variables used later on
@@ -26,6 +27,7 @@ class BoxStyle(TypedDict):
     """
     Storing user preferences for the box.
     """
+
     username_color: str
     outline_color: str
     text_color: str
@@ -35,6 +37,7 @@ class User(TypedDict):
     """
     Storing username and user-preferences.
     """
+
     username: str
     uuid: str
     style: BoxStyle
@@ -45,7 +48,14 @@ console: Console = Console()
 messages = []
 
 
-def handle_client(conn, addr) -> None:
+def handle_client(conn: any, address: any) -> None:
+    """
+    Function to handle the client connection.
+
+    :param conn: the connection.
+    :param address: the address.
+    :return: None.
+    """
     connected: bool = True
 
     # Receives name from the client
@@ -75,6 +85,9 @@ def handle_client(conn, addr) -> None:
 
 
 def start() -> None:
+    """
+    Starts the server menu.
+    """
     server.listen()
     console.print(f'{SERVER}')
     while True:

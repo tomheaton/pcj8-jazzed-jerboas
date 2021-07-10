@@ -1,28 +1,33 @@
 from rich.text import Text
 
-logo_text = Text.assemble(("""$$$$$$$$\\ $$\\                 
-\\__$$  __|$$ |                
-   $$ |   $$$$$$$\\   $$$$$$\\  
-   $$ |   $$  __$$\\  \\____$$\\ 
-   $$ |   $$ |  $$ | $$$$$$$ |
-   $$ |   $$ |  $$ |$$  __$$ |
-   $$ |   $$ |  $$ |\\$$$$$$$ |
-   \\__|   \\__|  \\__| \\_______|\n""", "bold magenta"), ("""$$$$$$$\\                      
-$$  __$$\\                     
-$$ |  $$ | $$$$$$\  $$\   $$\\ 
-$$$$$$$\ |$$  __$$\ \$$\ $$  |
-$$  __$$\ $$ /  $$ | \$$$$  / 
-$$ |  $$ |$$ |  $$ | $$  $$<  
-$$$$$$$  |\$$$$$$  |$$  /\$$\\ 
-\\_______/  \\______/ \\__/  \\__|""", "bold cyan"))
+logo_text = Text.assemble(
+    ("""$$$$$$$$\\ $$\\
+        \\__$$  __|$$ |
+           $$ |   $$$$$$$\\   $$$$$$\\
+           $$ |   $$  __$$\\  \\____$$\\
+           $$ |   $$ |  $$ | $$$$$$$ |
+           $$ |   $$ |  $$ |$$  __$$ |
+           $$ |   $$ |  $$ |\\$$$$$$$ |
+           \\__|   \\__|  \\__| \\_______|\n""",
+     "bold magenta"),
+    ("""$$$$$$$\\
+        $$  __$$\\
+        $$ |  $$ | $$$$$$\  $$\   $$\\
+        $$$$$$$\ |$$  __$$\ \$$\ $$  |
+        $$  __$$\ $$ /  $$ | \$$$$  /
+        $$ |  $$ |$$ |  $$ | $$  $$<
+        $$$$$$$  |\$$$$$$  |$$  /\$$\\
+        \\_______/  \\______/ \\__/  \\__|""",
+     "bold cyan")
+)
 
 
 def render_box(rows: list) -> Text:
     """
     This function gets the Text-object that is shown to the user once in a session.
-    :rows: A list of strings that together make a box.
-    There must be at least 16 rows/items in :rows:.
-    Returns a Text-object which can be printed with console.print()
+
+    :param rows: A list of strings that together make a box. (There must be at least 16 rows/items)
+    :return: Text-object which can be printed with console.print().
     """
     logo_rows = logo_text.split("\n")
     rows = ['  ' + x for x in rows]

@@ -1,35 +1,41 @@
 import os
-import time
 import socket
 import threading
+import time
+
 from rich import print
-from rich.text import Text
 from rich.console import Console
 from rich.panel import Panel
+from rich.text import Text
 
 
-def clear():
+def clear() -> int:
     """
     Clears terminal
     """
     return os.system('cls' if os.name == 'nt' else 'clear')
 
 
-main_title = Text.assemble(("""$$$$$$$$\\ $$\\                 
-\\__$$  __|$$ |                
-   $$ |   $$$$$$$\\   $$$$$$\\   
-   $$ |   $$  __$$\\  \\____$$\\ 
-   $$ |   $$ |  $$ | $$$$$$$ |
-   $$ |   $$ |  $$ |$$  __$$ |
-   $$ |   $$ |  $$ |\\$$$$$$$ |
-   \\__|   \\__|  \\__| \\_______|\n""", "bold magenta"), ("""$$$$$$$\\                      
-$$  __$$\\                     
-$$ |  $$ | $$$$$$\  $$\   $$\\ 
-$$$$$$$\ |$$  __$$\ \$$\ $$  |
-$$  __$$\ $$ /  $$ | \$$$$  / 
-$$ |  $$ |$$ |  $$ | $$  $$<  
-$$$$$$$  |\$$$$$$  |$$  /\$$\\ 
-\\_______/  \\______/ \\__/  \\__|""", "bold cyan"))
+main_title = Text.assemble(
+    ("""$$$$$$$$\\ $$\\
+        \\__$$  __|$$ |
+           $$ |   $$$$$$$\\   $$$$$$\\
+           $$ |   $$  __$$\\  \\____$$\\
+           $$ |   $$ |  $$ | $$$$$$$ |
+           $$ |   $$ |  $$ |$$  __$$ |
+           $$ |   $$ |  $$ |\\$$$$$$$ |
+           \\__|   \\__|  \\__| \\_______|\n""",
+     "bold magenta"),
+    ("""$$$$$$$\\
+        $$  __$$\\
+        $$ |  $$ | $$$$$$\  $$\   $$\\
+        $$$$$$$\ |$$  __$$\ \$$\ $$  |
+        $$  __$$\ $$ /  $$ | \$$$$  /
+        $$ |  $$ |$$ |  $$ | $$  $$<
+        $$$$$$$  |\$$$$$$  |$$  /\$$\\
+        \\_______/  \\______/ \\__/  \\__|""",
+     "bold cyan")
+)
 
 console: Console = Console()
 
@@ -85,11 +91,19 @@ join(name)
 
 
 def send_message_loop() -> None:
+    """
+
+    :return: None.
+    """
     while True:
         send_message(console.input("Type something: "))
 
 
 def receive_messages_loop() -> None:
+    """
+
+    :return: None.
+    """
     while True:
         print(client.recv(1000).decode(FORMAT))
 
