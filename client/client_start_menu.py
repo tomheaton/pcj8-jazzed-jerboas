@@ -6,7 +6,6 @@ from rich.panel import Panel
 import os
 import time
 import threading
-import errno
 
 '''Clears terminal'''
 
@@ -59,7 +58,6 @@ ADDR: set = (SERVER, PORT)
 '''Creates a connection to the server'''
 client: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
-client.setblocking(False)
 
 
 '''Function of which sends data to the server to connect the user'''
