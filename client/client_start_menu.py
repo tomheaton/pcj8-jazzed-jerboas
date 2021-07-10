@@ -54,7 +54,10 @@ SERVER: str = console.input('Server IP:')
 
 ADDR: set = (SERVER, PORT)
 
+<< << << < HEAD
 '''Creates a connection to the server'''
+== == == =
+>>>>>> > aa90e8818fe14e5d8a283e244645f0beb968518f
 client: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
 
