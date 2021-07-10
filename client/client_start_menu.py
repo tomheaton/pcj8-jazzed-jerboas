@@ -1,16 +1,18 @@
+import os
+import time
 import socket
+import threading
 from rich import print
 from rich.text import Text
 from rich.console import Console
 from rich.panel import Panel
-import os
-import time
-import threading
-
-'''Clears terminal'''
 
 
-def clear(): return os.system('cls' if os.name == 'nt' else 'clear')
+def clear():
+    """
+    Clears terminal
+    """
+    return os.system('cls' if os.name == 'nt' else 'clear')
 
 
 main_title = Text.assemble(("""$$$$$$$$\\ $$\\                 
@@ -29,41 +31,32 @@ $$ |  $$ |$$ |  $$ | $$  $$<
 $$$$$$$  |\$$$$$$  |$$  /\$$\\ 
 \\_______/  \\______/ \\__/  \\__|""", "bold cyan"))
 
-
 console: Console = Console()
 
-
-'''
-Sets variables used later on for socketing
-'''
+# Sets variables used later on for use with sockets
 HEADER: int = 64
 PORT: int = 5050
 FORMAT: str = 'utf-8'
 DISCONNECT_MESSAGE: str = '!DISCONNECT'
 
-
 clear()
-
 
 console.print(Panel.fit(main_title, border_style="red"))
 
-'''
-Prompts the user for the IP address
-'''
-SERVER: str = console.input('Server IP:')
+# Prompts the user for the IP address
+SERVER: str = console.input("Server IP:")
 
 ADDR: set = (SERVER, PORT)
 
-
-'''Creates a connection to the server'''
+# Creates a connection to the server
 client: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
 
 
-'''Function of which sends data to the server to connect the user'''
-
-
 def join(name: str) -> None:
+    """
+    Function of which sends data to the server to connect the user
+    """
     name: bytes = name.encode(FORMAT)
     name_length: int = len(name)
     send_length: str = str(name_length).encode(FORMAT)
@@ -73,10 +66,10 @@ def join(name: str) -> None:
     print(client.recv(1000).decode(FORMAT))
 
 
-'''Function which will allow the user to send a message'''
-
-
 def send_message(message: str) -> None:
+    """
+    Function which will allow the user to send a message
+    """
     message: bytes = message.encode(FORMAT)
     msg_length: int = len(message)
     msg_length: str = str(msg_length).encode(FORMAT)
@@ -86,14 +79,14 @@ def send_message(message: str) -> None:
     time.sleep(0.1)
 
 
-'''Prompts the user for their username'''
-name: str = console.input('What is your name?:')
+# Prompts the user for their username
+name: str = console.input("What is your name?:")
 join(name)
 
 
 def send_message_loop() -> None:
     while True:
-        send_message(console.input('Type something: '))
+        send_message(console.input("Type something: "))
 
 
 def receive_messages_loop() -> None:
