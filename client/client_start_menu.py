@@ -86,14 +86,13 @@ def send_message(message: str) -> None:
 
 
 # Prompts the user for their username
-name: str = console.input("What is your name?:")
+name: str = console.input("What is your name?: ")
 join(name)
 
 
 def send_message_loop() -> None:
     """
-
-    :return: None.
+    Send message loop function.
     """
     while True:
         send_message(console.input("Type something: "))
@@ -101,8 +100,7 @@ def send_message_loop() -> None:
 
 def receive_messages_loop() -> None:
     """
-
-    :return: None.
+    Receive message loop function.
     """
     while True:
         print(client.recv(1000).decode(FORMAT))
