@@ -24,17 +24,7 @@ $$ |  $$ |$$ |  $$ | $$  $$<
 $$$$$$$  |\$$$$$$  |$$  /\$$\\ 
 \\_______/  \\______/ \\__/  \\__|""", "bold cyan"))
 
-
-
-
 console: Console = Console()
-
-
-
-
-
-
-
 
 HEADER: int = 64
 PORT: int = 5050
@@ -46,7 +36,6 @@ console.print(Panel.fit(main_title, border_style="red"))
 SERVER: str = console.input('Server IP:')
 
 ADDR: set = (SERVER, PORT)
-
 
 client: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)

@@ -3,7 +3,9 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.text import Text
+
 console: Console = Console()
+
 
 def make_style_prompt(choices: list, default: str = None, prompt_msg: str = "What would you like to do:", main_stlye="none", frame_style="none", frame_border_style="none"):
     """
@@ -41,4 +43,3 @@ def make_style_prompt(choices: list, default: str = None, prompt_msg: str = "Wha
     choice_index = Prompt.ask(Text.assemble(("╰>", main_stlye)), choices=[str(x) for x in range(1, c+1)], default=default_index)
     choice_index = int(choice_index)
     return choices[choice_index-1]
-

@@ -40,6 +40,3 @@ def render_box(rows: list):
     for i in range(0, len(rows)):
         new_rows.append(Text.assemble(logo_rows[i], rows[i]+"\n"))
     return Text.assemble(*new_rows)
-
-    
-
