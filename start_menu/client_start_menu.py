@@ -6,6 +6,8 @@ from rich.panel import Panel
 import os
 import time
 
+clear = lambda: os.system('cls' if os.name == 'nt' else 'clear')
+
 main_title = Text.assemble(("""$$$$$$$$\\ $$\\                 
 \\__$$  __|$$ |                
    $$ |   $$$$$$$\\   $$$$$$\\   
@@ -30,7 +32,7 @@ PORT: int = 5050
 FORMAT: str = 'utf-8'
 DISCONNECT_MESSAGE: str = '!DISCONNECT'
 
-os.system('cls' if os.name == 'nt' else 'clear')
+clear = lambda: os.system('cls' if os.name == 'nt' else 'clear')
 console.print(Panel.fit(main_title, border_style="red"))
 SERVER: str = console.input('Server IP:')
 
@@ -55,4 +57,4 @@ name: str = console.input('What is your name?:')
 join(name)
 
 time.sleep(10)
-os.system('cls' if os.name == 'nt' else 'clear')
+clear()
