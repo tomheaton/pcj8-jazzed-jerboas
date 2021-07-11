@@ -9,7 +9,6 @@ from rich.text import Text
 from utils import clear
 
 
-
 main_title = Text.assemble(
     ("""$$$$$$$$\\ $$\\
 \\__$$  __|$$ |
@@ -83,12 +82,15 @@ def send_message(message: str) -> None:
 name: str = console.input("What is your name?: ")
 join(name)
 
+message = ''
+
 
 def send_message_loop() -> None:
     """
     Send message loop function.
     """
     while True:
+        print(message)
         send_message(console.input("Type something: "))
 
 
@@ -97,7 +99,7 @@ def receive_messages_loop() -> None:
     Receive message loop function.
     """
     while True:
-        print(client.recv(1000).decode(FORMAT))
+        message = client.recv(1000).decode(FORMAT)
 
 
 receive_messages_thread = threading.Thread(target=receive_messages_loop).start()
