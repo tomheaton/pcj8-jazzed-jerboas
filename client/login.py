@@ -60,6 +60,7 @@ def sign_up():
 
         usernames_taken = [x.username for x in secrets]
         username = Prompt.ask(Text.assemble(("╰→", "bold red")))
+
         if username in usernames_taken:
             clear()
             console.print(Panel(Text.assemble(("Username already taken", "bold purple")),
@@ -81,8 +82,6 @@ def sign_up():
             time.sleep(2.1)
             clear()
             continue
-
-        secrets.append(User(username, "test", Preferences()))
 
         progress_visual.append(Panel(Text.assemble(("Username ✓", "bold green")),
                                style="bold green", border_style="bold green"))
@@ -178,6 +177,13 @@ def sign_up():
     for i in progress_visual:
         console.print(i)
 
+    a = create_account(username, password2)
+
+    console.print(Panel(Text.assemble(("Successfully created an account!")), style="bold green", border_style="green"))
+    time.sleep(2.1)
+    clear()
+    return a
+
 
 def log_in():
     status = "working"
@@ -187,15 +193,12 @@ def log_in():
                       style="bold magenta", border_style="bold purple"))
         username = Prompt.ask(Text.assemble(("╰→", "bold red")))
 
+        console.print(Panel(Text.assemble(("Password", "bold purple")), style="bold cyan", border_style="bold cyan"))
+        password = Prompt.ask(Text.assemble(("╰→", "bold red")), password=True)
 
-def add_salt(hash_no_salt):
-    for i in range(9):
-        hash_no_salt += random.choice(printable_chars)
-    return hash_no_salt
+        user_target = [x for x in secrets if x.username == username]
 
-      user_target = [x for x in secrets if x.username == username]
-
-       if len(user_target) == 0:
+        if len(user_target) == 0:
             clear()
             console.print(Panel(Text.assemble(("Invalid username or pasword. Please try again.",
                           "bold red")), style="bold red", border_style="bold red"))
@@ -216,11 +219,6 @@ def add_salt(hash_no_salt):
         time.sleep(2.1)
         clear()
         return user_target
-
-
-def hash_pass(passwrd: str):
-    hashed = sha256(bytes(passwrd, "utf8")).hexdigest()
-    return add_salt(hashed)
 
 
 def login():
