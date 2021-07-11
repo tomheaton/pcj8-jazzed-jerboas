@@ -188,3 +188,6 @@ def credits() -> None:
         screen.update(Panel(text))
         sleep(0.5)
         clear()
+
+if __name__ == '__main__':
+    credits()

@@ -224,9 +224,9 @@ def login():
     choice = utils.make_style_prompt(choices=["Log in", "Sign up"], prompt_msg="Please log-in/sign up:",
                                      main_style="bold purple", frame_border_style="bold cyan", frame_style="bold red")
     if choice == "Log in":
-        log_in()
+        return log_in()
     if choice == "Sign up":
-        sign_up()
+        return sign_up()
 
 
-login()
+

@@ -9,26 +9,7 @@ from rich.panel import Panel
 from rich.text import Text
 from utils import clear
 
-main_title = Text.assemble(
-    (r"""$$$$$$$$\\ $$\\
-\\__$$  __|$$ |
-   $$ |   $$$$$$$\\   $$$$$$\\
-   $$ |   $$  __$$\\  \\____$$\\
-   $$ |   $$ |  $$ | $$$$$$$ |
-   $$ |   $$ |  $$ |$$  __$$ |
-   $$ |   $$ |  $$ |\\$$$$$$$ |
-   \\__|   \\__|  \\__| \\_______|\n""",
-     "bold magenta"),
-    (r"""$$$$$$$\\
-$$  __$$\\
-$$ |  $$ | $$$$$$\  $$\   $$\\
-$$$$$$$\ |$$  __$$\ \$$\ $$  |
-$$  __$$\ $$ /  $$ | \$$$$  /
-$$ |  $$ |$$ |  $$ | $$  $$<
-$$$$$$$  |\$$$$$$  |$$  /\$$\\
-\\_______/  \\______/ \\__/  \\__|""",
-     "bold cyan")
-)
+
 
 console: Console = Console()
 
@@ -40,7 +21,7 @@ DISCONNECT_MESSAGE: str = '!DISCONNECT'
 
 clear()
 
-console.print(Panel.fit(main_title, border_style="red"))
+
 
 # Prompts the user for the IP address
 SERVER: str = console.input("Server IP:")
