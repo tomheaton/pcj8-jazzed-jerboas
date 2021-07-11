@@ -1,5 +1,6 @@
 import socket
 import select
+import sys
 
 HEADER_LENGTH = 10
 
