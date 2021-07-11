@@ -210,3 +210,4 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
 
 if __name__ == '__main__':
     main_menu()
+    

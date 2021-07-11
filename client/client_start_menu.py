@@ -2,9 +2,6 @@ import socket
 import select
 import errno
 from pynput import keyboard
-import threading
-<<<<<<< HEAD
-import time
 
 from rich import print
 from rich.console import Console
@@ -12,6 +9,9 @@ from rich.panel import Panel
 from rich.text import Text
 from utils import clear
 
+import sys
+import time
+sleep = time.sleep()
 
 
 console: Console = Console()
@@ -76,9 +76,7 @@ def send_message_loop() -> None:
     while True:
         print(message)
         send_message(console.input("Type something: "))
-=======
-import sys
-from time import sleep
+
 
 HEADER_LENGTH = 10
 
@@ -96,7 +94,6 @@ client_socket.connect((IP, PORT))
 
 # Set connection to non-blocking state, so .recv() call won;t block, just return some exception we'll handle
 client_socket.setblocking(False)
->>>>>>> afdb1bf3afaa454138ea16895d0f3cd1baf1a19a
 
 # Prepare username and header and send them
 # We need to encode username to bytes, then count number of bytes and prepare header of fixed size, that we encode to bytes as well

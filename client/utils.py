@@ -68,17 +68,13 @@ class User:
         self.friends = []
 
 
-<<<<<<< HEAD
+
 class GoBack(Exception):
     pass
 
 def make_style_prompt(choices: list, default: str = None, prompt_msg: str = "Would you like to:", main_style: str = "none",
                       frame_style: str = "none",
                       frame_border_style: str = "none") -> str:
-=======
-def make_style_prompt(choices: list, default: str = None, prompt_msg: str = "Would you like to:",
-                      main_style: str = "none", frame_style: str = "none", frame_border_style: str = "none") -> str:
->>>>>>> afdb1bf3afaa454138ea16895d0f3cd1baf1a19a
     """
     Prompts user in a cool way and retrieves what the user picked.
 
