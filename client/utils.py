@@ -10,6 +10,7 @@ console: Console = Console()
 
 
 class Preferences:
+
     """
     This needs to be passed onto the 'User' class as it sets the default preferences:
     'sampleuser = User("samplename", "password", default_preference)'
@@ -26,12 +27,12 @@ class Preferences:
     to be used to allow multiple settings be to changed.
     """
 
-    def template_message(self):
+    def template_message(self) -> None:
         """
         Function which prints out a preview of how the users box is going to look.
         """
-        console.print(Panel("This is a template message.", title = ("["+self["Name Colour"]+"]") + "Title" + "[/]", border_style = self["Border Colour"],style = self["Message Colour"], width = 25, padding = 1, title_align = "left"))
-
+        console.print(Panel("This is a template message.", title=("["+self["Name Colour"]+"]") + "Title" + "[/]",
+                      border_style=self["Border Colour"], style=self["Message Colour"], width=25, padding=1, title_align="left"))
 
     def settings(self):
         """
@@ -39,7 +40,8 @@ class Preferences:
         colour values and returns then updated preference.
         """
         Preferences.template_message(self)
-        val_to_be_changed: str = Prompt.ask("\n🖌️    What would you like to change?    ", choices = ["Border Colour", "Name Colour", "Message Colour", "BACK"])
+        val_to_be_changed: str = Prompt.ask("\n🖌️    What would you like to change?    ", choices=[
+                                            "Border Colour", "Name Colour", "Message Colour", "BACK"])
 
         if val_to_be_changed == "BACK":
             exit()
@@ -48,14 +50,14 @@ class Preferences:
             while True:
                 colour: str = Prompt.ask("🎨   Enter the name or hex value of your desired colour   ")
                 try:
-                    test: str = console.print("", style = colour)
+                    test: str = console.print("", style=colour)
                 except:
                     console.print("❌   Please enter a valid colour!\n")
                 else:
                     previous_setting: str = self[val_to_be_changed]
                     self[val_to_be_changed] = "bold " + str(colour)
                     console.print("✔️   Updated successfully!\n")
-                    return self 
+                    return self
 
 
 class User:
@@ -66,12 +68,17 @@ class User:
         self.friends = []
 
 
+<<<<<<< HEAD
 class GoBack(Exception):
     pass
 
 def make_style_prompt(choices: list, default: str = None, prompt_msg: str = "Would you like to:", main_style: str = "none",
                       frame_style: str = "none",
                       frame_border_style: str = "none") -> str:
+=======
+def make_style_prompt(choices: list, default: str = None, prompt_msg: str = "Would you like to:",
+                      main_style: str = "none", frame_style: str = "none", frame_border_style: str = "none") -> str:
+>>>>>>> afdb1bf3afaa454138ea16895d0f3cd1baf1a19a
     """
     Prompts user in a cool way and retrieves what the user picked.
 
