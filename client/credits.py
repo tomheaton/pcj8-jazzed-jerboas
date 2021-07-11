@@ -1,37 +1,51 @@
-from utils import clear
-
 from time import sleep
 
-from rich.live import Live
-from rich.table import Table
-from rich.console import Console, RenderGroup
 from rich import print
 from rich.align import Align
-from rich.text import Text
+from rich.console import Console, RenderGroup
+from rich.live import Live
 from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
+from utils import clear
 
 console: Console = Console()
 
 height: list = ['bottom', 'middle', 'top']
 
 team_name: list = [
-    Text.assemble((r":                |$$$$$$$$| |$$| |$$| |$$$$$$|               :", 'bold purple'), justify='center'),
-    Text.assemble((r":                   |$$|    |$$| |$$| |$|                    :", 'bold purple'), justify='center'),
-    Text.assemble((r":                   |$$|    |$$$$$$$| |$$$$|                 :", 'bold purple'), justify='center'),
-    Text.assemble((r":                   |$$|    |$$| |$$| |$|                    :", 'bold purple'), justify='center'),
-    Text.assemble((":                   |$$|    |$$| |$$| |$$$$$$|               :\n", 'bold purple'), justify='center'),
+    Text.assemble((r":                |$$$$$$$$| |$$| |$$| |$$$$$$|               :", 'bold purple'),
+                  justify='center'),
+    Text.assemble((r":                   |$$|    |$$| |$$| |$|                    :", 'bold purple'),
+                  justify='center'),
+    Text.assemble((r":                   |$$|    |$$$$$$$| |$$$$|                 :", 'bold purple'),
+                  justify='center'),
+    Text.assemble((r":                   |$$|    |$$| |$$| |$|                    :", 'bold purple'),
+                  justify='center'),
+    Text.assemble((":                   |$$|    |$$| |$$| |$$$$$$|               :\n", 'bold purple'),
+                  justify='center'),
 
-    Text.assemble((r":          |$| |$$$$$| |$$$$$| |$$$$$| |$$$$$| |$$$$$\       :", 'bold magenta'), justify='center'),
-    Text.assemble((r":          |$| |$$ $$|    /$$/    /$$/ |$|     |$$| \$\      :", 'bold magenta'), justify='center'),
-    Text.assemble((r":          |$| |$$$$$|   /$$/    /$$/  |$$$|   |$$| |$|      :", 'bold magenta'), justify='center'),
-    Text.assemble((r":       ___|$| |$| |$|  /$$/    /$$/   |$|     |$$| /$/      :", 'bold magenta'), justify='center'),
-    Text.assemble((":      |$$$$$| |$| |$| |$$$$$| |$$$$$| |$$$$$| |$$$$$/       :\n", 'bold magenta'), justify='center'),
+    Text.assemble((r":          |$| |$$$$$| |$$$$$| |$$$$$| |$$$$$| |$$$$$\       :", 'bold magenta'),
+                  justify='center'),
+    Text.assemble((r":          |$| |$$ $$|    /$$/    /$$/ |$|     |$$| \$\      :", 'bold magenta'),
+                  justify='center'),
+    Text.assemble((r":          |$| |$$$$$|   /$$/    /$$/  |$$$|   |$$| |$|      :", 'bold magenta'),
+                  justify='center'),
+    Text.assemble((r":       ___|$| |$| |$|  /$$/    /$$/   |$|     |$$| /$/      :", 'bold magenta'),
+                  justify='center'),
+    Text.assemble((":      |$$$$$| |$| |$| |$$$$$| |$$$$$| |$$$$$| |$$$$$/       :\n", 'bold magenta'),
+                  justify='center'),
 
-    Text.assemble((r":    |$| |$$$$$| |$$$$$\  |$$$$\   /$$$$$\  |$$$$$|  /$$$$$| :", 'bold purple'), justify='center'),
-    Text.assemble((r":    |$| |$|     |$$  $$| |$  $$| |$$   $$| |$$ $$| |$$\     :", 'bold purple'), justify='center'),
-    Text.assemble((r":    |$| |$$$|   |$$$$$/  |$$$$/  |$$   $$| |$$$$$|  \$$$$$\ :", 'bold purple'), justify='center'),
-    Text.assemble((r": ___|$| |$|     |$| \$\  |$  $$\ |$$   $$| |$| |$|      /$$|:", 'bold purple'), justify='center'),
-    Text.assemble((r":|$$$$$| |$$$$$| |$|  \$\ |$$$$$/  \$$$$$/  |$| |$|  |$$$$$/ :", 'bold purple'), justify='center'),
+    Text.assemble((r":    |$| |$$$$$| |$$$$$\  |$$$$\   /$$$$$\  |$$$$$|  /$$$$$| :", 'bold purple'),
+                  justify='center'),
+    Text.assemble((r":    |$| |$|     |$$  $$| |$  $$| |$$   $$| |$$ $$| |$$\     :", 'bold purple'),
+                  justify='center'),
+    Text.assemble((r":    |$| |$$$|   |$$$$$/  |$$$$/  |$$   $$| |$$$$$|  \$$$$$\ :", 'bold purple'),
+                  justify='center'),
+    Text.assemble((r": ___|$| |$|     |$| \$\  |$  $$\ |$$   $$| |$| |$|      /$$|:", 'bold purple'),
+                  justify='center'),
+    Text.assemble((r":|$$$$$| |$$$$$| |$|  \$\ |$$$$$/  \$$$$$/  |$| |$|  |$$$$$/ :", 'bold purple'),
+                  justify='center'),
 ]
 
 jazzed_jerboas: list = ['[green]tomheaton[/]', '[purple]MikeNoCap[/]', '[purple]HiPeople21[/]',
@@ -44,7 +58,8 @@ new_line = '\n'
 
 def credits() -> None:
     with console.screen() as screen:
-        rule: str = '[purple]--------------------[/purple][magenta]This was built by:[/magenta][purple]--------------------[/purple]'
+        rule: str = '[purple]--------------------[/purple][magenta]This was built by:[/magenta][' \
+                    'purple]--------------------[/purple] '
         clear()
         text: Text = Align.center(
             Text.from_markup(
@@ -68,7 +83,8 @@ def credits() -> None:
             clear()
             text: Text = Align.center(
                 Text.from_markup(
-                    f"{rule}\n{new_line.join([str(i) for i in team_name])}\n{new_line.join([str(i) for i in jazzed_jerboas[:j]])}", justify="center"),
+                    f"{rule}\n{new_line.join([str(i) for i in team_name])}\n{new_line.join([str(i) for i in jazzed_jerboas[:j]])}",
+                    justify="center"),
                 vertical=height[0],
             )
             screen.update(Panel(text))
@@ -77,7 +93,8 @@ def credits() -> None:
         clear()
         text: Text = Align.center(
             Text.from_markup(
-                f"{rule}\n{new_line.join([str(i) for i in team_name])}\n{new_line.join([str(i) for i in jazzed_jerboas])}", justify="center"),
+                f"{rule}\n{new_line.join([str(i) for i in team_name])}\n{new_line.join([str(i) for i in jazzed_jerboas])}",
+                justify="center"),
             vertical=height[1],
         )
         screen.update(Panel(text))
@@ -86,7 +103,8 @@ def credits() -> None:
         clear()
         text: Text = Align.center(
             Text.from_markup(
-                f"{rule}\n{new_line.join([str(i) for i in team_name])}\n{new_line.join([str(i) for i in jazzed_jerboas])}", justify="center"),
+                f"{rule}\n{new_line.join([str(i) for i in team_name])}\n{new_line.join([str(i) for i in jazzed_jerboas])}",
+                justify="center"),
             vertical=height[2],
         )
         screen.update(Panel(text))
@@ -95,7 +113,8 @@ def credits() -> None:
         clear()
         text: Text = Align.center(
             Text.from_markup(
-                f"\n{new_line.join([str(i) for i in team_name])}\n{new_line.join([str(i) for i in jazzed_jerboas])}", justify="center"),
+                f"\n{new_line.join([str(i) for i in team_name])}\n{new_line.join([str(i) for i in jazzed_jerboas])}",
+                justify="center"),
             vertical=height[2],
         )
         screen.update(Panel(text))
@@ -105,7 +124,8 @@ def credits() -> None:
             clear()
             text: Text = Align.center(
                 Text.from_markup(
-                    f"{new_line.join([str(i) for i in team_name[j:]])}\n{new_line.join([str(i) for i in jazzed_jerboas])}", justify="center"),
+                    f"{new_line.join([str(i) for i in team_name[j:]])}\n{new_line.join([str(i) for i in jazzed_jerboas])}",
+                    justify="center"),
                 vertical=height[2],
             )
             screen.update(Panel(text))

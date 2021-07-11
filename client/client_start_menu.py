@@ -2,15 +2,15 @@ import os
 import socket
 import threading
 import time
+
 from rich import print
 from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
 from utils import clear
 
-
 main_title = Text.assemble(
-    ("""$$$$$$$$\\ $$\\
+    (r"""$$$$$$$$\\ $$\\
 \\__$$  __|$$ |
    $$ |   $$$$$$$\\   $$$$$$\\
    $$ |   $$  __$$\\  \\____$$\\
@@ -19,7 +19,7 @@ main_title = Text.assemble(
    $$ |   $$ |  $$ |\\$$$$$$$ |
    \\__|   \\__|  \\__| \\_______|\n""",
      "bold magenta"),
-    ("""$$$$$$$\\
+    (r"""$$$$$$$\\
 $$  __$$\\
 $$ |  $$ | $$$$$$\  $$\   $$\\
 $$$$$$$\ |$$  __$$\ \$$\ $$  |

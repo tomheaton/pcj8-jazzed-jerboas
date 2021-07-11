@@ -1,4 +1,5 @@
 import os
+
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.panel import Panel
@@ -12,6 +13,7 @@ class Preferences:
     def __init__(self):
         pass
 
+
 class User:
     def __init__(self, username: str, paswrd: str, preferences: Preferences):
         self.username = username
@@ -19,7 +21,9 @@ class User:
         self.preferences = preferences
         self.friends = []
 
-def make_style_prompt(choices: list, default: str = None, prompt_msg="Would you like to:", main_style: str = "none", frame_style: str = "none",
+
+def make_style_prompt(choices: list, default: str = None, prompt_msg: str = "Would you like to:", main_style: str = "none",
+                      frame_style: str = "none",
                       frame_border_style: str = "none") -> str:
     """
     Prompts user in a cool way and retrieves what the user picked.
@@ -43,10 +47,9 @@ def make_style_prompt(choices: list, default: str = None, prompt_msg="Would you 
     c = 0
     for i in choices:
         c += 1
-        # choices_styled.append(Panel(str(c) + ". " + i, style=frame_style, border_style=frame_border_style))
         choices_styled.append(Panel(f"{c}. {i}", style=frame_style, border_style=frame_border_style))
 
-    console.print(Panel(Markdown("**"+prompt_msg+"**"), style=main_style, border_style=main_style))
+    console.print(Panel(Markdown("**" + prompt_msg + "**"), style=main_style, border_style=main_style))
     for i in choices_styled:
         console.print(i)
 
@@ -61,5 +64,3 @@ def clear() -> int:
     Clears terminal
     """
     return os.system('cls' if os.name == 'nt' else 'clear')
-
-
