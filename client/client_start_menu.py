@@ -10,7 +10,7 @@ from rich.text import Text
 from utils import clear
 
 main_title = Text.assemble(
-    (r"""$$$$$$$$\\ $$\\
+    ("""$$$$$$$$\\ $$\\
 \\__$$  __|$$ |
    $$ |   $$$$$$$\\   $$$$$$\\
    $$ |   $$  __$$\\  \\____$$\\
@@ -19,7 +19,7 @@ main_title = Text.assemble(
    $$ |   $$ |  $$ |\\$$$$$$$ |
    \\__|   \\__|  \\__| \\_______|\n""",
      "bold magenta"),
-    (r"""$$$$$$$\\
+    ("""$$$$$$$\\
 $$  __$$\\
 $$ |  $$ | $$$$$$\  $$\   $$\\
 $$$$$$$\ |$$  __$$\ \$$\ $$  |
@@ -102,5 +102,5 @@ def receive_messages_loop() -> None:
         message = client.recv(1000).decode(FORMAT)
 
 
-receive_messages_thread = threading.Thread(target=receive_messages_loop).start()
+# receive_messages_thread = threading.Thread(target=receive_messages_loop).start()
 send_message_thread = threading.Thread(target=send_message_loop).start()

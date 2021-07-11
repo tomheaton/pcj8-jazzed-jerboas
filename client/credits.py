@@ -57,6 +57,9 @@ new_line = '\n'
 
 
 def credits() -> None:
+    """
+    Displays the credits
+    """
     with console.screen() as screen:
         rule: str = '[purple]--------------------[/purple][magenta]This was built by:[/magenta][' \
                     'purple]--------------------[/purple] '
