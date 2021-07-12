@@ -11,6 +11,8 @@ from rich.layout import Layout
 from rich.console import Console
 from rich.panel import Panel
 from rich.align import Align
+import credits
+credits.credits_rework()
 
 console: Console = Console()
 main_title: Text = Text.assemble(

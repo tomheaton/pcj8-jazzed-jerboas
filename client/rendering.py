@@ -6,11 +6,10 @@ from rich.console import Console
 from utils import clear
 
 import colorama
-from colorama import Fore, Back, Style
-colorama.init(autoreset=True) 
 # Colorame module for creating panel manually because rich wont let u see the string that is actually being printed.
 
-console = Console()
+
+
 
 logo_text = Text.assemble(
     (
@@ -38,43 +37,46 @@ $$$$$$$  |\$$$$$$  |$$  /\$$\\
      "bold cyan")
 )
 
-
+RED = '\033[91m'
 ENDC = '\033[0m'
+PURPLE = '\033[95m'
+CYAN = '\033[96m'
+
 box_logo_lines = [
-    f"{Fore.RED}╭────────────────────────────────╮  ",
-    f"{Fore.RED}│                                │  ",
-    f"{Fore.RED}│ {Style.BRIGHT}{Fore.MAGENTA}$$$$$$$$\\ $$\\                  {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│ {Style.BRIGHT}{Fore.MAGENTA}\\__$$  __|$$ |                 {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│    {Style.BRIGHT}{Fore.MAGENTA}$$ |   $$$$$$$\\   $$$$$$\\   {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│    {Style.BRIGHT}{Fore.MAGENTA}$$ |   $$  __$$\\  \\____$$\\  {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│    {Style.BRIGHT}{Fore.MAGENTA}$$ |   $$ |  $$ | $$$$$$$ | {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│    {Style.BRIGHT}{Fore.MAGENTA}$$ |   $$ |  $$ |$$  __$$ | {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│    {Style.BRIGHT}{Fore.MAGENTA}$$ |   $$ |  $$ |\\$$$$$$$ | {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│    {Style.BRIGHT}{Fore.MAGENTA}\\__|   \\__|  \\__| \\_______| {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│                                │  ",
-    f"{Fore.RED}│ {Style.BRIGHT}{Fore.CYAN}$$$$$$$\\                       {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│ {Style.BRIGHT}{Fore.CYAN}$$  __$$\\                      {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│ {Style.BRIGHT}{Fore.CYAN}$$ |  $$ | $$$$$$\\  $$\\   $$\\  {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│ {Style.BRIGHT}{Fore.CYAN}$$$$$$$\\ |$$  __$$\\ \\$$\\ $$  | {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│ {Style.BRIGHT}{Fore.CYAN}$$  __$$\\ $$ /  $$ | \\$$$$  /  {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│ {Style.BRIGHT}{Fore.CYAN}$$ |  $$ |$$ |  $$ | $$  $$<   {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│ {Style.BRIGHT}{Fore.CYAN}$$$$$$$  |\\$$$$$$  |$$  /\\$$\\  {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│ {Style.BRIGHT}{Fore.CYAN}\\_______/  \\______/ \\__/  \\__| {Style.NORMAL}{Fore.RED}│  ",
-    f"{Fore.RED}│                                │  ",
-    f"{Fore.RED}╰────────────────────────────────╯  "
+    RED+"╭────────────────────────────────╮  ",
+    RED+"│                                │  ",
+    RED+"│"+ENDC+PURPLE+" $$$$$$$$\\ $$\\                  "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+PURPLE+" \\__$$  __|$$ |                 "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+PURPLE+"    $$ |   $$$$$$$\\   $$$$$$\\   "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+PURPLE+"    $$ |   $$  __$$\\  \\____$$\\  "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+PURPLE+"    $$ |   $$ |  $$ | $$$$$$$ | "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+PURPLE+"    $$ |   $$ |  $$ |$$  __$$ | "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+PURPLE+"    $$ |   $$ |  $$ |\\$$$$$$$ | "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+PURPLE+"    \\__|   \\__|  \\__| \\_______| "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│                                │"+ENDC+"  ",
+    RED+"│"+ENDC+CYAN+" $$$$$$$\\                       "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+CYAN+" $$  __$$\\                      "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+CYAN+" $$ |  $$ | $$$$$$\\  $$\\   $$\\  "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+CYAN+" $$$$$$$\\ |$$  __$$\\ \\$$\\ $$  | "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+CYAN+" $$  __$$\\ $$ /  $$ | \\$$$$  /  "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+CYAN+" $$ |  $$ |$$ |  $$ | $$  $$<   "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+CYAN+" $$$$$$$  |\\$$$$$$  |$$  /\\$$\\  "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│"+ENDC+CYAN+" \\_______/  \\______/ \\__/  \\__| "+ENDC+RED+"│"+ENDC+"  ",
+    RED+"│                                │  "+ENDC,
+    RED+"╰────────────────────────────────╯  "+ENDC
 ]
-menu_logo = "".join([x+ENDC+"\n" if x != box_logo_lines[-1] else x+ENDC for x in box_logo_lines])
+
+menu_logo = "".join([x+"\n" if x != box_logo_lines[-1] else x for x in box_logo_lines])
 
 
-def render_box(rows: list) -> Text:
+def render_box(rows: list, console) -> Text:
     """
     This function gets the Text-object that is shown to the user once in a session.
 
     :param rows: A list of strings that together make a box. (There must be at least 16 rows/items)
     :return: Text-object which can be printed with console.print().
     """
-    logo_rows = logo_text.split("\n")
-    rows = ['  ' + x for x in rows]
+    logo_rows = menu_logo.split("\n")
 
     if len(rows) < 16:
         raise ValueError("The argument rows needs to contain at least 16 rows.")
@@ -91,14 +93,15 @@ def render_box(rows: list) -> Text:
 
 
 
-def render_menu_screen(rows: list) -> Text:
+def render_menu_screen(rows: list, console) -> Text:
+    
     """
     This function gets the Text-object that is shown to the user once in the main_menu.
 
     :param rows: A list of strings that together make a box. (There must be at least 21 rows/items)
     :return: Text-object which can be printed with console.print().
     """
-    
+
     logo_rows = menu_logo.split("\n")
 
 

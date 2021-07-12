@@ -1,24 +1,19 @@
 from rich.text import Text
 from rich.prompt import Prompt
 from rich.panel import Panel
-from rich.console import Console
+from rich.screen import Screen
+from rich.console import Console, RenderGroup
+from rich.align import Align
 
 from utils import User, Preferences, GoBack, clear
-from rendering import render_menu_screen
+from rendering import render_menu_screen, render_box
 
+import os
 
-
-# Importing of functions to run on select
-import credits
 import login
+import credits
 
-
-
-
-
-
-
-
+from colorama import Fore
 
 
 
@@ -26,6 +21,8 @@ import login
 
 
 console = Console()
+
+
 
 main_title = Text.assemble(
     (
@@ -99,8 +96,8 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
         if logged_in:
             rows.insert(0, Text.assemble((logged_in_as_msg, "bold green")))
         
-        console.print(render_menu_screen(rows))
-    
+        
+        console.print(render_menu_screen(rows, console))
         what_to_do = Prompt.ask(Text.assemble(("1: Scroll up\n", "bold cyan"), ("2: Scroll down\n", "bold cyan"), ("3: Select\n", "bold purple")), choices=["1", "2", "3"], default="3")
         if what_to_do == "1":
             if hover_on == 1:
@@ -189,10 +186,8 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
                     continue
             elif hover_on == 3:
                 try:
-                    clear()
-                    credits.credits() # Credits
+                    credits.credits_rework(console) # Credits
                     hover_on = 1
-                    clear()
                     continue
                 except GoBack:
                     hover_on = 1
@@ -210,4 +205,3 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
 
 if __name__ == '__main__':
     main_menu()
-    
