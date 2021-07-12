@@ -12,7 +12,7 @@ from rich.text import Text
 
 from utils import clear, GoBack
 import copy
-from pynput import Keyboard
+
 
 
 height: list = ['bottom', 'middle', 'top']
