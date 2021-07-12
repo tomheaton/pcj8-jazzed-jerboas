@@ -104,5 +104,3 @@ def help_preference():
     console.print((Align("[bold cyan]PREFERENCES[/]\n", align = "center", )))
     console.print((Align(paragraph, align = "center")))
     help_navigation("Pref")
-
-help_start_Page()
