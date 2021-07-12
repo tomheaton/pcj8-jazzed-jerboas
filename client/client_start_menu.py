@@ -2,9 +2,81 @@ import socket
 import select
 import errno
 from pynput import keyboard
-import threading
+
+from rich import print
+from rich.console import Console
+from rich.panel import Panel
+from rich.text import Text
+from utils import clear
+
 import sys
-from time import sleep
+import time
+sleep = time.sleep()
+
+
+console: Console = Console()
+
+# Sets variables used later on for use with sockets
+HEADER: int = 64
+PORT: int = 5050
+FORMAT: str = 'utf-8'
+DISCONNECT_MESSAGE: str = '!DISCONNECT'
+
+clear()
+
+
+
+# Prompts the user for the IP address
+SERVER: str = console.input("Server IP:")
+
+ADDR: set = (SERVER, PORT)
+
+# Creates a connection to the server
+client: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(ADDR)
+
+
+def join(name: str) -> None:
+    """
+    Function of which sends data to the server to connect the user
+    """
+    name: bytes = name.encode(FORMAT)
+    name_length: int = len(name)
+    send_length: str = str(name_length).encode(FORMAT)
+    send_length += b' ' * (HEADER - len(send_length))
+    client.send(send_length)
+    client.send(name)
+    print(client.recv(1000).decode(FORMAT))
+
+
+def send_message(message: str) -> None:
+    """
+    Function which will allow the user to send a message
+    """
+    message: bytes = message.encode(FORMAT)
+    msg_length: int = len(message)
+    msg_length: str = str(msg_length).encode(FORMAT)
+    msg_length += b' ' * (HEADER - len(msg_length))
+    client.send(msg_length)
+    client.send(message)
+    time.sleep(0.1)
+
+
+# Prompts the user for their username
+name: str = console.input("What is your name?: ")
+join(name)
+
+message = ''
+
+
+def send_message_loop() -> None:
+    """
+    Send message loop function.
+    """
+    while True:
+        print(message)
+        send_message(console.input("Type something: "))
+
 
 HEADER_LENGTH = 10
 
