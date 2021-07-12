@@ -1,5 +1,6 @@
-from time import sleep
 
+
+from time import sleep
 from rich import print
 from rich.align import Align
 from rich.console import Console, RenderGroup
@@ -9,16 +10,16 @@ from rich.table import Table
 from rich.text import Text
 
 
-from utils import clear
+from utils import clear, GoBack
 import copy
-
+from pynput import Keyboard
 
 
 height: list = ['bottom', 'middle', 'top']
 
 team_name: list = [
-    '[purple]--------------------[/purple][magenta]This was built by:[/magenta][' \
-                    'purple]--------------------[/purple] ',
+    '[purple]--------------------[/purple][magenta]This was built by:[/magenta]['
+    'purple]--------------------[/purple] ',
     Text.assemble((r":                |$$$$$$$$| |$$| |$$| |$$$$$$|               :", 'bold purple'),
                   justify='center'),
     Text.assemble((r":                   |$$|    |$$| |$$| |$|                    :", 'bold purple'),
@@ -57,7 +58,7 @@ team_name: list = [
 
 jazzed_jerboas: list = [
     '\n\n[green]Teamleader| Discord: StormedPanda#9999 | GitHub: tomheaton | aka Tom |[/]\n\n',
-    '\n\n[bold yellow]Teammember| Discord: Miklath#1000 | GitHub: MikeNoCap | aka Mike |[/]\n\n', 
+    '\n\n[bold yellow]Teammember| Discord: Miklath#1000 | GitHub: MikeNoCap | aka Mike |[/]\n\n',
     '\n\n[bold yellow]Teammember | Discord: HiPeople21#6968 | GitHub: HiPeople21 |[/]\n\n',
     '\n\n[bold yellow]Teammember | Discord: Mega#6949 | GitHub: TahU28 |[/]\n\n',
     '\n\n[bold yellow]Teammember | Discord: Darling#9795 | GitHub: ryoflux |[/]\n\n',
@@ -67,10 +68,11 @@ message: list = [
     'We are very thankfull for getting to join this event. Special thanks to the Python Discord event-team\nfor taking their time off to manage and host this event.',
     '',
     'Placeholder'
-    ]
+]
 
 
-rows_ = ["\n","\n","\n","[bold white]-----------------------Credits-----------------------[/]", "\n", "\n", "\n", "[bold white]There will be stops along this ride so you can take your time to read.[/]"]
+rows_ = ["\n", "\n", "\n", "[bold white]-----------------------Credits-----------------------[/]", "\n",
+         "\n", "\n", "[bold white]There will be stops along this ride so you can take your time to read.[/]"]
 for i in range(9):
     rows_.append("")
 for i in team_name:
@@ -129,7 +131,6 @@ def credits(console) -> None:
                 vertical=height[0],
             )
             screen.update(Panel(text, style="bold magenta", border_style="red"))
-    
 
         for j in range(len(jazzed_jerboas) + 1):
             clear()
@@ -247,21 +248,18 @@ def credits_rework():
     rows = copy.deepcopy(rows_)
     with Live("", refresh_per_second=9) as screen:
 
-        loop_times = 0 # Keep track of where in rows we are so we can stop at a specific point
+        loop_times = 0  # Keep track of where in rows we are so we can stop at a specific point
 
         while len(rows) != 0:
             loop_times += 1
             rows.pop(0)
-            
+
             scroll_through = Align.center(
-            Text.from_markup(
-                "".join([x+"\n" if not isinstance(x, Text) else Text.assemble((x))._text[1]+"\n" for x in rows]), justify="center"
-                )  
+                Text.from_markup(
+                    "".join([x+"\n" if not isinstance(x, Text) else Text.assemble((x))._text[1]+"\n" for x in rows]), justify="center"
+                )
             )
-            
-            
-            
-            
+
             screen.update(Panel(scroll_through, border_style="bold red", style="bold magenta"))
             if loop_times == 3:
                 for i in range(6):
@@ -279,10 +277,13 @@ def credits_rework():
                 for i in range(9):
                     screen.update(Panel(scroll_through, border_style="bold yellow", style="bold magenta"))
                     sleep(1)
-                    
+
             sleep(0.4)
     clear()
     
 
-if __name__ == '__main__':
-    credits_rework()
+
+def skip_credits():
+    raise GoBack
+
+
