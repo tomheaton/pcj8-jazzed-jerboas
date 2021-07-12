@@ -7,7 +7,10 @@ from rich.live import Live
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
+
+
 from utils import clear
+
 
 console: Console = Console()
 
@@ -46,10 +49,17 @@ team_name: list = [
                   justify='center'),
     Text.assemble((r":|$$$$$| |$$$$$| |$|  \$\ |$$$$$/  \$$$$$/  |$| |$|  |$$$$$/ :", 'bold purple'),
                   justify='center'),
+    Text.assemble((r":____________________________________________________________:", 'bold purple'),
+                  justify='center'),
 ]
 
-jazzed_jerboas: list = ['[green]tomheaton[/]', '[purple]MikeNoCap[/]', '[purple]HiPeople21[/]',
-                        '[purple]TahU28[/]', '[purple]ryoflux[/]', '[purple]b-a-b-i-s[/]']
+jazzed_jerboas: list = [
+ '\n\n[green]Teamleader| Discord: StormedPanda#9999 | GitHub: tomheaton | aka Tom |[/]\n\n',
+ '\n\n[bold yellow]Teammember| Discord: Miklath#1000 | GitHub: MikeNoCap | aka Mike |[/]\n\n', 
+ '\n\n[bold yellow]Teammember | Discord: HiPeople21#6968 | GitHub: HiPeople21 |[/]\n\n',
+                        '\n\n[bold yellow]Teammember | Discord: Mega#6949 | GitHub: TahU28 |[/]\n\n',
+                        '\n\n[bold yellow]Teammember | Discord: Darling#9795 | GitHub: ryoflux |[/]\n\n',
+                        '\n\n[bold yellow]Teammember | Discord: babis99#8888 | GitHub: b-a-b-i-s |[/]\n\n']
 
 message: list = ['Placeholder', 'Placeholder', 'Placeholder']
 
@@ -69,7 +79,7 @@ def credits() -> None:
                 f"{rule}", justify="center"),
             vertical=height[0],
         )
-        screen.update(Panel(text))
+        screen.update(Panel(text, style="bold magenta", border_style="red"))
         sleep(0.5)
 
         for j in range(len(team_name)):
@@ -79,7 +89,7 @@ def credits() -> None:
                     f"{rule}\n{new_line.join([str(i) for i in team_name[:j]])}", justify="center"),
                 vertical=height[0],
             )
-            screen.update(Panel(text))
+            screen.update(Panel(text, style="bold magenta", border_style="red"))
             sleep(0.5)
 
         for j in range(len(jazzed_jerboas) + 1):
@@ -90,7 +100,7 @@ def credits() -> None:
                     justify="center"),
                 vertical=height[0],
             )
-            screen.update(Panel(text))
+            screen.update(Panel(text, style="bold magenta", border_style="red"))
             sleep(0.5)
 
         clear()
@@ -100,7 +110,7 @@ def credits() -> None:
                 justify="center"),
             vertical=height[1],
         )
-        screen.update(Panel(text))
+        screen.update(Panel(text, style="bold magenta", border_style="red"))
         sleep(0.5)
 
         clear()
@@ -110,7 +120,7 @@ def credits() -> None:
                 justify="center"),
             vertical=height[2],
         )
-        screen.update(Panel(text))
+        screen.update(Panel(text, style="bold magenta", border_style="red"))
         sleep(0.5)
 
         clear()
@@ -120,7 +130,7 @@ def credits() -> None:
                 justify="center"),
             vertical=height[2],
         )
-        screen.update(Panel(text))
+        screen.update(Panel(text, style="bold magenta", border_style="red"))
         sleep(0.5)
 
         for j in range(len(team_name)):
@@ -131,7 +141,7 @@ def credits() -> None:
                     justify="center"),
                 vertical=height[2],
             )
-            screen.update(Panel(text))
+            screen.update(Panel(text, style="bold magenta", border_style="red"))
             sleep(0.5)
 
         for j in range(len(jazzed_jerboas) + 1):
@@ -141,7 +151,7 @@ def credits() -> None:
                     f"{new_line.join([str(i) for i in jazzed_jerboas[j:]])}", justify="center"),
                 vertical=height[2],
             )
-            screen.update(Panel(text))
+            screen.update(Panel(text, style="bold magenta", border_style="red"))
             sleep(0.5)
 
         clear()
@@ -150,7 +160,7 @@ def credits() -> None:
                 "", justify="center"),
             vertical=height[2],
         )
-        screen.update(Panel(text))
+        screen.update(Panel(text, style="bold magenta", border_style="red"))
         sleep(0.5)
 
         for j in range(len(message) + 1):
@@ -160,7 +170,7 @@ def credits() -> None:
                     f"{new_line.join([str(i) for i in message[:j]])}", justify="center"),
                 vertical=height[0],
             )
-            screen.update(Panel(text))
+            screen.update(Panel(text, style="bold magenta", border_style="red"))
             sleep(1)
 
         clear()
@@ -169,7 +179,7 @@ def credits() -> None:
                 f"{new_line.join([str(i) for i in message])}", justify="center"),
             vertical=height[1],
         )
-        screen.update(Panel(text))
+        screen.update(Panel(text, style="bold magenta", border_style="red"))
         sleep(1)
 
         for j in range(len(message)):
@@ -179,7 +189,7 @@ def credits() -> None:
                     f"{new_line.join([str(i) for i in message[j:]])}", justify="center"),
                 vertical=height[2],
             )
-            screen.update(Panel(text))
+            screen.update(Panel(text, style="bold magenta", border_style="red"))
             sleep(1)
 
         clear()
@@ -188,10 +198,9 @@ def credits() -> None:
                 "", justify="center"),
             vertical=height[2],
         )
-        screen.update(Panel(text))
+        screen.update(Panel(text, style="bold magenta", border_style="red"))
         sleep(0.5)
         clear()
 
 if __name__ == '__main__':
     credits()
-    
