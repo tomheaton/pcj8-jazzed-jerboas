@@ -52,6 +52,7 @@ $$$$$$$  |\$$$$$$  |$$  /\$$\\
 
 
 def main_menu(logged_in: bool = False, logged_in_as = None):
+    clear()
     selected = False
     if logged_in:
         options = {
@@ -65,7 +66,7 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
         }
     if not logged_in:
         options = {
-            "Logg in/Sign up": 1,
+            "Log in/Sign up": 1,
             "Help/Info": 2,
             "Credits": 3,
             "Exit": 4
@@ -97,8 +98,11 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
             rows.insert(0, Text.assemble((logged_in_as_msg, "bold green")))
         
         
-        console.print(render_menu_screen(rows, console))
-        what_to_do = Prompt.ask(Text.assemble(("1: Scroll up\n", "bold cyan"), ("2: Scroll down\n", "bold cyan"), ("3: Select\n", "bold purple")), choices=["1", "2", "3"], default="3")
+        console.print(render_menu_screen(rows))
+        if logged_in:
+            what_to_do = Prompt.ask(Text.assemble(("1: Scroll up\n", "bold cyan"), ("2: Scroll down\n", "bold cyan"), ("3: Select\n", "bold purple"), ("out: Log out\n", "bold red")), choices=["1", "2", "3", "out"], default="3")
+        if not logged_in:
+            what_to_do = Prompt.ask(Text.assemble(("1: Scroll up\n", "bold cyan"), ("2: Scroll down\n", "bold cyan"), ("3: Select\n", "bold purple")), choices=["1", "2", "3"], default="3")
         if what_to_do == "1":
             if hover_on == 1:
                 clear()
@@ -158,7 +162,7 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
                 elif hover_on == 5:
                     try:
                         clear()
-                        credits.credits() # Credits
+                        credits.credits_rework() # Credits
                         hover_on = 1
                         clear()
                         continue
@@ -186,8 +190,10 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
                     continue
             elif hover_on == 3:
                 try:
-                    credits.credits_rework(console) # Credits
+                    clear()
+                    credits.credits_rework() # Credits
                     hover_on = 1
+                    clear()
                     continue
                 except GoBack:
                     hover_on = 1
@@ -196,7 +202,8 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
             elif hover_on == 4:
                 clear()
                 exit() # Exit, not even implemented yet lol
-
+        if what_to_do == "out":
+            return main_menu(logged_in=False, logged_in_as=None)
 
         clear()
         

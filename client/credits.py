@@ -243,9 +243,9 @@ def credits(console) -> None:
         clear()
 
 
-def credits_rework(console):
+def credits_rework():
     rows = copy.deepcopy(rows_)
-    with console.screen() as screen:
+    with Live("", refresh_per_second=9) as screen:
 
         loop_times = 0 # Keep track of where in rows we are so we can stop at a specific point
 
@@ -265,27 +265,23 @@ def credits_rework(console):
             screen.update(Panel(scroll_through, border_style="bold red", style="bold magenta"))
             if loop_times == 3:
                 for i in range(6):
-                    clear()
                     screen.update(Panel(scroll_through, border_style="bold yellow", style="bold magenta"))
                     sleep(1)
             if loop_times == 37:
                 for i in range(10):
-                    clear()
                     screen.update(Panel(scroll_through, border_style="bold yellow", style="bold magenta"))
                     sleep(1)
             if loop_times == 51:
                 for i in range(23):
-                    clear()
                     screen.update(Panel(scroll_through, border_style="bold yellow", style="bold magenta"))
                     sleep(1)
             if loop_times == 63:
                 for i in range(9):
-                    clear()
                     screen.update(Panel(scroll_through, border_style="bold yellow", style="bold magenta"))
                     sleep(1)
                     
             sleep(0.4)
-            clear()
+    clear()
     
 
 if __name__ == '__main__':

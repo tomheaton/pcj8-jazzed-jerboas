@@ -10,7 +10,6 @@ console: Console = Console()
 
 
 class Preferences:
-
     """
     This needs to be passed onto the 'User' class as it sets the default preferences:
     'sampleuser = User("samplename", "password", default_preference)'
@@ -26,6 +25,14 @@ class Preferences:
     *Note: this only allows for one settings to be changed, so a while loop would need
     to be used to allow multiple settings be to changed.
     """
+
+    def __init__(self):
+        self.preference_dict = default_preference = {
+        "Name Colour" : "bold cyan",
+        "Message Colour" : "bold white",
+        "Border Colour" : "bold magenta"
+        }
+
 
     def template_message(self) -> None:
         """
@@ -44,7 +51,7 @@ class Preferences:
                                             "Border Colour", "Name Colour", "Message Colour", "BACK"])
 
         if val_to_be_changed == "BACK":
-            exit()
+            raise GoBack
 
         else:
             while True:
