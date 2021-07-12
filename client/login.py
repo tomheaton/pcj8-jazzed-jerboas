@@ -12,6 +12,9 @@ from rich.prompt import Prompt
 from rich.text import Text
 from utils import Preferences, User, clear
 
+
+
+
 with open("server\\secrets.pkl", "rb") as fp:
     secrets = pickle.load(fp)
 
@@ -82,7 +85,7 @@ def sign_up():
             clear()
             continue
 
-        progress_visual.append(Panel(Text.assemble(("Username ✓", "bold green")),
+        progress_visual.append(Panel(Text.assemble(("Username ☺", "bold green")),
                                      style="bold green", border_style="bold green"))
         progress_visual.append(Text.assemble(("╰→", "bold red"), (username, "none")))
         username_status = "ready"
@@ -168,7 +171,7 @@ def sign_up():
             clear()
             continue
 
-        progress_visual.append(Panel(Text.assemble(("Password ✓", "bold green")),
+        progress_visual.append(Panel(Text.assemble(("Password ☺", "bold green")),
                                      style="bold green", border_style="bold green"))
         progress_visual.append(Text.assemble(("╰→", "bold red"), ("HIDDEN", "bold yellow")))
         password_status = "ready"
