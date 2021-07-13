@@ -1,3 +1,6 @@
+import textwrap
+import re
+
 from rich import console
 import rich
 from rich.panel import Panel
@@ -6,13 +9,15 @@ from rich.table import Table
 from rich.console import Console
 from rich.screen import Screen 
 from rich.live import Live
+from rich.markup import escape
 
 from utils import clear, User, Preferences
 import time
 import random
 
 
-
+def get_index_duplicates(lst, item):
+    return [i for i, x in enumerate(lst) if x == item]
 
 logo_text = Text.assemble(
     (
@@ -177,42 +182,140 @@ def get_box(rows, preferences):
 
 
 
-def display_message(msg_sender: User, message: str):
-    a = time.perf_counter()
+def get_message_box(msg_sender: User, message: str, stage: int):
+    """Returns a list of strings which together assemble the message box that is being displayed in ThaBox."""
     size = len(message)
 
-    name_color = "bold purple"
-    message_color = "blue"
-    border_color = "yellow"
+    name_color = "bold cyan"
+    message_color = "bold white"
+    border_color = "bold magenta"
 
 
-    if size in range(1, 33):
-        msg_box = \
-        f"""
-        [{border_color}]┌────────────────────────────────┐[/]
-        [{border_color}]│[/][{name_color}]{msg_sender.username : ^32}[/][{border_color}]│[/]
-        [{border_color}]├────────────────────────────────┤[/]
-        [{border_color}]│[/][{message_color}]{message : <32}[/][{border_color}]│[/]
-        [{border_color}]└────────────────────────────────┘[/]
-        """
-    b = time.perf_counter()
-    print(b-a)
-    return msg_box
+    message_lines = textwrap.wrap(message, width=32)
+
+    message_string = ""
+    count = 0
+    for _ in message_lines:
+        count += 1
+        if not count == len(message_lines):
+            message_string += f"│{_ : <32}│" + "\n"
+            continue
+        message_string += f"│{_ : <32}│"
+        
+    if len(message_string.splitlines()) > 9:
+       raise ValueError("Message too long!")
+
+    msg_box = \
+    f"""┌────────────────────────────────┐
+│{"Message from" : ^32}│
+│{msg_sender.username : ^32}│
+├────────────────────────────────┤
+{message_string}
+└────────────────────────────────┘"""
+    
+
+    
+    lines = msg_box.splitlines()
+    if stage < 34:
+        a = [line[(34-stage):34]for line in lines]
+    if stage >= 34:
+        a = ["".join([" " for _ in range(stage-34)])+line for line in lines]
+    
+    new = []
+
+    c = 0
+    for i in a:
+        c+=1
+        if c == 1 or c == 2 or c == 4:
+            new.append(Text.from_markup(f"[{border_color}]{i}[/]\n"))
+            continue
+        if c == 3:
+            list_username = list(user.username)
+            list_line = list(i)
+            if list_line.count("│")-list_username.count("│") == 2: # Ignore │ in usernames.
+                indexes = get_index_duplicates(list_line, "│")
+                list_line[indexes[0]] = f"[{border_color}]│[/][{name_color}]"
+                list_line[indexes[-1]] = f"[/][{border_color}]│[/]\n"
+                new.append(Text.from_markup("".join(list_line)))
+            if list_line.count("│")-list_username.count("│") == 1:
+                indexes = get_index_duplicates(list_line, "│")
+                list_line[indexes[-1]] = f"[/][{border_color}]│[/]\n"
+                list_line.insert(0, f"[{name_color}]")
+                new.append(Text.from_markup("".join(list_line)))
+            continue
+        if not c-4 > len(message_lines):
+            list_line = list(i)
+            current_msg_line = list(message_lines[c-5])
+            if list_line.count("│")-current_msg_line.count("│") == 2: # Ignore │ in usernames.
+                indexes = get_index_duplicates(list_line, "│")
+
+                list_line[indexes[0]] = f"[{border_color}]│[/][{message_color}]"
+                list_line[indexes[-1]] = f"[/][{border_color}]│[/]\n"
+
+                new.append(Text.from_markup("".join(list_line)))
+            if list_line.count("│")-current_msg_line.count("│") == 1:
+                indexes = get_index_duplicates(list_line, "│")
+
+                if stage == 1:
+                    list_line[0] = f"[{border_color}]│[/]\n" 
+                else:
+                    list_line[0] = f"[{message_color}]"
+                    list_line[indexes[-1]] = f" [{border_color}]│[/]\n" 
+                
+                
+                new.append(Text.from_markup("".join(list_line)))
+
+        if c-4 > len(message_lines):
+            list_line = list(i)
+            if "└" in list_line and "┘" in list_line: 
+                indexleft = get_index_duplicates(list_line, "└")[0]
+                indexright = get_index_duplicates(list_line, "┘")[0]
+
+                list_line[indexleft] = f"[{border_color}]└"
+                list_line[indexright] = f"┘[/]"
+                new.append(Text.from_markup("".join(list_line)))
+
+            if "┘" in list_line and  not "└" in list_line:
+                index = get_index_duplicates(list_line, "┘")[0]
+              
+                if stage == 1:
+                    list_line[index] = f"[{border_color}]┘[/]"
+                    
+                else:
+                    list_line[0] = f"[{border_color}]─"
+                    list_line[index] = f"┘[/]"
+                new.append(Text.from_markup("".join(list_line)))
+                
+                
+
+
+
+
+    return new
+
+
+   
 
 
     direction = random.randint(1, 2) # Message will fade in from one of two directions. (left, right)
 
     
 if __name__ == '__main__':
-    user = User(username="TESTING123", paswrd="thisis100%hashedlol", preferences=Preferences())
+    user = User(username=r"MyDogCummedOnTeenagers", paswrd="thisis100%hashedlol", preferences=Preferences())
     console = Console()
-    a = display_message(user, "This test")
-    spaces = ""
-    with Live("Test", refresh_per_second=60) as live:
-        for i in range(70):
-            spaces +=" "
-            time.sleep(0.1)
-            live.update(spaces+"Test")
+    
+    
+    
+    with Live("", refresh_per_second=5000) as live:
+        for _ in range(0, 90):
+            a = get_message_box(user, "The message box now works with color and animation at the same time. Now I need to intergrate it in render_box. That will be hell, but its worth it for the end result. aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", _)
+            
+            new_Text = Text("")
+            for i in a:
+                new_Text = Text.assemble(new_Text, i)
+            live.update(new_Text)
+            time.sleep(0.0000004)
+
         
  
 
