@@ -216,12 +216,12 @@ def enter_room_size():#DONE
     Validates the user input, so they enter a correct size, and 
     returns the room_size.
     """
-    room_size = console.input(" " * ((console.width // 2) - 14) + "[bold red]Enter room size (2 - 4):   [/]")
+    room_size = console.input(" " * ((console.width // 2) - 14) + "[bold red]Enter room size (2 - 6):   [/]")
 
     if room_size.lower() == "back":
         create_box_tui(User, available_session_data)
 
-    elif room_size == "2" or room_size == "3" or room_size == "4":
+    elif room_size == "2" or room_size == "3" or room_size == "4" or room_size == "5" or room_size == "6":
         return room_size
 
     else:
@@ -312,7 +312,8 @@ def create_box_tui(user: User, available_session_data, select="left"):
         """
         Needs to be redirected to a chat room
         """
-        return public_session_id, room_size, None
+        server_type = select
+        return public_session_id, room_size, None, server_type
         
 
     elif select == "private":
@@ -345,7 +346,8 @@ def create_box_tui(user: User, available_session_data, select="left"):
         """
         Needs to be redirected to a chat room
         """
-        return private_session_id, room_size, password        
+        server_type = select
+        return private_session_id, room_size, password, server_type        
 
     else:
         """
