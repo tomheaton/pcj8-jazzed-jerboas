@@ -19,65 +19,7 @@ from prompt_toolkit.shortcuts import input_dialog
 
 console: Console = Console()
 
-# # Sets variables used later on for use with sockets
-# HEADER: int = 64
-# PORT: int = 8888
-# FORMAT: str = 'utf-8'
-# DISCONNECT_MESSAGE: str = '!DISCONNECT'
 
-# clear()
-
-
-# # Prompts the user for the IP address
-# SERVER: str = console.input("Server IP:")
-
-# ADDR: set = (SERVER, PORT)
-
-# # Creates a connection to the server
-# client: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# client.connect(ADDR)
-
-
-# def join(name: str) -> None:
-#     """
-#     Function of which sends data to the server to connect the user
-#     """
-#     name: bytes = name.encode(FORMAT)
-#     name_length: int = len(name)
-#     send_length: str = str(name_length).encode(FORMAT)
-#     send_length += b' ' * (HEADER - len(send_length))
-#     client.send(send_length)
-#     client.send(name)
-#     print(client.recv(1000).decode(FORMAT))
-
-
-# def send_message(message: str) -> None:
-#     """
-#     Function which will allow the user to send a message
-#     """
-#     message: bytes = message.encode(FORMAT)
-#     msg_length: int = len(message)
-#     msg_length: str = str(msg_length).encode(FORMAT)
-#     msg_length += b' ' * (HEADER - len(msg_length))
-#     client.send(msg_length)
-#     client.send(message)
-#     time.sleep(0.1)
-
-
-# # Prompts the user for their username
-# name: str = console.input("What is your name?: ")
-# join(name)
-
-# message: str = ''
-
-
-# def send_message_loop() -> None:
-#     """
-#     Send message loop function.
-#     """
-#     while True:
-#         print(message)
-#         send_message(console.input("Type something: "))
 class MessageValidator(Validator):
     def validate(self, document):
         text = document.text
@@ -93,18 +35,13 @@ PORT: int = 8888
 my_username: str = input("Username: ")
 
 # Create a socket
-# socket.AF_INET - address family, IPv4, some otehr possible are AF_INET6, AF_BLUETOOTH, AF_UNIX
-# socket.SOCK_STREAM - TCP, conection-based, socket.SOCK_DGRAM - UDP, connectionless, datagrams, socket.SOCK_RAW - raw IP packets
 client_socket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Connect to a given ip and port
 client_socket.connect((IP, PORT))
 
-# Set connection to non-blocking state, so .recv() call won;t block, just return some exception we'll handle
 client_socket.setblocking(False)
 
-# Prepare username and header and send them
-# We need to encode username to bytes, then count number of bytes and prepare header of fixed size, that we encode to bytes as well
 client_username: bytes = my_username.encode('utf-8')
 username_header: bytes = f"{len(client_username):<{HEADER_LENGTH}}".encode('utf-8')
 client_socket.send(username_header + client_username)
@@ -127,7 +64,7 @@ def send_message() -> None:
         message: bytes = message.encode('utf-8')
         message_header: bytes = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
         client_socket.send(message_header + message)
-        print(f'{client_username.decode("utf-8")} > {message.decode("utf-8")}', end="\r")
+        print(f'{client_username.decode("utf-8")} > {message.decode("utf-8")}')
     is_typing = False
 
 
@@ -135,7 +72,6 @@ def receive_messages() -> None:
     global is_typing
     while True:
         while not is_typing:
-            sleep(0.1)
             try:
                 username_header = client_socket.recv(HEADER_LENGTH)
 
@@ -171,22 +107,22 @@ def receive_messages() -> None:
 
             except Exception as e:
                 # Any other exception - something happened, exit
-                print('Reading error: '.format(str(e)))
+                print('Reading error: {}'.format(str(e)))
                 sys.exit()
-        # else:
-        #     message: str = prompt(f'{username}: ', validator=MessageValidator())
+    # else:
+    #     message: str = prompt(f'{username}: ', validator=MessageValidator())
 
-        #     # If message is not empty - send it
-        #     if message:
+    #     # If message is not empty - send it
+    #     if message:
 
-        #         # Encode message to bytes, prepare header and convert to bytes, like for username above, then send
-        #         message: bytes = message.encode('utf-8')
-        #         message_header: bytes = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
-        #         client_socket.send(message_header + message)
-        #     else:
-        #         continue
+    #         # Encode message to bytes, prepare header and convert to bytes, like for username above, then send
+    #         message: bytes = message.encode('utf-8')
+    #         message_header: bytes = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
+    #         client_socket.send(message_header + message)
+    #     else:
+    #         continue
 
-        #     is_typing = False
+    #     is_typing = False
 
 
 def hotkeys():
