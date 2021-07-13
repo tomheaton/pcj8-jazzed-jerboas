@@ -22,8 +22,6 @@ clients: dict = {}
 
 print(f'Listening for connections on {IP}:{PORT}...')
 
-# Handles message receiving
-
 
 def receive_message(client_socket) -> Union[dict, bool]:
 
@@ -48,14 +46,9 @@ def receive_message(client_socket) -> Union[dict, bool]:
 while True:
     read_sockets, _, exception_sockets = select.select(sockets_list, [], sockets_list)
 
-    # Iterate over notified sockets
     for notified_socket in read_sockets:
-        # If notified socket is a server socket - new connection, accept it
         if notified_socket == server_socket:
 
-            # Accept new connection
-            # That gives us new socket - client socket, connected to this given client only, it's unique for that client
-            # The other returned object is ip/port set
             client_socket, client_address = server_socket.accept()
 
             # Client should send his name right away, receive it
@@ -73,9 +66,10 @@ while True:
 
             print('Accepted new connection from {}:{}, username: {}'.format(
                 *client_address, user['data'].decode('utf-8')))
+
             for client in clients:
-                client.send('Accepted new connection from {}:{}, username: {}'.format(
-                    *client_address, user['data'].decode('utf-8')).encode('utf-8'))
+                client.send('{} joined'.format(
+                    user['data'].decode('utf-8')).encode('utf-8'))
 
         # Else existing socket is sending a message
         else:
@@ -86,6 +80,10 @@ while True:
             # If False, client disconnected, cleanup
             if message is False:
                 print('Closed connection from: {}'.format(clients[notified_socket]['data'].decode('utf-8')))
+
+                for client in clients:
+                    client.send('{} left'.format(
+                        clients[notified_socket]['data'].decode('utf-8')).encode('utf-8'))
 
                 # Remove from list for socket.socket()
                 sockets_list.remove(notified_socket)
@@ -102,15 +100,8 @@ while True:
 
             # Iterate over connected clients and broadcast message
             for client_socket in clients:
+                client_socket.send(user['header'] + user['data'] + message['header'] + message['data'])
 
-                # But don't sent it to sender
-                if client_socket != notified_socket:
-
-                    # Send user and message (both with their headers)
-                    # We are reusing here message header sent by sender, and saved username header send by user when he connected
-                    client_socket.send(user['header'] + user['data'] + message['header'] + message['data'])
-
-    # It's not really necessary to have this, but will handle some socket exceptions just in case
     for notified_socket in exception_sockets:
 
         # Remove from list for socket.socket()

@@ -30,7 +30,7 @@ class MessageValidator(Validator):
 
 HEADER_LENGTH: int = 10
 
-IP: str = input('Ip: ')
+IP: str = input('IP: ')
 PORT: int = 8888
 my_username: str = input("Username: ")
 
@@ -94,10 +94,6 @@ def receive_messages() -> None:
                 print(f'{username}: {message}')
 
             except IOError as e:
-                # This is normal on non blocking connections - when there are no incoming data error is going to be raised
-                # Some operating systems will indicate that using AGAIN, and some using WOULDBLOCK error code
-                # We are going to check for both - if one of them - that's expected, means no incoming data, continue as normal
-                # If we got different error code - something happened
                 if e.errno != errno.EAGAIN and e.errno != errno.EWOULDBLOCK:
                     print('Reading error: {}'.format(str(e)))
                     sys.exit()
@@ -109,20 +105,6 @@ def receive_messages() -> None:
                 # Any other exception - something happened, exit
                 print('Reading error: {}'.format(str(e)))
                 sys.exit()
-    # else:
-    #     message: str = prompt(f'{username}: ', validator=MessageValidator())
-
-    #     # If message is not empty - send it
-    #     if message:
-
-    #         # Encode message to bytes, prepare header and convert to bytes, like for username above, then send
-    #         message: bytes = message.encode('utf-8')
-    #         message_header: bytes = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
-    #         client_socket.send(message_header + message)
-    #     else:
-    #         continue
-
-    #     is_typing = False
 
 
 def hotkeys():
