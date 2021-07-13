@@ -71,7 +71,7 @@ def help_navigation(currentpage):
                 break
         
         elif keyboard.is_pressed("backspace"):
-            GoBack()
+            raise GoBack
 
 def help_start_Page():
     clear()
