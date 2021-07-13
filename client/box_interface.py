@@ -86,23 +86,25 @@ layout["boxes"].split_row(
 #---TEMP FUNCTIONS - TO BE REPLACED
 def is_already_an_id(x):
     import random
-    y = random.choice([True, False])
-    return y
+    return random.choice([True, False])
 
 def is_correct_password(x):
     import random
-    y = random.choice([True, False])
-    return y
+    return random.choice([True, False])
 #----------------------------------
 
-def layout_setup(select, text):
+def layout_setup(select: str, text: str): #DONE
     """
     Creates menu layout, with ASCII box art and navigation help text.
     """
-
     global layout, private_box_art, public_box_art, colour 
+
     clear()
     layout["title"].update(Align(text, align = "center"))
+    layout["screen"].update("\n\n[bold white]!   Use [bold magenta] right arrow[/] or [bold magenta]left arrow[/] to select a box.[/]"+
+                              "\n[bold white]!   [bold magenta]ENTER[/] to confirm your choice.[/]"+
+                              "\n[bold white]!   Press [bold magenta]BACKSPACE[/] to return to Menu.[/]")
+
     if select == "left":
         layout["right"].update(Align(Text(f"{private_box_art}", style = colour["box_default"]), align = "center"))
         layout["left"].update(Align(Text(f"{public_box_art}", style = colour["box_hover"]), align = "center"))
@@ -110,15 +112,15 @@ def layout_setup(select, text):
         layout["right"].update(Align(Text(f"{private_box_art}", style = colour["box_hover"]), align = "center"))
         layout["left"].update(Align(Text(f"{public_box_art}", style = colour["box_default"]), align = "center"))
     
-    layout["screen"].update("\n\n[bold white][bold red]![/]   Use [bold magenta] right arrow[/] or [bold magenta]left arrow[/] to select a box,\n!   [bold magenta]ENTER[/] to confirm your choice\n!   Press [bold magenta]BACKSPACE[/] to return to Menu.[/]")
     console.print(layout)
 
 
-def tui_navigation(select, available_session_data):
+def tui_navigation(select: str, available_session_data):#DONE
     """
     Returns which box is selected.
     """
 
+    #Adds delay between key presses
     time.sleep(0.2)
     while True:
         if keyboard.is_pressed("backspace"):
@@ -141,7 +143,92 @@ def tui_navigation(select, available_session_data):
                 select = "public"
                 return select
 
+
+def create_session_id(): #DONE
+    """
+    Adds leading 0's if necessary and returns a unique session_id,
+    by comparing it to taken id's.
+    """
+    num: int = random.randint(1,1000)
+    session_id: str = ("0" * (4 - len(str(num)))) + str(num)
+    if is_already_an_id(session_id):
+        create_session_id()
+
+    return str(session_id)   
+        
+
+def enter_session_id(prompt: str, alignment: str, password_prompt): #DONE
+    """
+    Prompts user to enter a valid session ID
+    """
+    given_id = console.input(prompt)
+
+    if given_id.lower() == "back":
+        join_box_tui(User, available_session_data)
+
+    elif (len(given_id) == 4) and (given_id.isdigit() == True):
+        if is_already_an_id(int(given_id)):
+            if password_prompt != False:
+                enter_password(password_prompt)
+            
+            else:
+                """
+                Needs to be redirected to a chat room
+                """
+                console.print(Align("\n✔️   Joining ThaBox...", align = alignment))
+                time.sleep(0.5)
+                clear()
+                sys.exit()                
+        
+        else:
+            console.print(Align("❌   The room you are trying to join doesn't exist\n", align = alignment))
+            time.sleep(0.5)
+            enter_session_id(prompt, alignment, password_prompt)
+
+    else:
+        console.print(Align("❌   Session ID's can only be 4 digit numbers!\n", align = alignment))
+        time.sleep(0.5)
+        enter_session_id(prompt, alignment, password_prompt)
+
+
+def enter_password(prompt):#DONE
+    """
+    Checks if entered password is correct.
+    """
+    time.sleep(0.3) #Input delay
+    given_password = console.input(prompt)
+    if is_correct_password(given_password):
+        """
+        Needs to be redirected to a chat room
+        """
+        console.print(Align("\n✔️   Joining ThaBox...", align = "center"))
+        time.sleep(1)
+        clear()
+        sys.exit()
     
+    else:
+        console.print(Align("❌   Incorrect Password!", align = "center"))
+        enter_password(prompt)
+    
+
+def enter_room_size():#DONE
+    """
+    Validates the user input, so they enter a correct size, and 
+    returns the room_size.
+    """
+    room_size = console.input(" " * ((console.width // 2) - 14) + "[bold red]Enter room size (2 - 4):   [/]")
+
+    if room_size.lower() == "back":
+        create_box_tui(User, available_session_data)
+
+    elif room_size == "2" or room_size == "3" or room_size == "4":
+        return room_size
+
+    else:
+        console.print(Align("❌   Enter a valid number!\n", align = "center"))
+        enter_room_size()
+
+
 def join_box_tui(user: User, available_session_data, select="left"):
     if select == "public":
         """
@@ -156,76 +243,41 @@ def join_box_tui(user: User, available_session_data, select="left"):
                               "█▀▀ █▄█ █▄█ █▄▄ █ █▄▄   █▄█ █▄█ █ █ ██▄ ▄█\n", align = "center"), style = "bold cyan")
 
         console.print(Align(Panel("Room Name = \nSesion ID = \nUsers = ", expand = False), align = "center"), style = "bold white")
-        console.print("\n\n[bold white][bold red]![/]   Use [bold magenta] right arrow[/] or [bold magenta]left arrow[/] to find more rooms\n!   [bold magenta]SPACE[/] to type in a session ID\n!   Press [bold magenta]BACKSPACE[/] to go back.[/]")
+        console.print("\n\n[bold white]!   Use [bold magenta] right arrow[/] or [bold magenta]left arrow[/] to find more rooms.[/]\n"+
+                          "[bold white]!   [bold magenta]SPACE[/] to type in a session ID.[/]\n"+
+                          "[bold white]!   Press [bold magenta]BACKSPACE[/] to go back.[/]")
+        
         
         #Functionality of other keys needs to be implemented.
+        time.sleep(0.2)
         while True:
             if keyboard.is_pressed("backspace"):
                 select = "left"
                 join_box_tui(User, available_session_data,  select)
 
             if keyboard.is_pressed("space"):
-                given_id = console.input("\n>   [bold red]Enter the session ID:[/]   ")
+                console.print()
+                enter_session_id(("[bold red]>   Enter the session ID or type 'BACK' to go back:[/]   "), "left", False)
 
-                if (len(given_id) == 4) and (given_id.isdigit() == True):
+            if keyboard.is_pressed("left_arrow"):
+                pass
 
-                    if is_already_an_id(int(given_id)):
-                        """
-                        Needs to be redirected to a chat room
-                        """
-                        console.print(Align("\n✔️   Joining ThaBox...", align = "center"))
-                        time.sleep(0.5)
-                        clear()
-                        sys.exit()
-                    
-                    else:
-                        console.print("❌   The room you are trying to join doesn't exist")
-                        time.sleep(2)
-                        join_box_tui(User, available_session_data,  select)
-
-                else:
-                    console.print("❌   Session ID's can only be 4 digit numbers!")
-                    time.sleep(2)
-                    join_box_tui(User, available_session_data,  select)
+            if keyboard.is_pressed("right_arrow"):
+                pass
+                
       
 
     elif select == "private":
         clear()
         console.print(Align("\n█▀█ █▀█ █ █ █ ▄▀█ ▀█▀ █▀▀   █▄▄ █▀█ ▀▄▀\n"+
                               "█▀▀ █▀▄ █ ▀▄▀ █▀█  █  ██▄   █▄█ █▄█ █ █\n", align = "center"), style = "bold cyan")
+
         console.print(Align("\nType [bold magenta]BACK[/] in the Session ID field to go back.\n", align = "center"))                
 
-        while True:
-            time.sleep(0.2)
-            given_id = console.input(" " * ((console.width // 2) - 14) + "[bold red]Enter the session ID:[/]   ")
-            if given_id.lower() == "back":
-                select = "left"
-                join_box_tui(User, available_session_data,  select)
+        enter_session_id((" " * ((console.width // 2) - 14) + "[bold red]Enter the session ID:[/]   "), "center", 
+                         (str("\n" + " " * ((console.width // 2) - 17) + "[bold red]Enter the room password:[/]   ")))
 
-            elif (len(given_id) == 4) and (given_id.isdigit() == True):
-                    if is_already_an_id(int(given_id)):
-                        while True:
-                            time.sleep(0.2)
-                            given_password = console.input("\n" + " " * ((console.width // 2) - 17) + "[bold red]Enter the room password:[/]   ")
-                            
-                            if is_correct_password(given_password):
-                                """
-                                Needs to be redirected to a chat room
-                                """
-                                console.print(Align("\n✔️   Joining ThaBox...", align = "center"))
-                                time.sleep(0.5)
-                                clear()
-                                sys.exit()
-                            
-                            else:
-                                console.print(Align("❌   Incorrect Password!\n", align = "center"))
-                    
-                    else:
-                        console.print(Align("❌   The room you are trying to join doesn't exist!", align = "center"))                   
 
-            else:
-                console.print(Align("❌   Session ID's can only be 4 digit numbers!\n", align = "center"))
-        
     else:
         """
         JOIN BOX MENU
@@ -244,43 +296,34 @@ def create_box_tui(user: User, available_session_data, select="left"):
 
     if select == "public":
         clear()
-        #Creates random session ids, until a unique one is created
-        while True:
-            public_session_id: int = random.randint(1000,9999)
-            if not is_already_an_id(public_session_id):
-                break
+        public_session_id = create_session_id()
 
         console.print(Align("\n█▄▄ █▀█ ▀▄▀   █▀ █▀▀ ▀█▀ ▀█▀ █ █▄ █ █▀▀ █▀\n"+
                               "█▄█ █▄█ █ █   ▄█ ██▄  █   █  █ █ ▀█ █▄█ ▄█\n", align = "center"), style = "bold cyan")
         console.print(Align("Type [bold magenta]BACK[/] in any of the fields to go back.\n", align = "center"))
         console.print(Align(f"[bold red]Session ID:[/]   {public_session_id}", align = "center"))
-
-        #
-        while True:
-            room_size = console.input(" " * ((console.width // 2) - 14) + "[bold red]Enter room size (2 - 4):   [/]")
-            if room_size.lower() == "back":
-                create_box_tui(User, available_session_data)
-            elif room_size == "2" or room_size == "3" or room_size == "4":
-                break
-            else:
-                console.print(Align("❌   Enter a valid number!\n", align = "center"))
+         
+        room_size = enter_room_size()
 
         console.print(Align("\n✔️   Creating ThaBox...", align = "center"))
         time.sleep(0.5)
         clear()
+        
+        """
+        Needs to be redirected to a chat room
+        """
         return public_session_id, room_size, None
+        
 
     elif select == "private":
         clear()
-        while True:
-            public_session_id: int = random.randint(1000,9999)
-            if not is_already_an_id(public_session_id):
-                break
+        private_session_id = create_session_id()
+        print(private_session_id)
         
         console.print(Align("\n█▄▄ █▀█ ▀▄▀   █▀ █▀▀ ▀█▀ ▀█▀ █ █▄ █ █▀▀ █▀\n"+
                               "█▄█ █▄█ █ █   ▄█ ██▄  █   █  █ █ ▀█ █▄█ ▄█\n", align = "center"), style = "bold cyan")
         console.print(Align("Type [bold magenta]BACK[/] in any of the fields to go back.\n", align = "center"))
-        console.print(Align(f"[bold red]Session ID:[/]   {public_session_id}", align = "center"))
+        console.print(Align(f"[bold red]Session ID:[/]   {private_session_id}", align = "center"))
         
         while True:
             password = console.input(" " * ((console.width // 2) - 12) + "[bold red]Create a Password:   [/]")
@@ -292,20 +335,17 @@ def create_box_tui(user: User, available_session_data, select="left"):
                 console.print(Align("❌   Password can't have spaces!\n", align = "center"))
 
             else:
-                while True:
-                    room_size = console.input(" " * ((console.width // 2) - 12) + "[bold red]Enter room size (2 - 4):   [/]")
-                    if room_size.lower() == "back":
-                        create_box_tui(User, available_session_data)
-                    elif room_size == "2" or room_size == "3" or room_size == "4":
-                        break
-                    else:
-                        console.print(Align("❌   Enter a valid number!\n", align = "center"))
+                room_size = enter_room_size()
                 break
 
         console.print(Align("\n✔️   Creating ThaBox...", align = "center"))
         time.sleep(0.5)
         clear()
-        return public_session_id, room_size, password        
+
+        """
+        Needs to be redirected to a chat room
+        """
+        return private_session_id, room_size, password        
 
     else:
         """
@@ -314,3 +354,4 @@ def create_box_tui(user: User, available_session_data, select="left"):
         layout_setup(select, "[bold cyan]\n\n█▀▀ █▀█ █▀▀ ▄▀█ ▀█▀ █▀▀   █▄▄ █▀█ ▀▄▀\n█▄▄ █▀▄ ██▄ █▀█  █  ██▄   █▄█ █▄█ █ █[/]") #select, "CREATE BOX"
         select = tui_navigation(select, available_session_data)
         create_box_tui(User, available_session_data,  select)
+
