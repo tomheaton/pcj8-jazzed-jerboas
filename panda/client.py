@@ -1,10 +1,11 @@
 import asyncio
-import socketio
-from panda.components.client import Client
 import socket
-from rich.prompt import Prompt, Confirm
+import sys
+sys.path.append('../')
+import socketio
 from rich.console import Console
-
+from rich.prompt import Prompt, Confirm
+from panda.components.client import Client
 # TODO: move some of this to the Client class.
 CLIENT_NAME = socket.gethostname()
 CLIENT_ADDRESS = socket.gethostbyname(CLIENT_NAME)
@@ -26,6 +27,17 @@ async def disconnect():
     # await SIO.emit("join_chat", {"room": room_name, "name": client_name})
 
 
+@SIO.event
+async def send_message(sid, data):
+    print(f"send message: {data}")
+
+
+@SIO.event
+async def receive_message(sid, data):
+    print(f"receive message: {data}")
+    CONSOLE.print(data)
+
+
 def callback_message(a, b):
     print(f"callback: {a}, {b}")
 
@@ -44,11 +56,22 @@ async def start_console():
 
     chatroom_id: str = Prompt.ask("enter chatroom to join")
 
+    await join_chatroom(chatroom_id)
+
 
 async def text_loop():
     while True:
         await asyncio.sleep(1)
-        query: str = Prompt.ask("enter query")
+        text: str = Prompt.ask("enter text")
+        await SIO.emit("send_message", {"message": text})
+
+
+async def join_chatroom(chatroom_id):
+    await SIO.emit("join_chatroom", {"room_id": chatroom_id})
+
+
+async def leave_chatroom(chatroom_id):
+    await SIO.emit("leave_chatroom", {"room_id": chatroom_id})
 
 
 async def main():

@@ -1,5 +1,3 @@
-import json
-
 from panda.components.user_preferences import UserPreferences
 
 

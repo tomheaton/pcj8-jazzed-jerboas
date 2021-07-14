@@ -5,7 +5,7 @@ __pycache__/
 # Environment specific
 .venv
 venv
-panda/.env
+.env
 env
 
 # Unittest reports

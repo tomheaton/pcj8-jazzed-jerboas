@@ -1,8 +1,11 @@
+from panda.components.user import User
+
+
 class ChatRoom:
 
     template = {}
 
-    def __init__(self, name: str, uuid: str, private: bool, capacity: int, users: list[str]):
+    def __init__(self, name: str, uuid: str, private: bool, capacity: int, users: list[User]):
         self.name = name
         self.uuid = uuid
         self.private = private

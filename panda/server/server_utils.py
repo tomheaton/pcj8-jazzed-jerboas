@@ -1,8 +1,6 @@
 # Server Utilities
-import hashlib
 import os
 import uuid
-from panda.components.chatroom import ChatRoom
 from panda.components.database import Database
 from panda.components.user import User
 
