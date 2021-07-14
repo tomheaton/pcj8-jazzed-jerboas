@@ -29,7 +29,7 @@ colour = {
     "box_hover": "bold yellow"
 }
 
-private_box_art = ("""
+public_box_art = ("""
           +--+
           |  |
           |  |
@@ -47,7 +47,7 @@ private_box_art = ("""
 +------------------+/
 """)
 
-public_box_art = ("""
+private_box_art = ("""
          .------.
         / .----. \  
        _| |____| |_
