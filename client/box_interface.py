@@ -84,11 +84,11 @@ layout["boxes"].split_row(
 )
 
 #---TEMP FUNCTIONS - TO BE REPLACED
-def is_already_an_id(x):
+def is_already_an_id(session_id):
     import random
     return random.choice([True, False])
 
-def is_correct_password(x):
+def is_correct_password(password, session_id):
     import random
     return random.choice([True, False])
 #----------------------------------
