@@ -10,10 +10,11 @@ from rich.console import Console
 from rich.screen import Screen 
 from rich.live import Live
 from rich.markup import escape
+from rich.prompt import Prompt
 
 from utils import clear, User, Preferences 
 
-
+client_user = None
 
 import time
 import random
@@ -87,8 +88,6 @@ def render_menu_screen(rows: list) -> Text:
     return Text.assemble(*new_rows)
 
 
-
-
 def get_message_box_rows(message_box: list, user: User) -> list:
     message_box = [_+"".join([" " for i in range(90-len(_))]) for _ in message_box]
     
@@ -110,12 +109,13 @@ def get_message_box_rows(message_box: list, user: User) -> list:
     new_rows.append(Text.assemble(("└──────────────────────────────────────────────────────────────────────────────────────────┘",  border_color)))
     return new_rows
 
+
 def get_message_box(msg_sender: User, message: str, stage: int) -> list:
     """Returns a list of strings which together assemble the message box that is being displayed in render_message."""
 
-    name_color = user.preferences.preference_dict["Name Colour"]
-    message_color = user.preferences.preference_dict["Message Colour"]
-    border_color = user.preferences.preference_dict["Message Border Colour"]
+    name_color = client_user.preferences.preference_dict["Name Colour"]
+    message_color = client_user.preferences.preference_dict["Message Colour"]
+    border_color = client_user.preferences.preference_dict["Message Border Colour"]
 
 
     message_lines = textwrap.wrap(message, width=32)
@@ -133,12 +133,12 @@ def get_message_box(msg_sender: User, message: str, stage: int) -> list:
        raise ValueError("Message too long!")
 
     msg_box = \
-    f"""┌────────────────────────────────┐
-│{"Message from" : ^32}│
-│{msg_sender.username : ^32}│
-├────────────────────────────────┤
-{message_string}
-└────────────────────────────────┘"""
+    f"┌────────────────────────────────┐\n" \
+    f"│{'Message from' : ^32}│\n" \
+    f"│{msg_sender.username : ^32}│\n" \
+    f"├────────────────────────────────┤\n" \
+    f"{message_string}\n" \
+    f"└────────────────────────────────┘"
     
 
     
@@ -157,7 +157,7 @@ def get_message_box(msg_sender: User, message: str, stage: int) -> list:
             new.append(Text.from_markup(f"[{border_color}]{i}[/]"))
             continue
         if c == 3:
-            list_username = list(user.username)
+            list_username = list(msg_sender.username)
             list_line = list(i)
             if list_line.count("│")-list_username.count("│") == 2: # Ignore │ in usernames.
                 indexes = get_index_duplicates(list_line, "│")
@@ -222,19 +222,60 @@ def get_message_box(msg_sender: User, message: str, stage: int) -> list:
 
 
    
+def render_message(message: str, user: User, message_show_time: int = 6) -> Text:
+    fade_left_frames = []
+    for _ in range(0, 63):
+        message_box = get_message_box(user, message, _)
+        frame = render_menu_screen(get_message_box_rows(message_box, user))
+        fade_left_frames.append(frame)
 
 
-    
-if __name__ == '__main__':
-    user = User(username=r"MyDogCummedOnTeenagers", paswrd="thisis100%hashedlol", preferences=Preferences())
+    going_down_box = get_message_box(user, message, 62)
+    going_down_frames = []
+
+    message_size = len(going_down_box)
+
+    for i in range(26-message_size):
+        going_down_box.insert(0, "".join([" " for ___ in range(90)]))
+        going_down_frames.append(render_menu_screen(get_message_box_rows(going_down_box, user)))
+    for i in range(message_size):
+        going_down_box.insert(0, "".join([" " for ___ in range(90)]))
+        going_down_box.pop(-1)
+        going_down_frames.append(render_menu_screen(get_message_box_rows(going_down_box, user)))
+
+
+    with Live("", refresh_per_second=10) as live:
+        for i in fade_left_frames:
+            live.update(i)
+            time.sleep(0.05)
+
+        time.sleep(message_show_time)
+
+        for i in going_down_frames:
+            live.update(i)
+            time.sleep(0.07)
+
+
+def message_demo(user: User):
+    global client_user 
+    client_user = user
     console = Console()
+    while True:
+        clear()
+        console.print(render_menu_screen(get_message_box_rows(["".join(" " for _ in range(90)) for i in range(26)],user)))
+        mes = Prompt.ask("Send a message")
+        clear()
+        render_message(mes, user)
     
 
-    with Live("", refresh_per_second=45) as live:
-        for _ in range(0, 65):
-            a = get_message_box(user, "Guess who just made this render_message thing work... Now I need to make the message go down once it has comed to the center of the screen. Do you think there should be a function to mark as read? That way it will stay in center until it is read then go down.", _)
-            live.update(render_menu_screen(get_message_box_rows(a, user)))
-            time.sleep(0.03)
+
+    
+            
+
+
+    
+
+    
          
 
         

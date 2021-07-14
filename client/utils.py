@@ -8,7 +8,6 @@ from rich.prompt import Prompt
 from rich.text import Text
 
 
-
 console: Console = Console()
 
 
@@ -80,6 +79,7 @@ class Preferences:
                         self.preference_dict[val_to_be_changed] = "bold " + str(colour)
                         console.print("✔️   Updated successfully!\n")
                         time.sleep(2.2)
+                        # update_userfiles()
                         clear()
 
                         repeat = make_style_prompt(choices=["[green]Yes[/]", "[red]No[/]"], prompt_msg="Would you like to change something else?", main_style=self.preference_dict["Message Border Colour"])

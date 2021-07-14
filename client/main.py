@@ -6,7 +6,7 @@ from rich.console import Console, RenderGroup
 from rich.align import Align
 
 from utils import User, Preferences, GoBack, clear
-from rendering import render_menu_screen
+from rendering import render_menu_screen, message_demo
 
 import login
 import credits
@@ -113,7 +113,7 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
                 if hover_on == 1:
                     try:
                         clear()
-                        pass # Create box
+                        message_demo(logged_in_as) # Create box
                         hover_on = 1
                         clear()
                         continue

@@ -14,7 +14,6 @@ from utils import Preferences, User, clear
 
 
 
-
 with open("server\\secrets.pkl", "rb") as fp:
     secrets = pickle.load(fp)
 

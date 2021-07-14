@@ -81,7 +81,10 @@ for i in range(3):
     rows_.append("")
 for i in jazzed_jerboas:
     rows_.append(i)
-for i in range(9):
+for i in range(12):
+    rows_.append("")
+
+for i in range(14):
     rows_.append("")
 rows_.append("[bold blue]ThaBox was made as a submission for Python Discord's code-jam[/]")
 rows_.append("[bold blue]and was developed by The Jazzed Jerboa's over the timespan of a week. [/]")
@@ -244,7 +247,7 @@ def credits(console) -> None:
         clear()
 
 
-def credits_rework():
+def credits_rework() -> None:
     rows = copy.deepcopy(rows_)
     with Live("", refresh_per_second=9) as screen:
 
@@ -269,11 +272,11 @@ def credits_rework():
                 for i in range(10):
                     screen.update(Panel(scroll_through, border_style="bold yellow", style="bold magenta"))
                     sleep(1)
-            if loop_times == 51:
-                for i in range(23):
+            if loop_times == 65:
+                for i in range(32):
                     screen.update(Panel(scroll_through, border_style="bold yellow", style="bold magenta"))
                     sleep(1)
-            if loop_times == 63:
+            if loop_times == 78:
                 for i in range(9):
                     screen.update(Panel(scroll_through, border_style="bold yellow", style="bold magenta"))
                     sleep(1)
