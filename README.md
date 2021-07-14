@@ -12,6 +12,30 @@ Introducing **ThaBox**, a text-based `[REDACTED]` application.
 
 - built using the Rich framework
 
+## How to dev?
+
+#### Installing the Dependencies
+
+Use this command to install the development dependencies.
+```shell
+$ pip install -r dev-requirements.txt
+```
+
+## How to use?
+
+First, use this command to initialize the stack. (this should only be run once per project)
+```shell
+$ python initial_setup.py
+```
+Then, use this command to start the server.
+```shell
+$ python server.py
+```
+Finally, use this command to start the client interface.
+```shell
+$ python client.py
+```
+
 ## Authors
 
 Team Jazzed Jerboas - tomheaton, MikeNoCap, HiPeople21, TahU28, ryoflux, b-a-b-i-s
