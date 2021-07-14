@@ -6,14 +6,11 @@ from rich.console import Console, RenderGroup
 from rich.align import Align
 
 from utils import User, Preferences, GoBack, clear
-from rendering import render_menu_screen, render_box
-
-import os
+from rendering import render_menu_screen
 
 import login
 import credits
 
-from colorama import Fore
 
 
 
@@ -84,9 +81,7 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
         rows.append(Text.assemble(("--------------------", "bold blue")))
         for i in rows_temp:
             rows.append("")
-            rows.append("")
             rows.append(i)
-            rows.append("")
             rows.append("")
             rows.append(Text.assemble(("--------------------", "bold blue")))
         
@@ -140,7 +135,7 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
                 elif hover_on == 3:
                     try:
                         clear()
-                        pass # Preferences
+                        logged_in_as.preferences.settings() # Preferences
                         hover_on = 1
                         clear()
                         continue

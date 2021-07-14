@@ -1,8 +1,8 @@
 import textwrap
-import re
+
+from typing import List, TYPE_CHECKING
 
 from rich import console
-import rich
 from rich.panel import Panel
 from rich.text import Text
 from rich.table import Table
@@ -11,45 +11,29 @@ from rich.screen import Screen
 from rich.live import Live
 from rich.markup import escape
 
-from utils import clear, User, Preferences
+from utils import clear, User, Preferences 
+
+
+
 import time
 import random
 
 
-def get_index_duplicates(lst, item):
+def get_index_duplicates(lst, item) -> list: 
+    """
+    :param lst: The list to search for an item or items in.
+    :param item: The item to find indexes for in list.
+    Like list.index(), but list.index() only returns one index. This function returns all the indexes of which an item appears.
+    """
     return [i for i, x in enumerate(lst) if x == item]
 
-logo_text = Text.assemble(
-    (
-"""
-$$$$$$$$\\ $$\\
-\\__$$  __|$$ |
-   $$ |   $$$$$$$\\   $$$$$$\\
-   $$ |   $$  __$$\\  \\____$$\\
-   $$ |   $$ |  $$ | $$$$$$$ |
-   $$ |   $$ |  $$ |$$  __$$ |
-   $$ |   $$ |  $$ |\\$$$$$$$ |
-   \\__|   \\__|  \\__| \\_______|\n
-""",
-     "bold magenta"),
-    (
-"""$$$$$$$\\
-$$  __$$\\
-$$ |  $$ | $$$$$$\  $$\   $$\\
-$$$$$$$\ |$$  __$$\ \$$\ $$  |
-$$  __$$\ $$ /  $$ | \$$$$  /
-$$ |  $$ |$$ |  $$ | $$  $$<
-$$$$$$$  |\$$$$$$  |$$  /\$$\\
-\\_______/  \\______/ \\__/  \\__|
-""",
-     "bold cyan")
-)
 
+# Create the colored logo-text manually because rich'es Panel()
+# function does not allow you to get the raw_output (the string that is actually being printed)
 RED = '\033[91m'
 ENDC = '\033[0m'
 PURPLE = '\033[95m'
 CYAN = '\033[96m'
-
 box_logo_lines = [
     RED+"╭────────────────────────────────╮  "+ENDC,
     RED+"│                                │  "+ENDC,
@@ -73,76 +57,14 @@ box_logo_lines = [
     RED+"│                                │  "+ENDC,
     RED+"╰────────────────────────────────╯  "+ENDC
 ]
-
-box_rows = [
-        "[{}]┌───────────────────────────────────────────────────────────────────────────────────┐",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]│[/]{}[{}]│[/]",
-        "[{}]└───────────────────────────────────────────────────────────────────────────────────┘[/]"
-        
-        #"┘",
-        #"└",
-        #"┘",
-        #"┐",
-        #"├",
-        #"┤",
-        #"─"
-    ]
-
 menu_logo = "".join([x+"\n" if x != box_logo_lines[-1] else x for x in box_logo_lines])
-
-
-def render_box(rows: list) -> Text:
-    """
-    Discontinued project........
-    This function gets the Text-object that is shown to the user once in a session.
-
-    :param rows: A list of strings that together make a box. (There must be at least 16 rows/items)
-    :return: Text-object which can be printed with console.print().
-    """
-    logo_rows = menu_logo.split("\n")
-
-    if len(rows) < 16:
-        raise ValueError("The argument rows needs to contain at least 16 rows.")
-    if len(rows) > 16:
-        dummy_rows_to_add = len(rows) - len(logo_rows)
-        dummy_rows = [Text.assemble(('-' * 30, "red")) for _ in range(dummy_rows_to_add)]
-        for i in range(dummy_rows_to_add):
-            logo_rows.append(dummy_rows[i])
-
-    new_rows = []
-    for i in range(0, len(rows)):
-        new_rows.append(Text.assemble(logo_rows[i], rows[i] + '\n'))
-    return Text.assemble(*new_rows)
 
 
 
 def render_menu_screen(rows: list) -> Text:
     
     """
-    This function gets the Text-object that is shown to the user once in the main_menu.
+    This function gets the Text-object that is shown to the user once in the main_menu or while in a box.
 
     :param rows: A list of strings that together make a box. (There must be at least 21 rows/items)
     :return: Text-object which can be printed with console.print().
@@ -165,30 +87,35 @@ def render_menu_screen(rows: list) -> Text:
     return Text.assemble(*new_rows)
 
 
-def get_box(rows, preferences):
-    if len(rows) != 26:
+
+
+def get_message_box_rows(message_box: list, user: User) -> list:
+    message_box = [_+"".join([" " for i in range(90-len(_))]) for _ in message_box]
+    
+    while len(message_box) != 26:
+        message_box.append("".join([" " for i in range(90)]))
+        if len(message_box) == 26:
+            break
+        message_box.insert(0, "".join([" " for i in range(90)]))
+    
+    if len(message_box) != 26:
         raise ValueError("Box must contain 26 rows.")
 
-    border_color = "green"
-
-
+    border_color = user.preferences.preference_dict["Border Colour"]
     new_rows = []
 
-    count = -1
-    for i in rows:
-        count +=1
-        new_rows.append(Text.from_markup(box_rows[count].format(border_color, i, border_color)))
+    new_rows.append(Text.assemble(("┌──────────────────────────────────────────────────────────────────────────────────────────┐", border_color)))
+    for i in message_box:
+        new_rows.append(Text.assemble(("│", border_color), (i), ("│", border_color)))
+    new_rows.append(Text.assemble(("└──────────────────────────────────────────────────────────────────────────────────────────┘",  border_color)))
     return new_rows
 
+def get_message_box(msg_sender: User, message: str, stage: int) -> list:
+    """Returns a list of strings which together assemble the message box that is being displayed in render_message."""
 
-
-def get_message_box(msg_sender: User, message: str, stage: int):
-    """Returns a list of strings which together assemble the message box that is being displayed in ThaBox."""
-    size = len(message)
-
-    name_color = "bold cyan"
-    message_color = "bold white"
-    border_color = "bold magenta"
+    name_color = user.preferences.preference_dict["Name Colour"]
+    message_color = user.preferences.preference_dict["Message Colour"]
+    border_color = user.preferences.preference_dict["Message Border Colour"]
 
 
     message_lines = textwrap.wrap(message, width=32)
@@ -227,7 +154,7 @@ def get_message_box(msg_sender: User, message: str, stage: int):
     for i in a:
         c+=1
         if c == 1 or c == 2 or c == 4:
-            new.append(Text.from_markup(f"[{border_color}]{i}[/]\n"))
+            new.append(Text.from_markup(f"[{border_color}]{i}[/]"))
             continue
         if c == 3:
             list_username = list(user.username)
@@ -235,11 +162,11 @@ def get_message_box(msg_sender: User, message: str, stage: int):
             if list_line.count("│")-list_username.count("│") == 2: # Ignore │ in usernames.
                 indexes = get_index_duplicates(list_line, "│")
                 list_line[indexes[0]] = f"[{border_color}]│[/][{name_color}]"
-                list_line[indexes[-1]] = f"[/][{border_color}]│[/]\n"
+                list_line[indexes[-1]] = f"[/][{border_color}]│[/]"
                 new.append(Text.from_markup("".join(list_line)))
             if list_line.count("│")-list_username.count("│") == 1:
                 indexes = get_index_duplicates(list_line, "│")
-                list_line[indexes[-1]] = f"[/][{border_color}]│[/]\n"
+                list_line[indexes[-1]] = f"[/][{border_color}]│[/]"
                 list_line.insert(0, f"[{name_color}]")
                 new.append(Text.from_markup("".join(list_line)))
             continue
@@ -250,17 +177,17 @@ def get_message_box(msg_sender: User, message: str, stage: int):
                 indexes = get_index_duplicates(list_line, "│")
 
                 list_line[indexes[0]] = f"[{border_color}]│[/][{message_color}]"
-                list_line[indexes[-1]] = f"[/][{border_color}]│[/]\n"
+                list_line[indexes[-1]] = f"[/][{border_color}]│[/]"
 
                 new.append(Text.from_markup("".join(list_line)))
             if list_line.count("│")-current_msg_line.count("│") == 1:
                 indexes = get_index_duplicates(list_line, "│")
 
                 if stage == 1:
-                    list_line[0] = f"[{border_color}]│[/]\n" 
+                    list_line[0] = f"[{border_color}]│[/]" 
                 else:
                     list_line[0] = f"[{message_color}]"
-                    list_line[indexes[-1]] = f" [{border_color}]│[/]\n" 
+                    list_line[indexes[-1]] = f" [{border_color}]│[/]" 
                 
                 
                 new.append(Text.from_markup("".join(list_line)))
@@ -288,7 +215,7 @@ def get_message_box(msg_sender: User, message: str, stage: int):
                 
                 
 
-
+        
 
 
     return new
@@ -297,24 +224,18 @@ def get_message_box(msg_sender: User, message: str, stage: int):
    
 
 
-    direction = random.randint(1, 2) # Message will fade in from one of two directions. (left, right)
-
     
 if __name__ == '__main__':
     user = User(username=r"MyDogCummedOnTeenagers", paswrd="thisis100%hashedlol", preferences=Preferences())
     console = Console()
     
-    
-    
-    with Live("", refresh_per_second=5000) as live:
-        for _ in range(0, 90):
-            a = get_message_box(user, "The message box now works with color and animation at the same time. Now I need to intergrate it in render_box. That will be hell, but its worth it for the end result. aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", _)
-            
-            new_Text = Text("")
-            for i in a:
-                new_Text = Text.assemble(new_Text, i)
-            live.update(new_Text)
-            time.sleep(0.0000004)
+
+    with Live("", refresh_per_second=45) as live:
+        for _ in range(0, 65):
+            a = get_message_box(user, "Guess who just made this render_message thing work... Now I need to make the message go down once it has comed to the center of the screen. Do you think there should be a function to mark as read? That way it will stay in center until it is read then go down.", _)
+            live.update(render_menu_screen(get_message_box_rows(a, user)))
+            time.sleep(0.03)
+         
 
         
  
