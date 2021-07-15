@@ -176,7 +176,7 @@ def enter_session_id(prompt: str, alignment: str, password_prompt): #IN PROGRESS
     given_id = console.input(prompt)
 
     if given_id.lower() == "back":
-        join_box_tui(User, available_session_data)
+        return join_box_tui(User, available_session_data)
 
     elif (len(given_id) == 4) and (given_id.isdigit() == True):
         if is_already_an_id(int(given_id)):
@@ -223,7 +223,7 @@ def enter_password(prompt, session_id): #IN PROGRESS
         return enter_password(prompt, session_id)
     
 
-def enter_room_size():#DONE
+def enter_room_size(user):#DONE
     """
     Validates the user input, so they enter a correct size, and 
     returns the room_size.
@@ -231,14 +231,14 @@ def enter_room_size():#DONE
     size = console.input(" " * ((console.width // 2) - 14) + "[bold red]Enter room size (2 - 6):   [/]")
 
     if size.lower() == "back":
-        create_box_tui(User, available_session_data)
+        return create_box_tui(user, available_session_data)
 
     if size == "2" or size == "3" or size == "4" or size == "5" or size == "6":
         return str(size)
 
     else:
         console.print(Align("❌   Enter a valid number!\n", align = "center"))
-        return enter_room_size()
+        return enter_room_size(user)
 
 
 def join_box_tui(user: User, available_session_data, select="left"): #IN PROGRESS
@@ -252,7 +252,7 @@ def join_box_tui(user: User, available_session_data, select="left"): #IN PROGRES
         clear()
 
         console.print(Align("\n█▀█ █ █ █▄▄ █   █ █▀▀   █▄▄ █▀█ ▀▄▀ █▀▀ █▀\n" + 
-                              "█▀▀ █▄█ █▄█ █▄▄ █ █▄▄   █▄█ █▄█ █ █ ██▄ ▄█\n", align = "center"), style = "bold cyan")
+                              "█▀▀ █▄█ █▄█ █▄▄ █ █▄▄   █▄█ █▄█ █ █ ██▄ ▄█\n", align = "center"), style = user.preferences.preference_dict["Border Colour"])
 
         console.print(Align(Panel("Room Name = \nSesion ID = \nUsers = ", expand = False), align = "center"), style = "bold white")
         console.print("\n\n[bold white]!   Use [bold magenta] right arrow[/] or [bold magenta]left arrow[/] to find more rooms.[/]\n"+
@@ -265,7 +265,7 @@ def join_box_tui(user: User, available_session_data, select="left"): #IN PROGRES
         while True:
             if keyboard.is_pressed("backspace"):
                 select = "left"
-                return join_box_tui(User, available_session_data,  select)
+                return join_box_tui(user, available_session_data,  select)
 
             if keyboard.is_pressed("space"):
                 console.print()
@@ -282,7 +282,7 @@ def join_box_tui(user: User, available_session_data, select="left"): #IN PROGRES
     elif select == "private":
         clear()
         console.print(Align("\n█▀█ █▀█ █ █ █ ▄▀█ ▀█▀ █▀▀   █▄▄ █▀█ ▀▄▀\n"+
-                              "█▀▀ █▀▄ █ ▀▄▀ █▀█  █  ██▄   █▄█ █▄█ █ █\n", align = "center"), style = "bold cyan")
+                              "█▀▀ █▀▄ █ ▀▄▀ █▀█  █  ██▄   █▄█ █▄█ █ █\n", align = "center"), style = user.preferences.preference_dict["Border Colour"])
 
         console.print(Align("\nType [bold magenta]BACK[/] in the Session ID field to go back.\n", align = "center"))                
 
@@ -294,9 +294,9 @@ def join_box_tui(user: User, available_session_data, select="left"): #IN PROGRES
         """
         JOIN BOX MENU
         """
-        layout_setup(select, "[bold cyan]\n\n  █ █▀█ █ █▄ █   █▄▄ █▀█ ▀▄▀\n█▄█ █▄█ █ █ ▀█   █▄█ █▄█ █ █[/]") #select, "JOIN BOX"
+        layout_setup(select, f"[{user.preferences.preference_dict['Border Colour']}]\n\n  █ █▀█ █ █▄ █   █▄▄ █▀█ ▀▄▀\n█▄█ █▄█ █ █ ▀█   █▄█ █▄█ █ █[/]") #select, "JOIN BOX"
         select = tui_navigation(select, available_session_data)
-        join_box_tui(User, available_session_data,  select)
+        join_box_tui(user, available_session_data,  select)
 
 
 def create_box_tui(user: User, available_session_data, select="left"):
@@ -311,11 +311,11 @@ def create_box_tui(user: User, available_session_data, select="left"):
         public_session_id = create_session_id()
 
         console.print(Align("\n█▄▄ █▀█ ▀▄▀   █▀ █▀▀ ▀█▀ ▀█▀ █ █▄ █ █▀▀ █▀\n"+
-                              "█▄█ █▄█ █ █   ▄█ ██▄  █   █  █ █ ▀█ █▄█ ▄█\n", align = "center"), style = "bold cyan")
+                              "█▄█ █▄█ █ █   ▄█ ██▄  █   █  █ █ ▀█ █▄█ ▄█\n", align = "center"), style = user.preferences.preference_dict['Border Colour'])
         console.print(Align("Type [bold magenta]BACK[/] in any of the fields to go back.\n", align = "center"))
         console.print(Align(f"[bold red]Session ID:[/]   {public_session_id}", align = "center"))
          
-        room_size = enter_room_size()
+        room_size = enter_room_size(user)
 
         console.print(Align("\n✔️   Creating ThaBox...", align = "center"))
         time.sleep(0.5)        
@@ -332,21 +332,24 @@ def create_box_tui(user: User, available_session_data, select="left"):
         private_session_id = create_session_id()
         
         console.print(Align("\n█▄▄ █▀█ ▀▄▀   █▀ █▀▀ ▀█▀ ▀█▀ █ █▄ █ █▀▀ █▀\n"+
-                              "█▄█ █▄█ █ █   ▄█ ██▄  █   █  █ █ ▀█ █▄█ ▄█\n", align = "center"), style = "bold cyan")
+                              "█▄█ █▄█ █ █   ▄█ ██▄  █   █  █ █ ▀█ █▄█ ▄█\n", align = "center"), style = user.preferences.preference_dict['Border Colour'])
         console.print(Align("Type [bold magenta]BACK[/] in any of the fields to go back.\n", align = "center"))
         console.print(Align(f"[bold red]Session ID:[/]   {private_session_id}", align = "center"))
         
         while True:
+            time.sleep(0.2)
             password = console.input(" " * ((console.width // 2) - 12) + "[bold red]Create a Password:   [/]")
             if password.lower() == "back":
-                return create_box_tui(User, available_session_data)
+                return create_box_tui(user, available_session_data)
             elif password == "":
                 console.print(Align("❌   Password can't be blank!\n", align = "center"))
             elif " " in password:
                 console.print(Align("❌   Password can't have spaces!\n", align = "center"))
+            elif len(password) < 8:
+                console.print(Align("❌   Password must have at least 8 characters!\n", align = "center"))
 
             else:
-                room_size = enter_room_size()
+                room_size = enter_room_size(user)
                 break
 
         console.print(Align("\n✔️   Creating ThaBox...", align = "center"))
@@ -359,7 +362,7 @@ def create_box_tui(user: User, available_session_data, select="left"):
         """
         CREATE BOX MENU
         """
-        layout_setup(select, "[bold cyan]\n\n█▀▀ █▀█ █▀▀ ▄▀█ ▀█▀ █▀▀   █▄▄ █▀█ ▀▄▀\n█▄▄ █▀▄ ██▄ █▀█  █  ██▄   █▄█ █▄█ █ █[/]") #select, "CREATE BOX"
+        layout_setup(select, f"[{user.preferences.preference_dict['Border Colour']}]\n\n█▀▀ █▀█ █▀▀ ▄▀█ ▀█▀ █▀▀   █▄▄ █▀█ ▀▄▀\n█▄▄ █▀▄ ██▄ █▀█  █  ██▄   █▄█ █▄█ █ █[/]") #select, "CREATE BOX"
         select = tui_navigation(select, available_session_data)
-        return create_box_tui(User, available_session_data,  select)
+        return create_box_tui(user, available_session_data,  select)
 

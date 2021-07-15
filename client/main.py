@@ -5,6 +5,7 @@ from rich.screen import Screen
 from rich.console import Console, RenderGroup
 from rich.align import Align
 
+import box_interface
 from utils import User, Preferences, GoBack, clear
 from rendering import render_menu_screen, message_demo
 
@@ -113,7 +114,7 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
                 if hover_on == 1:
                     try:
                         clear()
-                        message_demo(logged_in_as) # Create box
+                        box_interface.create_box_tui(logged_in_as, [[1234]]) # Create box
                         hover_on = 1
                         clear()
                         continue
@@ -124,7 +125,7 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
                 elif hover_on == 2:
                     try:
                         clear()
-                        pass # Join box
+                        box_interface.join_box_tui(logged_in_as, [[1234]])
                         hover_on = 1
                         clear()
                         continue

@@ -222,7 +222,7 @@ def get_message_box(msg_sender: User, message: str, stage: int) -> list:
 
 
    
-def render_message(message: str, user: User, message_show_time: int = 6) -> Text:
+def render_message(message: str, user: User, message_show_time: int = 6, live=Live()) -> Text:
     fade_left_frames = []
     for _ in range(0, 63):
         message_box = get_message_box(user, message, _)
@@ -244,16 +244,17 @@ def render_message(message: str, user: User, message_show_time: int = 6) -> Text
         going_down_frames.append(render_menu_screen(get_message_box_rows(going_down_box, user)))
 
 
-    with Live("", refresh_per_second=10) as live:
-        for i in fade_left_frames:
-            live.update(i)
-            time.sleep(0.05)
+    for i in fade_left_frames:
+        live.update(i)
+        time.sleep(0.05)
 
-        time.sleep(message_show_time)
+    time.sleep(message_show_time)
 
-        for i in going_down_frames:
-            live.update(i)
-            time.sleep(0.07)
+    for i in going_down_frames:
+        live.update(i)
+        time.sleep(0.07)
+    
+    return live
 
 
 def message_demo(user: User):
@@ -261,12 +262,12 @@ def message_demo(user: User):
     client_user = user
     console = Console()
     while True:
-        clear()
-        console.print(render_menu_screen(get_message_box_rows(["".join(" " for _ in range(90)) for i in range(26)],user)))
-        mes = Prompt.ask("Send a message")
-        clear()
-        render_message(mes, user)
-    
+        with Live("") as live:
+            live.update(render_menu_screen(get_message_box_rows(["".join(" " for _ in range(90)) for i in range(26)],user)))
+            mes = "This is a demo message..."
+            live = render_message(mes, user, live=live)
+            time.sleep(100)
+       
 
 
     
