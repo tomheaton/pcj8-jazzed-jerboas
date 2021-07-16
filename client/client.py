@@ -35,7 +35,10 @@ async def receive_message(data):
 
 async def main():
     print("[CLIENT]: Starting connection...")
-    await sio.connect('http://localhost:8080')
+    try:
+        await sio.connect('http://localhost:8080')
+    except ConnectionError as e:
+        print("[CLIENT]: could not connect to server.")
     await asyncio.sleep(2)
     print("[CLIENT]: Running console...")
     await console_loop()
@@ -49,7 +52,7 @@ async def console_loop():
         globals().update(ROOM=room_name)
         await sio.emit("join_room", {"username": USERNAME, "room_name": ROOM})
 
-    while True & CONNECTED:
+    while True and CONNECTED:
         await asyncio.sleep(2)
         message: str = Prompt.ask("enter message")
         await asyncio.sleep(0.01)
