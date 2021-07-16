@@ -62,41 +62,13 @@ async def console_loop():
         client_info = main_navigation.main_menu(logged_in=False, logged_in_as=None)
         if client_info[0] == "create":
             join_or_create, user, session_id, password, room_size_max, server_type = client_info
-        print(client_info)
-        globals().update(USERNAME=client_info[1].username)
-        if Confirm.ask("returning user?"):
-            # TODO: let user sign in to an account.
-            username: str = Prompt.ask("enter username")
-            password: str = Prompt.ask("enter password")
-            # IF SUCCESS, create account and log them in
-            globals().update(USERNAME=username)
-            room_name: str = Prompt.ask("enter room name")
-            globals().update(ROOM=room_name)
-            await sio.emit("join_room", {"username": USERNAME, "room_name": ROOM})
-        else:
-            # TODO: let user create an account.
-            console.print("time to sign-up!")
-            username: str = Prompt.ask("enter username")
-            password: str = Prompt.ask("enter password")
-            # IF SUCCESS, create account and log them in
-            globals().update(USERNAME=username)
-            room_name: str = Prompt.ask("enter room name")
-            globals().update(ROOM=room_name)
-            await sio.emit("join_room", {"username": USERNAME, "room_name": ROOM})
-
-        await asyncio.sleep(0.01)
-
-        if Confirm.ask("join a chatroom?"):
-            # TODO: let user join a chatroom.
-            chatroom_name: str = Prompt.ask("enter chatroom to join")
-            # TODO: check chatroom before joining. (do not let user create one by joining)
-        if Confirm.ask("create a chatroom?"):
-            # TODO: let user create a chatroom.
-            chatroom_name: str = Prompt.ask("enter name for your chatroom")
-            private: bool = Confirm.ask("private?")
-            # TODO: check capacity input.
-            capacity: int = IntPrompt.ask("enter room size")
-
+            if server_type == "private":
+                private = True
+            else:
+                private = False
+        
+        if join_or_create == "create":
+            await sio.emit("create_room", {"room_name": session_id, "private": private, "password": password, "capacity": room_size_max})
         await asyncio.sleep(0.01)
 
     while True and CONNECTED:
