@@ -2,20 +2,16 @@ import socket
 import select
 import errno
 from pynput import keyboard
-
 from rich import print
 from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
 from utils import clear
-
 import sys
 from time import sleep
-
 from prompt_toolkit.validation import Validator, ValidationError
 from prompt_toolkit import prompt
 from prompt_toolkit.shortcuts import input_dialog
-
 
 console: Console = Console()
 
@@ -85,7 +81,8 @@ def receive_messages() -> None:
                 # Receive and decode username
                 username: str = client_socket.recv(username_length).decode('utf-8')
 
-                # Now do the same for message (as we received username, we received whole message, there's no need to check if it has any length)
+                # Now do the same for message (as we received username, we received whole message,
+                # there's no need to check if it has any length)
                 message_header: bytes = client_socket.recv(HEADER_LENGTH)
                 message_length: int = int(message_header.decode('utf-8').strip())
                 message: str = str(client_socket.recv(message_length).decode('utf-8'))

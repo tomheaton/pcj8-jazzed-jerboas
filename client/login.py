@@ -13,7 +13,6 @@ from rich.text import Text
 from utils import Preferences, User, clear
 
 
-
 with open("server\\secrets.pkl", "rb") as fp:
     secrets = pickle.load(fp)
 
@@ -229,6 +228,3 @@ def login():
         return log_in()
     if choice == "Sign up":
         return sign_up()
-
-
-

@@ -1,19 +1,10 @@
-
-
+import copy
 from time import sleep
-from rich import print
 from rich.align import Align
-from rich.console import Console, RenderGroup
 from rich.live import Live
 from rich.panel import Panel
-from rich.table import Table
 from rich.text import Text
-
-
 from utils import clear, GoBack
-import copy
-
-
 
 height: list = ['bottom', 'middle', 'top']
 
@@ -70,7 +61,6 @@ message: list = [
     'Placeholder'
 ]
 
-
 rows_ = ["\n", "\n", "\n", "[bold white]-----------------------Credits-----------------------[/]", "\n",
          "\n", "\n", "[bold white]There will be stops along this ride so you can take your time to read.[/]"]
 for i in range(9):
@@ -90,16 +80,19 @@ rows_.append("[bold blue]ThaBox was made as a submission for Python Discord's co
 rows_.append("[bold blue]and was developed by The Jazzed Jerboa's over the timespan of a week. [/]")
 for i in range(2):
     rows_.append("")
-rows_.append("[bold blue]We are very thankful for getting to join this event (Python code-jam Summer 2021). Special thanks to the Python Discord event-team [/]")
+rows_.append("[bold blue]We are very thankful for getting to join this event (Python code-jam Summer 2021). " \
+             "Special thanks to the Python Discord event-team [/]")
 rows_.append("[bold blue]for taking their time off to manage and host this event. [/]")
 for i in range(2):
     rows_.append("")
-rows_.append("[bold blue]Please don't look at The Jazzed Jerboa's as a team that submitted a project for the Python code-jam Summer 2021,[/]")
-rows_.append("[bold blue]but rather a team of wonderful people that shares the same interests. Being a part of the team gives you a feeling that you really belong somewhere.[/]")
+rows_.append("[bold blue]Please don't look at The Jazzed Jerboa's as a team that submitted a project for the " \
+             "Python code-jam Summer 2021,[/]")
+rows_.append("[bold blue]but rather a team of wonderful people that shares the same interests. " \
+             "Being a part of the team gives you a feeling that you really belong somewhere.[/]")
 for i in range(2):
     rows_.append("")
-rows_.append("[bold blue]During this event we have comed a bit closer to mastering the art of collaboration.[/]")
-rows_.append("[bold blue]It was superfun developing this! [/]")
+rows_.append("[bold blue]During this event we have come a bit closer to mastering the art of collaboration.[/]")
+rows_.append("[bold blue]It was super fun developing this! [/]")
 for i in range(2):
     rows_.append("")
 rows_.append("[bold blue]It's been a hell of a ride. [/]")
@@ -259,7 +252,9 @@ def credits_rework() -> None:
 
             scroll_through = Align.center(
                 Text.from_markup(
-                    "".join([x+"\n" if not isinstance(x, Text) else Text.assemble((x))._text[1]+"\n" for x in rows]), justify="center"
+                    "".join(
+                        [x + "\n" if not isinstance(x, Text) else Text.assemble((x))._text[1] + "\n" for x in rows]),
+                    justify="center"
                 )
             )
 
@@ -283,10 +278,7 @@ def credits_rework() -> None:
 
             sleep(0.4)
     clear()
-    
 
 
 def skip_credits():
     raise GoBack
-
-
