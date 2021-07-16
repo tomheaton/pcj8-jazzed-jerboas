@@ -139,12 +139,16 @@ def tui_navigation(select: str, available_session_data):#DONE
             raise GoBack
 
         if keyboard.is_pressed("left_arrow"):
-            select = "left"
-            return select
+            if select != "left":
+                select = "left"
+                return select
+            continue
 
         if keyboard.is_pressed("right_arrow"):
-            select = "right"
-            return select
+            if select != "right":
+                select = "right"
+                return select
+            continue
 
         if keyboard.is_pressed("enter"):
             if select == "left":

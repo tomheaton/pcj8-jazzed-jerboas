@@ -10,7 +10,7 @@ from rich.align import Align
 
 console = Console()
 
-def help_navigation(currentpage):
+def help_navigation(currentpage, user):
     """
     Allows user to cycle through the help pages.
     """
@@ -38,77 +38,93 @@ def help_navigation(currentpage):
     while True:
         if keyboard.is_pressed("left_arrow"):
             if previous == "About":
-                help_start_Page()
+                help_start_Page(user)
                 break
 
             elif previous == "Boxes":
-                help_boxes()
+                help_boxes(user)
                 break
 
             elif previous == "Messages":
-                help_messages()
+                help_messages(user)
                 break
 
             elif previous == "Pref":
-                help_preference()
+                help_preference(user)
                 break
 
         elif keyboard.is_pressed("right_arrow"):
             if next == "About":
-                help_start_Page()
+                help_start_Page(user)
                 break
 
             elif next == "Boxes":
-                help_boxes()
+                help_boxes(user)
                 break
 
             elif next == "Messages":
-                help_messages()
+                help_messages(user)
                 break
 
             elif next == "Pref":
-                help_preference()
+                help_preference(user)
                 break
         
         elif keyboard.is_pressed("backspace"):
             raise GoBack
 
-def help_start_Page():
+def help_start_Page(user):
+    if user is not None:
+        main_style = user.preferences.preference_dict["Border Colour"]
+    else:
+        main_style = "bold cyan"
     clear()
-    paragraph = "[bright_white]'ThaBox' is a social media platform in which the conversations \nbetween users are for the users only. Not a single message is \nsaved in the server, giving you the utmost privacy. Chat with \nstrangers in public boxes, or have a blast with your friends \nin private boxes. \n\n[/][bold grey58]This program was created for the 'Python Discord 2021 CodeJam'.\n[/]"
+    paragraph = "[bright_white]ThaBox is a social media platform in which the conversations \nbetween users are for the users only. Not a single message is \nsaved, giving you the utmost privacy. Chat with \nstrangers in public boxes, or have a blast with your friends \nin private boxes. \n\n[/][bold grey58]This program was created for the 'Python Discord 2021 CodeJam'.\n[/]"
 
-    console.print((Align("""[bold cyan]
+    console.print((Align(f"""[{main_style}]
 ▄▀█ █▄▄ █▀█ █ █ ▀█▀
 █▀█ █▄█ █▄█ █▄█  █ [/]\n""", align = "center", )))
     console.print((Align(paragraph, align = "center")))
-    help_navigation('About')
+    help_navigation('About', user)
 
-def help_boxes():
+def help_boxes(user):
+    if user is not None:
+        main_style = user.preferences.preference_dict["Border Colour"]
+    else:
+        main_style = "bold cyan"
     clear()
     paragraph = "[bright_white]There are two types of boxes available - a private and a public\nbox. When creating a public box, you get a session ID, which\nothers can find in a list of public boxes and join. However, when\ncreating a private box, you get a session ID and have to set a\npassword for the box. Any user with the session ID and password\ncan join your box.\n[/]"
 
-    console.print((Align("""[bold cyan]
+    console.print((Align(f"""[{main_style}]
   █▄▄ █▀█ ▀▄▀ █▀▀ █▀
   █▄█ █▄█ █ █ ██▄ ▄█[/]\n""", align = "center", )))
     console.print((Align(paragraph, align = "center")))
-    help_navigation('Boxes')
+    help_navigation('Boxes', user)
 
-def help_messages():
+def help_messages(user):
+    if user is not None:
+        main_style = user.preferences.preference_dict["Border Colour"]
+    else:
+        main_style = "bold cyan"
     clear()
-    paragraph = "[bright_white]Message can be sent to another person in the same box, by simply\ntyping it out when you recieve the prompt. Only 1 person in the\nbox can type at once, so you may need to wait until someone else\nhas finished.\n\nMessages that you received are available only until the next \nmessage has been sent. Past message are deleted and can't be \nretrieved.\n[/]"
+    paragraph = "[bright_white]Messages can be sent to another person in the same box, by simply\ntyping it out when you recieve the prompt. Only 1 person in the\nbox can type at once, so you may need to wait until someone else\nhas finished.\n\nMessages that you receive are available for some seconds.\nmessage has been sent. Past message are not stored and can't be \nretrieved.\n[/]"
 
-    console.print((Align("""[bold cyan]
+    console.print((Align(f"""[{main_style}]
 █▀▄▀█ █▀▀ █▀ █▀ ▄▀█ █▀▀ █▀▀ █▀
 █ ▀ █ ██▄ ▄█ ▄█ █▀█ █▄█ ██▄ ▄█[/]\n""", align = "center", )))
     console.print((Align(paragraph, align = "center")))
-    help_navigation("Messages")
+    help_navigation("Messages", user)
 
-def help_preference():
+def help_preference(user):
+    if user is not None:
+        main_style = user.preferences.preference_dict["Border Colour"]
+    else:
+        main_style = "bold cyan"
     clear()
-    paragraph = "[bright_white]The colour scheme of your message box can be changed in the\n'Preferences' settings. A valid colour name, a hex ('#xxxxxx')\nor an [bold red]R[/][bold green]G[/][bold blue]B[/] ('rgb(r, g, b)') value\ncan be used to personalise different parts of your box. [/]\n"
+    paragraph = "[bright_white]The colour scheme of your box can be changed in the\nPreferences page once logged in. A valid colour name or a hex-value (#xxxxxx)\nocan be used to personalise different parts of your box. [/]\n"
 
-    console.print((Align("""[bold cyan]
+    console.print((Align(f"""[{main_style}]
 █▀█ █▀█ █▀▀ █▀▀ █▀▀ █▀█ █▀▀ █▄ █ █▀▀ █▀▀ █▀
 █▀▀ █▀▄ ██▄ █▀  ██▄ █▀▄ ██▄ █ ▀█ █▄▄ ██▄ ▄█[/]\n""", align = "center", )))
     console.print((Align(paragraph, align = "center")))
-    help_navigation("Pref")
+    help_navigation("Pref", user)

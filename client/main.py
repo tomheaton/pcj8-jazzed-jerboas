@@ -11,7 +11,7 @@ from rendering import render_menu_screen, message_demo
 
 import login
 import credits
-
+import help as help_page
 
 
 
@@ -147,7 +147,7 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
                 elif hover_on == 4:
                     try:
                         clear()
-                        pass # Help/Info
+                        help_page.help_start_Page(logged_in_as) # Help/Info
                         hover_on = 1
                         clear()
                         continue
@@ -168,7 +168,7 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
                         continue
                 elif hover_on == 6:
                     clear()
-                    exit() # Exit, not even implemented yet lol
+                    exit() 
             
             if hover_on == 1:
                 clear()
@@ -176,7 +176,7 @@ def main_menu(logged_in: bool = False, logged_in_as = None):
             elif hover_on == 2:
                 try:
                     clear()
-                    pass # Help/Info
+                    help_page.help_start_Page(logged_in_as)# Help/Info
                     hover_on = 1
                     clear()
                     continue
