@@ -12,7 +12,7 @@ from rich.text import Text
 from utils import Preferences, User, clear
 
 
-with open("server\\secrets.pkl", "rb") as fp:
+with open("../server/secrets.pkl", "rb") as fp:
     secrets = pickle.load(fp)
 
 printable_chars = list(string.printable.replace("\n", "").replace(" ", "").replace("    ", ""))
@@ -40,7 +40,7 @@ def create_account(username: str, password: str):
     global secrets
     password = hash_pass(password)
     secrets.append(User(username=username, paswrd=password, preferences=Preferences()))
-    with open("server\\secrets.pkl", "wb") as f:
+    with open("../server/secrets.pkl", "wb") as f:
         pickle.dump(secrets, f)
 
     user_ob = [x for x in secrets if x.username == username][0]

@@ -5,7 +5,7 @@ from rich.console import Console
 from rich.prompt import Prompt, Confirm, IntPrompt
 import rendering
 import main as main_navigation
-
+from box_interface import create_box_tui
 
 
 sio = socketio.AsyncClient()
@@ -14,10 +14,13 @@ CONNECTED: bool = False
 USERNAME = ""
 ROOM = ""
 
+
 def get_room_names():
     "Should retrive a list of all active rooms (their names)"
     pass
-    return [["room_name", "password", "ppl_in_room", "room_ppl_limit"] for i in "room_shit_idk_how_to_make"] # Password sohuld be None if room is public.
+    # Password sohuld be None if room is public.
+    return [["room_name", "password", "ppl_in_room", "room_ppl_limit"] for i in "room_shit_idk_how_to_make"]
+
 
 @sio.event
 async def connect():

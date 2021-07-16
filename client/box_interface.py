@@ -375,3 +375,8 @@ def create_box_tui(user: User, available_session_data, select="left"):
                      f"[{user.preferences.preference_dict['Border Colour']}]\n\n█▀▀ █▀█ █▀▀ ▄▀█ ▀█▀ █▀▀   █▄▄ █▀█ ▀▄▀\n█▄▄ █▀▄ ██▄ █▀█  █  ██▄   █▄█ █▄█ █ █[/]")  # select, "CREATE BOX"
         select = tui_navigation(select, available_session_data)
         return create_box_tui(user, available_session_data, select)
+
+
+def chat_rooms_scroll():
+    what_to_do = Prompt.ask(Text.assemble(("1: Scroll up\n", "bold cyan"), ("2: Scroll down\n", "bold cyan"),
+                                          ("3: Select\n", "bold purple")), choices=["1", "2", "3"], default="3")
