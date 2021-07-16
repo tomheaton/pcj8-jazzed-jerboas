@@ -20,5 +20,5 @@ pynput~=1.7
 rich~=10.6
 keyboard~=0.13
 python-socketio~=5.3
-python-socketio[asyncio_client]~=1.1
+python-socketio-client~=1.1
 aiohttp~=3.7
