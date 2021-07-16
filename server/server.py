@@ -6,6 +6,9 @@ sio = socketio.AsyncServer(async_mode="aiohttp")
 app = web.Application()
 sio.attach(app)
 
+users = []
+rooms = []
+
 
 @sio.event
 async def connect(sid):
