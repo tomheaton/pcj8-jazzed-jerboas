@@ -1,11 +1,10 @@
 # Client
 import asyncio
 import socketio
-from rich.console import Console
-from rich.prompt import Prompt, Confirm, IntPrompt
 import rendering
 import main as main_navigation
-
+from rich.console import Console
+from rich.prompt import Prompt, Confirm, IntPrompt
 
 
 sio = socketio.AsyncClient()
@@ -13,11 +12,16 @@ console = Console()
 CONNECTED: bool = False
 USERNAME = ""
 ROOM = ""
+ROOMS: list = []
 
-def get_room_names():
-    "Should retrive a list of all active rooms (their names)"
-    pass
-    return [["room_name", "password", "ppl_in_room", "room_ppl_limit"] for i in "room_shit_idk_how_to_make"] # Password sohuld be None if room is public.
+
+def set_rooms(data):
+    globals().update(ROOMS=data["rooms"])
+
+
+def get_rooms():
+    await sio.emit("get_rooms", callback=set_rooms)
+
 
 @sio.event
 async def connect():
