@@ -1,8 +1,8 @@
 # Server Utilities
 import os
 import uuid
-from panda.components.database import Database
-from panda.components.user import User
+from components.database import Database
+from components.user import User
 
 
 # TODO: create first time initialization function.

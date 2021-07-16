@@ -33,7 +33,7 @@ $ python server.py
 ```
 Finally, use this command to start the client interface.
 ```shell
-$ python client.py
+$ python __main__.py
 ```
 
 ## Authors

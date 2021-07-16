@@ -1,4 +1,4 @@
-from panda.components.user_preferences import UserPreferences
+from .user_preferences import UserPreferences
 
 
 class User:

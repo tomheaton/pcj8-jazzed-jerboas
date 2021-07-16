@@ -1,5 +1,5 @@
-from panda.components.chatroom import ChatRoom
-from panda.components.user import User
+from .chatroom import ChatRoom
+from .user import User
 
 
 class Server:

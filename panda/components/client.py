@@ -1,4 +1,4 @@
-from panda.components.user import User
+from .user import User
 
 
 class Client:

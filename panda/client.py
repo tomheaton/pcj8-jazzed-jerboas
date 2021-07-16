@@ -1,12 +1,12 @@
 import asyncio
 import socket
-import sys
-sys.path.append('../')
 import socketio
 from rich.console import Console
 from rich.prompt import Prompt, Confirm
-from panda.components.client import Client
+from components.client import Client
+
 # TODO: move some of this to the Client class.
+
 CLIENT_NAME = socket.gethostname()
 CLIENT_ADDRESS = socket.gethostbyname(CLIENT_NAME)
 CLIENT = Client(CLIENT_ADDRESS, CLIENT_NAME)

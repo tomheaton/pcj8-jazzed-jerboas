@@ -1,15 +1,14 @@
 # The Server
-import os
 import socket
-import dotenv
+from dotenv_config import Config
 import socketio
 from aiohttp import web
 from server.server_utils import create_database, register_user, login_user
 from components.server import Server
 from components.user import User
 
-dotenv.load_dotenv()
-salt = os.environ.get("SALT")
+config = Config(".env")
+salt = config("SALT", str)
 
 # TODO: move some of this to the Server class.
 SERVER_NAME = socket.gethostname()
