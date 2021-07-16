@@ -11,7 +11,7 @@ rooms = []
 
 
 @sio.event
-async def connect(sid):
+async def connect(sid, data):
     print(f"[SERVER]: connect {sid}")
 
 

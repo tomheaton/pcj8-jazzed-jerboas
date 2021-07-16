@@ -45,6 +45,7 @@ async def main():
 
 
 async def console_loop():
+    # TODO: log the user in/make an account
     if CONNECTED:
         name: str = Prompt.ask("enter username")
         globals().update(USERNAME=name)
