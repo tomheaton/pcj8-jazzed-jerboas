@@ -56,6 +56,7 @@ async def console_loop():
     # TODO: log the user in/make an account
     if CONNECTED:
         client_info = main_navigation.main_menu(logged_in=False, logged_in_as=None)
+        print(client_info)
         globals().update(USERNAME=client_info[0].username)
         if Confirm.ask("returning user?"):
             # TODO: let user sign in to an account.

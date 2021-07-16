@@ -331,9 +331,9 @@ def create_box_tui(user: User, available_session_data, select="left"):
         time.sleep(0.5)
 
         server_type = select
-        password = False
+        password = None
 
-        return user, public_session_id, password, room_size, server_type
+        return "create", user, public_session_id, password, room_size, server_type
 
 
 
@@ -367,7 +367,7 @@ def create_box_tui(user: User, available_session_data, select="left"):
         time.sleep(0.5)
 
         server_type = select
-        return user, private_session_id, password, room_size, server_type
+        return "create", user, private_session_id, password, room_size, server_type
 
     else:
         """
