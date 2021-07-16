@@ -107,7 +107,7 @@ def main_menu(logged_in: bool = False, logged_in_as=None):
                 if hover_on == 1:
                     try:
                         clear()
-                        box_interface.create_box_tui(logged_in_as, [[1234]])  # Create box
+                        return box_interface.create_box_tui(logged_in_as, [[1234]])  # Create box
                         hover_on = 1
                         clear()
                         continue
@@ -118,7 +118,7 @@ def main_menu(logged_in: bool = False, logged_in_as=None):
                 elif hover_on == 2:
                     try:
                         clear()
-                        box_interface.join_box_tui(logged_in_as, [[1234]])
+                        return box_interface.join_box_tui(logged_in_as, [[1234]])
                         hover_on = 1
                         clear()
                         continue
