@@ -3,16 +3,13 @@ import random
 import re
 import string
 import time
-from hashlib import sha256
-
 import utils
+from hashlib import sha256
 from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.text import Text
 from utils import Preferences, User, clear
-
-
 
 
 with open("server\\secrets.pkl", "rb") as fp:
@@ -230,6 +227,3 @@ def login():
         return log_in()
     if choice == "Sign up":
         return sign_up()
-
-
-

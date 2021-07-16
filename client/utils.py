@@ -7,8 +7,6 @@ from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.text import Text
 
-
-
 console: Console = Console()
 
 
@@ -31,12 +29,11 @@ class Preferences:
 
     def __init__(self):
         self.preference_dict = default_preference = {
-        "Name Colour": "bold cyan",
-        "Message Colour": "bold white",
-        "Border Colour": "bold green",
-        "Message Border Colour": "bold magenta",
+            "Name Colour": "bold cyan",
+            "Message Colour": "bold white",
+            "Border Colour": "bold green",
+            "Message Border Colour": "bold magenta",
         }
-
 
     def template_message(self) -> None:
         """
@@ -59,14 +56,19 @@ class Preferences:
         """
         while True:
             Preferences.template_message(self)
-            val_to_be_changed: str = make_style_prompt(prompt_msg="What would you like to change?", choices=["Border Colour", "Name Colour", "Message Colour", "Message Border Colour", "[red]Exit preferences[/]"], main_style=self.preference_dict["Message Border Colour"], frame_border_style=self.preference_dict["Border Colour"])
+            val_to_be_changed: str = make_style_prompt(prompt_msg="What would you like to change?",
+                                                       choices=["Border Colour", "Name Colour", "Message Colour",
+                                                                "Message Border Colour", "[red]Exit preferences[/]"],
+                                                       main_style=self.preference_dict["Message Border Colour"],
+                                                       frame_border_style=self.preference_dict["Border Colour"])
             clear()
             if val_to_be_changed == "[red]Exit preferences[/]":
                 raise GoBack
 
             else:
                 while True:
-                    console.print(Panel("🎨 Name a color or enter a hex-value", border_style=self.preference_dict["Message Border Colour"]))
+                    console.print(Panel("🎨 Name a color or enter a hex-value",
+                                        border_style=self.preference_dict["Message Border Colour"]))
                     colour: str = Prompt.ask(Text.assemble(("╰>", self.preference_dict["Message Colour"])))
                     try:
                         test: str = console.print("", style=colour)
@@ -80,13 +82,15 @@ class Preferences:
                         self.preference_dict[val_to_be_changed] = "bold " + str(colour)
                         console.print("✔️   Updated successfully!\n")
                         time.sleep(2.2)
+                        # update_userfiles()
                         clear()
 
-                        repeat = make_style_prompt(choices=["[green]Yes[/]", "[red]No[/]"], prompt_msg="Would you like to change something else?", main_style=self.preference_dict["Message Border Colour"])
+                        repeat = make_style_prompt(choices=["[green]Yes[/]", "[red]No[/]"],
+                                                   prompt_msg="Would you like to change something else?",
+                                                   main_style=self.preference_dict["Message Border Colour"])
                         if repeat == "[green]Yes[/]":
                             break
                         return self
-  
 
 
 class User:
@@ -97,11 +101,12 @@ class User:
         self.friends = []
 
 
-
 class GoBack(Exception):
     pass
 
-def make_style_prompt(choices: list, default: str = None, prompt_msg: str = "Would you like to:", main_style: str = "none",
+
+def make_style_prompt(choices: list, default: str = None, prompt_msg: str = "Would you like to:",
+                      main_style: str = "none",
                       frame_style: str = "none",
                       frame_border_style: str = "none") -> str:
     """

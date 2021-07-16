@@ -1,25 +1,22 @@
 import textwrap
-
 from typing import List, TYPE_CHECKING
-
 from rich import console
 from rich.panel import Panel
 from rich.text import Text
 from rich.table import Table
 from rich.console import Console
-from rich.screen import Screen 
+from rich.screen import Screen
 from rich.live import Live
 from rich.markup import escape
-
-from utils import clear, User, Preferences 
-
-
-
+from rich.prompt import Prompt
+from utils import clear, User, Preferences
 import time
 import random
 
+client_user = None
 
-def get_index_duplicates(lst, item) -> list: 
+
+def get_index_duplicates(lst, item) -> list:
     """
     :param lst: The list to search for an item or items in.
     :param item: The item to find indexes for in list.
@@ -28,41 +25,39 @@ def get_index_duplicates(lst, item) -> list:
     return [i for i, x in enumerate(lst) if x == item]
 
 
-# Create the colored logo-text manually because rich'es Panel()
+# Create the colored logo-text manually because rich's Panel()
 # function does not allow you to get the raw_output (the string that is actually being printed)
 RED = '\033[91m'
 ENDC = '\033[0m'
 PURPLE = '\033[95m'
 CYAN = '\033[96m'
 box_logo_lines = [
-    RED+"╭────────────────────────────────╮  "+ENDC,
-    RED+"│                                │  "+ENDC,
-    RED+"│"+ENDC+PURPLE+" $$$$$$$$\\ $$\\                  "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+PURPLE+" \\__$$  __|$$ |                 "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+PURPLE+"    $$ |   $$$$$$$\\   $$$$$$\\   "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+PURPLE+"    $$ |   $$  __$$\\  \\____$$\\  "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+PURPLE+"    $$ |   $$ |  $$ | $$$$$$$ | "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+PURPLE+"    $$ |   $$ |  $$ |$$  __$$ | "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+PURPLE+"    $$ |   $$ |  $$ |\\$$$$$$$ | "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+PURPLE+"    \\__|   \\__|  \\__| \\_______| "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│                                │"+ENDC+"  ",
-    RED+"│"+ENDC+CYAN+" $$$$$$$\\                       "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+CYAN+" $$  __$$\\                      "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+CYAN+" $$ |  $$ | $$$$$$\\  $$\\   $$\\  "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+CYAN+" $$$$$$$\\ |$$  __$$\\ \\$$\\ $$  | "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+CYAN+" $$  __$$\\ $$ /  $$ | \\$$$$  /  "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+CYAN+" $$ |  $$ |$$ |  $$ | $$  $$<   "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+CYAN+" $$$$$$$  |\\$$$$$$  |$$  /\\$$\\  "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│"+ENDC+CYAN+" \\_______/  \\______/ \\__/  \\__| "+ENDC+RED+"│"+ENDC+"  ",
-    RED+"│                                │  "+ENDC,
-    RED+"╰────────────────────────────────╯  "+ENDC
+    RED + "╭────────────────────────────────╮  " + ENDC,
+    RED + "│                                │  " + ENDC,
+    RED + "│" + ENDC + PURPLE + " $$$$$$$$\\ $$\\                  " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + PURPLE + " \\__$$  __|$$ |                 " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + PURPLE + "    $$ |   $$$$$$$\\   $$$$$$\\   " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + PURPLE + "    $$ |   $$  __$$\\  \\____$$\\  " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + PURPLE + "    $$ |   $$ |  $$ | $$$$$$$ | " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + PURPLE + "    $$ |   $$ |  $$ |$$  __$$ | " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + PURPLE + "    $$ |   $$ |  $$ |\\$$$$$$$ | " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + PURPLE + "    \\__|   \\__|  \\__| \\_______| " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│                                │" + ENDC + "  ",
+    RED + "│" + ENDC + CYAN + " $$$$$$$\\                       " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + CYAN + " $$  __$$\\                      " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + CYAN + " $$ |  $$ | $$$$$$\\  $$\\   $$\\  " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + CYAN + " $$$$$$$\\ |$$  __$$\\ \\$$\\ $$  | " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + CYAN + " $$  __$$\\ $$ /  $$ | \\$$$$  /  " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + CYAN + " $$ |  $$ |$$ |  $$ | $$  $$<   " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + CYAN + " $$$$$$$  |\\$$$$$$  |$$  /\\$$\\  " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│" + ENDC + CYAN + " \\_______/  \\______/ \\__/  \\__| " + ENDC + RED + "│" + ENDC + "  ",
+    RED + "│                                │  " + ENDC,
+    RED + "╰────────────────────────────────╯  " + ENDC
 ]
-menu_logo = "".join([x+"\n" if x != box_logo_lines[-1] else x for x in box_logo_lines])
-
+menu_logo = "".join([x + "\n" if x != box_logo_lines[-1] else x for x in box_logo_lines])
 
 
 def render_menu_screen(rows: list) -> Text:
-    
     """
     This function gets the Text-object that is shown to the user once in the main_menu or while in a box.
 
@@ -72,12 +67,11 @@ def render_menu_screen(rows: list) -> Text:
 
     logo_rows = menu_logo.split("\n")
 
-
     if len(rows) < 21:
         raise ValueError("The argument rows needs to contain at least 21 rows.")
     if len(rows) > 21:
         dummy_rows_to_add = len(rows) - len(logo_rows)
-        dummy_rows = [Text.assemble(('-' * 34+"  ", "red")) for _ in range(dummy_rows_to_add)]
+        dummy_rows = [Text.assemble(('-' * 34 + "  ", "red")) for _ in range(dummy_rows_to_add)]
         for i in range(dummy_rows_to_add):
             logo_rows.append(dummy_rows[i])
 
@@ -87,36 +81,38 @@ def render_menu_screen(rows: list) -> Text:
     return Text.assemble(*new_rows)
 
 
-
-
 def get_message_box_rows(message_box: list, user: User) -> list:
-    message_box = [_+"".join([" " for i in range(90-len(_))]) for _ in message_box]
-    
+    message_box = [_ + "".join([" " for i in range(90 - len(_))]) for _ in message_box]
+
     while len(message_box) != 26:
         message_box.append("".join([" " for i in range(90)]))
         if len(message_box) == 26:
             break
         message_box.insert(0, "".join([" " for i in range(90)]))
-    
+
     if len(message_box) != 26:
         raise ValueError("Box must contain 26 rows.")
 
     border_color = user.preferences.preference_dict["Border Colour"]
     new_rows = []
 
-    new_rows.append(Text.assemble(("┌──────────────────────────────────────────────────────────────────────────────────────────┐", border_color)))
+    new_rows.append(
+        Text.assemble(("┌──────────────────────────────────────────────────────────────────────────────────────────┐",
+                       border_color)))
     for i in message_box:
-        new_rows.append(Text.assemble(("│", border_color), (i), ("│", border_color)))
-    new_rows.append(Text.assemble(("└──────────────────────────────────────────────────────────────────────────────────────────┘",  border_color)))
+        new_rows.append(Text.assemble(("│", border_color), i, ("│", border_color)))
+    new_rows.append(
+        Text.assemble(("└──────────────────────────────────────────────────────────────────────────────────────────┘",
+                       border_color)))
     return new_rows
+
 
 def get_message_box(msg_sender: User, message: str, stage: int) -> list:
     """Returns a list of strings which together assemble the message box that is being displayed in render_message."""
 
-    name_color = user.preferences.preference_dict["Name Colour"]
-    message_color = user.preferences.preference_dict["Message Colour"]
-    border_color = user.preferences.preference_dict["Message Border Colour"]
-
+    name_color = client_user.preferences.preference_dict["Name Colour"]
+    message_color = client_user.preferences.preference_dict["Message Colour"]
+    border_color = client_user.preferences.preference_dict["Message Border Colour"]
 
     message_lines = textwrap.wrap(message, width=32)
 
@@ -128,73 +124,70 @@ def get_message_box(msg_sender: User, message: str, stage: int) -> list:
             message_string += f"│{_ : <32}│" + "\n"
             continue
         message_string += f"│{_ : <32}│"
-        
+
     if len(message_string.splitlines()) > 9:
-       raise ValueError("Message too long!")
+        raise ValueError("Message too long!")
 
     msg_box = \
-    f"""┌────────────────────────────────┐
-│{"Message from" : ^32}│
-│{msg_sender.username : ^32}│
-├────────────────────────────────┤
-{message_string}
-└────────────────────────────────┘"""
-    
+        f"┌────────────────────────────────┐\n" \
+        f"│{'Message from' : ^32}│\n" \
+        f"│{msg_sender.username : ^32}│\n" \
+        f"├────────────────────────────────┤\n" \
+        f"{message_string}\n" \
+        f"└────────────────────────────────┘"
 
-    
     lines = msg_box.splitlines()
     if stage < 34:
-        a = [line[(34-stage):34]for line in lines]
+        a = [line[(34 - stage):34] for line in lines]
     if stage >= 34:
-        a = ["".join([" " for _ in range(stage-34)])+line for line in lines]
-    
+        a = ["".join([" " for _ in range(stage - 34)]) + line for line in lines]
+
     new = []
 
     c = 0
     for i in a:
-        c+=1
+        c += 1
         if c == 1 or c == 2 or c == 4:
             new.append(Text.from_markup(f"[{border_color}]{i}[/]"))
             continue
         if c == 3:
-            list_username = list(user.username)
+            list_username = list(msg_sender.username)
             list_line = list(i)
-            if list_line.count("│")-list_username.count("│") == 2: # Ignore │ in usernames.
+            if list_line.count("│") - list_username.count("│") == 2:  # Ignore │ in usernames.
                 indexes = get_index_duplicates(list_line, "│")
                 list_line[indexes[0]] = f"[{border_color}]│[/][{name_color}]"
                 list_line[indexes[-1]] = f"[/][{border_color}]│[/]"
                 new.append(Text.from_markup("".join(list_line)))
-            if list_line.count("│")-list_username.count("│") == 1:
+            if list_line.count("│") - list_username.count("│") == 1:
                 indexes = get_index_duplicates(list_line, "│")
                 list_line[indexes[-1]] = f"[/][{border_color}]│[/]"
                 list_line.insert(0, f"[{name_color}]")
                 new.append(Text.from_markup("".join(list_line)))
             continue
-        if not c-4 > len(message_lines):
+        if not c - 4 > len(message_lines):
             list_line = list(i)
-            current_msg_line = list(message_lines[c-5])
-            if list_line.count("│")-current_msg_line.count("│") == 2: # Ignore │ in usernames.
+            current_msg_line = list(message_lines[c - 5])
+            if list_line.count("│") - current_msg_line.count("│") == 2:  # Ignore │ in usernames.
                 indexes = get_index_duplicates(list_line, "│")
 
                 list_line[indexes[0]] = f"[{border_color}]│[/][{message_color}]"
                 list_line[indexes[-1]] = f"[/][{border_color}]│[/]"
 
                 new.append(Text.from_markup("".join(list_line)))
-            if list_line.count("│")-current_msg_line.count("│") == 1:
+            if list_line.count("│") - current_msg_line.count("│") == 1:
                 indexes = get_index_duplicates(list_line, "│")
 
                 if stage == 1:
-                    list_line[0] = f"[{border_color}]│[/]" 
+                    list_line[0] = f"[{border_color}]│[/]"
                 else:
                     list_line[0] = f"[{message_color}]"
-                    list_line[indexes[-1]] = f" [{border_color}]│[/]" 
-                
-                
+                    list_line[indexes[-1]] = f" [{border_color}]│[/]"
+
                 new.append(Text.from_markup("".join(list_line)))
 
-        if c-4 > len(message_lines):
+        if c - 4 > len(message_lines):
             list_line = list(i)
-            if "└" in list_line and "┘" in list_line: 
+            if "└" in list_line and "┘" in list_line:
                 indexleft = get_index_duplicates(list_line, "└")[0]
                 indexright = get_index_duplicates(list_line, "┘")[0]
 
@@ -202,43 +195,61 @@ def get_message_box(msg_sender: User, message: str, stage: int) -> list:
                 list_line[indexright] = f"┘[/]"
                 new.append(Text.from_markup("".join(list_line)))
 
-            if "┘" in list_line and  not "└" in list_line:
+            if "┘" in list_line and not "└" in list_line:
                 index = get_index_duplicates(list_line, "┘")[0]
-              
+
                 if stage == 1:
                     list_line[index] = f"[{border_color}]┘[/]"
-                    
+
                 else:
                     list_line[0] = f"[{border_color}]─"
                     list_line[index] = f"┘[/]"
                 new.append(Text.from_markup("".join(list_line)))
-                
-                
-
-        
-
 
     return new
 
 
-   
+def render_message(message: str, user: User, message_show_time: int = 6, live=Live()) -> Text:
+    fade_left_frames = []
+    for _ in range(0, 63):
+        message_box = get_message_box(user, message, _)
+        frame = render_menu_screen(get_message_box_rows(message_box, user))
+        fade_left_frames.append(frame)
+
+    going_down_box = get_message_box(user, message, 62)
+    going_down_frames = []
+
+    message_size = len(going_down_box)
+
+    for i in range(26 - message_size):
+        going_down_box.insert(0, "".join([" " for ___ in range(90)]))
+        going_down_frames.append(render_menu_screen(get_message_box_rows(going_down_box, user)))
+    for i in range(message_size):
+        going_down_box.insert(0, "".join([" " for ___ in range(90)]))
+        going_down_box.pop(-1)
+        going_down_frames.append(render_menu_screen(get_message_box_rows(going_down_box, user)))
+
+    for i in fade_left_frames:
+        live.update(i)
+        time.sleep(0.05)
+
+    time.sleep(message_show_time)
+
+    for i in going_down_frames:
+        live.update(i)
+        time.sleep(0.07)
+
+    return live
 
 
-    
-if __name__ == '__main__':
-    user = User(username=r"MyDogCummedOnTeenagers", paswrd="thisis100%hashedlol", preferences=Preferences())
+def message_demo(user: User):
+    global client_user
+    client_user = user
     console = Console()
-    
-
-    with Live("", refresh_per_second=45) as live:
-        for _ in range(0, 65):
-            a = get_message_box(user, "Guess who just made this render_message thing work... Now I need to make the message go down once it has comed to the center of the screen. Do you think there should be a function to mark as read? That way it will stay in center until it is read then go down.", _)
-            live.update(render_menu_screen(get_message_box_rows(a, user)))
-            time.sleep(0.03)
-         
-
-        
- 
-
-
-
+    while True:
+        with Live("") as live:
+            live.update(
+                render_menu_screen(get_message_box_rows(["".join(" " for i in range(90)) for j in range(26)], user)))
+            mes = "This is a demo message..."
+            live = render_message(mes, user, live=live)
+            time.sleep(100)

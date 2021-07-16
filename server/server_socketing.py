@@ -24,12 +24,11 @@ print(f'Listening for connections on {IP}:{PORT}...')
 
 
 def receive_message(client_socket) -> Union[dict, bool]:
-
     try:
-
         message_header: bytes = client_socket.recv(HEADER_LENGTH)
 
-        # If we received no data, client gracefully closed a connection, for example using socket.close() or socket.shutdown(socket.SHUT_RDWR)
+        # If we received no data, client gracefully closed a connection, for example using socket.close() or
+        # socket.shutdown(socket.SHUT_RDWR)
         if not len(message_header):
             return False
 
@@ -37,9 +36,7 @@ def receive_message(client_socket) -> Union[dict, bool]:
 
         # Return an object of message header and message data
         return {'header': message_header, 'data': client_socket.recv(message_length)}
-
-    except:
-
+    except Exception:
         return False
 
 
