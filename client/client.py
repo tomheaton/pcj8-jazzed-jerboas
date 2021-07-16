@@ -3,6 +3,10 @@ import asyncio
 import socketio
 from rich.console import Console
 from rich.prompt import Prompt, Confirm, IntPrompt
+import rendering
+import main as main_navigation
+
+
 
 sio = socketio.AsyncClient()
 console = Console()
@@ -47,6 +51,7 @@ async def main():
 async def console_loop():
     # TODO: log the user in/make an account
     if CONNECTED:
+        client_info = main_navigation.main_menu(logged_in=False, logged_in_as=None)
         if Confirm.ask("returning user?"):
             # TODO: let user sign in to an account.
             username: str = Prompt.ask("enter username")

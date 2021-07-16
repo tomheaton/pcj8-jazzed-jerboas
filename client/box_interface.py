@@ -174,7 +174,7 @@ def create_session_id():  # DONE
     if is_already_an_id(session_id):
         return create_session_id()
 
-    return str(session_id)
+    return session_id
 
 
 def enter_session_id(prompt: str, alignment: str, password_prompt):  # IN PROGRESS
@@ -333,7 +333,7 @@ def create_box_tui(user: User, available_session_data, select="left"):
         server_type = select
         password = False
 
-        return str(public_session_id), password, str(room_size), str(server_type)
+        return user, public_session_id, password, room_size, server_type
 
 
 
@@ -367,7 +367,7 @@ def create_box_tui(user: User, available_session_data, select="left"):
         time.sleep(0.5)
 
         server_type = select
-        return str(private_session_id), str(password), room_size, str(server_type)
+        return user, private_session_id, password, room_size, server_type
 
     else:
         """
