@@ -12,7 +12,7 @@ from rich.text import Text
 from utils import Preferences, User, clear
 
 
-with open("server\\secrets.pkl", "rb") as fp:
+with open("../server/secrets.pkl", "rb") as fp:
     secrets = pickle.load(fp)
 
 printable_chars = list(string.printable.replace("\n", "").replace(" ", "").replace("    ", ""))
