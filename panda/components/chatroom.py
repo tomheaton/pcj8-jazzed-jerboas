@@ -1,16 +1,25 @@
 from .user import User
 
+MAX_CAPACITY = 16
+
 
 class ChatRoom:
 
-    template = {}
+    template = {
+        "name": "",
+        "uuid": "",
+        "users": {},
+        "private": "",
+        "capacity": 0
+    }
 
-    def __init__(self, name: str, uuid: str, private: bool, capacity: int, users: list[User]):
+    def __init__(self, name: str, uuid: str, users: list[User] = None, private: bool = False,
+                 capacity: int = MAX_CAPACITY):
         self.name = name
         self.uuid = uuid
+        self.users = [] if users is None else users
         self.private = private
         self.capacity = capacity
-        self.users = users
 
     def get_name(self):
         return self.name
@@ -32,3 +41,9 @@ class ChatRoom:
 
     def purge(self):
         self.users = []
+
+    def serialize(self):
+        pass
+
+    def deserialize(self):
+        pass

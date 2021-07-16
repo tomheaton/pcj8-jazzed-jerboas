@@ -1,16 +1,18 @@
 # Server Utilities
 import os
 import uuid
-from components.database import Database
-from components.user import User
+from .database import Database
+from .user import User
 
 
 # TODO: create first time initialization function.
 def generate_salt():
+    """Generates a hexadecimal salt string."""
     return os.urandom(32).hex()
 
 
 def generate_uuid():
+    """Generates a hexadecimal UUID."""
     return uuid.uuid4().hex
 
 
@@ -55,16 +57,3 @@ def join_chatroom():
 
 def generate_chatrooms():
     pass
-
-
-# def chatroom_pop():
-#     pass
-#
-#
-# def chatroom_pop_users(chatrooms: list[ChatRoom]):
-#     for room in chatrooms:
-#         room.purge()
-#
-#
-# def server_pop_users(users: list[User]):
-#     users.purge()
