@@ -19,7 +19,7 @@ def set_rooms(data):
     globals().update(ROOMS=data["rooms"])
 
 
-def get_rooms():
+async def get_rooms():
     await sio.emit("get_rooms", callback=set_rooms)
 
 
@@ -60,8 +60,10 @@ async def console_loop():
     # TODO: log the user in/make an account
     if CONNECTED:
         client_info = main_navigation.main_menu(logged_in=False, logged_in_as=None)
+        if client_info[0] == "create":
+            join_or_create, user, session_id, password, room_size_max, server_type = client_info
         print(client_info)
-        globals().update(USERNAME=client_info[0].username)
+        globals().update(USERNAME=client_info[1].username)
         if Confirm.ask("returning user?"):
             # TODO: let user sign in to an account.
             username: str = Prompt.ask("enter username")
