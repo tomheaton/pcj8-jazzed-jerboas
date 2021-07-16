@@ -14,6 +14,10 @@ CONNECTED: bool = False
 USERNAME = ""
 ROOM = ""
 
+def get_room_names():
+    "Should retrive a list of all active rooms (their names)"
+    pass
+return [["room_name", "password", "ppl_in_room", "room_ppl_limit"] for i in "room_shit_idk_how_to_make"] # Password sohuld be None if room is public.
 
 @sio.event
 async def connect():
@@ -52,6 +56,7 @@ async def console_loop():
     # TODO: log the user in/make an account
     if CONNECTED:
         client_info = main_navigation.main_menu(logged_in=False, logged_in_as=None)
+        globals().update(USERNAME=client_info[0].username)
         if Confirm.ask("returning user?"):
             # TODO: let user sign in to an account.
             username: str = Prompt.ask("enter username")
