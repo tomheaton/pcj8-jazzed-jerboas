@@ -3,9 +3,8 @@ import random
 import re
 import string
 import time
-from hashlib import sha256
-
 import utils
+from hashlib import sha256
 from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt

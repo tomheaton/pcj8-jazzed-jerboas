@@ -17,3 +17,5 @@ flake8-isort~=4.0
 # TODO: add all the dependencies here.
 prompt-toolkit~=3.0
 pynput~=1.7
+rich~=10.6
+keyboard~=0.13
