@@ -495,5 +495,18 @@ def chat_rooms_scroll(logged_in_as: User):
         clear()
 
 
+def ask_for_session():
+    session = Prompt.ask("Please enter a session id")
+    return session
+
+
+def is_valid_session(session_id):
+    """
+    Use this function to test whether a given session id is valid or not.
+    """
+    for session in sessions_data:
+        return session["session_id"] == session_id
+
+
 if __name__ == "__main__":
     chat_rooms_scroll({'Rick', 'Roll', 'Lol', })
