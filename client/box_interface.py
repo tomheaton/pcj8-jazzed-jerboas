@@ -455,13 +455,13 @@ def chat_rooms_scroll(logged_in_as: User):
         'You': 9,
         'Down': 10,
     }
-    hover_on = 0
+    hover_on = 1
     while not selected:
         rows = []
         rows_temp = [x.center(len("--------------------"), "|") for x in list(options)]
 
-        rows_temp[hover_on] = Text.assemble(
-            (rows_temp[hover_on].center(len("--------------------"), "|"), "bold yellow"))
+        rows_temp[hover_on - 1] = Text.assemble(
+            (rows_temp[hover_on - 1].center(len("--------------------"), "|"), "bold yellow"))
 
         rows.append(Text.assemble(("--------------------", "bold blue")))
         for i in rows_temp:
@@ -470,18 +470,18 @@ def chat_rooms_scroll(logged_in_as: User):
             rows.append("")
             rows.append(Text.assemble(("--------------------", "bold blue")))
 
-        # while len(rows) < 21:
-        #     rows.append(Text.assemble(("--------------------", "bold red")))
-        # try:
-            console.print(render_chat_rooms(rows[hover_on:], hover_on))
-        # except IndexError:
-        #     console.print(render_menu_screen(rows[-7 * 4:]))
+        # Fill up unused space.
+        while len(rows) < 21:
+            rows.append(Text.assemble(("--------------------", "bold red")))
+
+        console.print(render_menu_screen(rows))
+
         what_to_do = Prompt.ask(Text.assemble(("1: Scroll up\n", "bold cyan"), ("2: Scroll down\n", "bold cyan"),
                                               ("3: Select\n", "bold purple"), ("back: Back\n", "bold red")),
                                 choices=["1", "2", "3", "back"], default="3")
 
         if what_to_do == "1":
-            if hover_on == 0:
+            if hover_on == 1:
                 clear()
                 continue
             hover_on -= 1
