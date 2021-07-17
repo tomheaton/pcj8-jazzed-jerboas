@@ -44,11 +44,7 @@ def create_account(username: str, password: str):
     global secrets
     password = hash_pass(password)
     secrets.append(User(username=username, paswrd=password, preferences=Preferences()))
-<<<<<<< HEAD
-    with open("../server/secrets.pkl", "wb") as f:
-=======
     with open("secrets.pkl", "wb") as f:
->>>>>>> adbb5a9843ee47a80d1c330a7f3c5e61d6508922
         pickle.dump(secrets, f)
 
     user_ob = [x for x in secrets if x.username == username][0]

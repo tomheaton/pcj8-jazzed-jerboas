@@ -509,7 +509,11 @@ def is_valid_session(session_id):
     Use this function to test whether a given session id is valid or not.
     """
     for session in sessions_data:
-        return session["session_id"] == session_id
+        if session["room_name"] == session_id:
+            return True
+        else:
+            continue
+    return False
 
 
 if __name__ == "__main__":
