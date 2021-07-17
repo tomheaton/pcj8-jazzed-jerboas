@@ -98,14 +98,14 @@ async def console_loop():
 
     while True and CONNECTED:
         console.print(rendering.render_menu_screen(rendering.get_message_box_rows([], user)))
-        console.print("Tips: Hold space to type, Hold backspace to go back to main-menu.")
+        console.print("Tips: Hold space to type, Hold Alt to go back to main-menu.")
         await asyncio.sleep(2)
         if keyboard.is_pressed("space"):
             clear()
             message = rendering.prompt(user)
             await asyncio.sleep(0.01)
             await sio.emit("send_message", {"username": user.username, "message": message, "room_name": name})
-        if keyboard.is_pressed("backspace"):
+        if keyboard.is_pressed("alt"):
             clear()
             return await console_loop()
         global messages_to_show
