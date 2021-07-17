@@ -65,7 +65,6 @@ async def send_message(sid, data):
 async def receive_message(data):
     global messages_to_show
     messages_to_show.append([data["username"], data["message"]])
-    print(f"{data['username']}-{data['message']}")
 
 
 async def main():
