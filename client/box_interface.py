@@ -377,6 +377,61 @@ def create_box_tui(user: User, available_session_data, select="left"):
         return create_box_tui(user, available_session_data, select)
 
 
-def chat_rooms_scroll():
-    what_to_do = Prompt.ask(Text.assemble(("1: Scroll up\n", "bold cyan"), ("2: Scroll down\n", "bold cyan"),
-                                          ("3: Select\n", "bold purple")), choices=["1", "2", "3"], default="3")
+def chat_rooms_scroll(logged_in_as: User):
+    selected = False
+    options = {
+        "Logged in as ": 1,
+        "Create box": 2,
+        "Join box": 3,
+        "Preferences": 4,
+        "Help/Info": 5,
+        "Credits": 6,
+        "Exit": 7
+    }
+    hover_on = 1
+    while not selected:
+        rows = []
+        rows_temp = [x.center(len("--------------------"), "|") for x in list(options)]
+
+        logged_in_as_msg = rows_temp.pop(0)
+        rows_temp[hover_on - 1] = Text.assemble(
+            (rows_temp[hover_on - 1].center(len("--------------------"), "|"), "bold yellow"))
+
+        rows.append(Text.assemble(("--------------------", "bold blue")))
+        for i in rows_temp:
+            rows.append("")
+            rows.append(i)
+            rows.append("")
+            rows.append(Text.assemble(("--------------------", "bold blue")))
+
+        # Fill up unused space.
+        while len(rows) < 21:
+            rows.append(Text.assemble(("--------------------", "bold red")))
+
+        rows.insert(0, Text.assemble((logged_in_as_msg, "bold green")))
+
+        what_to_do = Prompt.ask(Text.assemble(("1: Scroll up\n", "bold cyan"), ("2: Scroll down\n", "bold cyan"),
+                                              ("3: Select\n", "bold purple"), ("Back: Back\n", "bold red")),
+                                choices=["1", "2", "3", "back"], default="3")
+
+        if what_to_do == "1":
+            if hover_on == 1:
+                clear()
+                continue
+            hover_on -= 1
+        if what_to_do == "2":
+            if hover_on == len(rows_temp):
+                clear()
+                continue
+            hover_on += 1
+        if what_to_do == "3":
+            pass
+
+        if what_to_do == "back":
+            raise GoBack
+
+        clear()
+
+
+if __name__ == "__main__":
+    chat_rooms_scroll({'boi', 'boi', 'boi', })

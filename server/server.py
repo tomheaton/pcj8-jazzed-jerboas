@@ -1,6 +1,7 @@
 # Server
 import socketio
 from aiohttp import web
+from chatroom import Chatroom
 
 sio = socketio.AsyncServer(async_mode="aiohttp")
 app = web.Application()
@@ -18,6 +19,13 @@ async def connect(sid, data):
 @sio.event
 async def disconnect(sid):
     print(f"[SERVER]: disconnect {sid}")
+
+
+@sio.event
+async def create_room(sid, data):
+    print(f"{data['username']} joined to {data['room_name']}")
+    rooms.append({"room_name": data['room_name']})
+    sio.enter_room(sid, data['room_name'])
 
 
 @sio.event
@@ -41,6 +49,13 @@ async def send_message(sid, data):
 @sio.event
 async def receive_message(sid, data):
     print(f"[SERVER]: receive message {sid}, data: {data}")
+
+
+@sio.event
+async def get_rooms(sid):
+    room_data = rooms
+    print(f"[SERVER]: getting rooms for {sid}.")
+    return room_data
 
 
 if __name__ == "__main__":
