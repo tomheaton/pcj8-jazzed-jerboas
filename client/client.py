@@ -107,7 +107,7 @@ async def console_loop():
             await sio.emit("send_message", {"username": user.username, "message": message, "room_name": name})
         if keyboard.is_pressed("backspace"):
             clear()
-            return console_loop()
+            return await console_loop()
         global messages_to_show
         if len(messages_to_show) != 0:
             clear()
