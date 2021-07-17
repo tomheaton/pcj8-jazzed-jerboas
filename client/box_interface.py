@@ -254,6 +254,7 @@ def enter_session_id(prompt: str, alignment: str, password_prompt, sessions_data
                 console.print(Align("\n✔️   Joining ThaBox...", align=alignment))
                 time.sleep(0.5)
                 clear()
+                return given_id
 
         else:
             console.print(Align("❌   The room you are trying to join doesn't exist\n", align=alignment))
@@ -276,6 +277,7 @@ def enter_password(sessions_data, prompt, session_id):
         console.print(Align("\n✔️   Joining ThaBox...", align="center"))
         time.sleep(1)
         clear()
+        return session_id, given_password
 
     else:
         console.print(Align("❌   Incorrect Password!", align="center"))
@@ -333,7 +335,13 @@ def join_box_tui(user: User, sessions_data, select="left"):
 
             if keyboard.is_pressed("space"):
                 console.print()
-                enter_session_id("[bold red]>   Enter the session ID or type 'BACK' to go back:[/]   ", "left", False, sessions_data)
+                chatroom_name = enter_session_id("[bold red]>   Enter the session ID or type 'BACK' to go back:[/]   ", "left", False, sessions_data)
+
+                return chatroom_name
+                """
+                user needs to be redirected to another chat room
+                """
+
 
     elif select == "private":
         clear()
@@ -343,8 +351,14 @@ def join_box_tui(user: User, sessions_data, select="left"):
 
         console.print(Align("\nType [bold magenta]BACK[/] in the Session ID field to go back.\n", align="center"))
 
-        enter_session_id((" " * ((console.width // 2) - 14) + "[bold red]Enter the session ID:[/]   "), "center",
+        chatroom_name, room_password = enter_session_id((" " * ((console.width // 2) - 14) + "[bold red]Enter the session ID:[/]   "), "center",
                          (str("\n" + " " * ((console.width // 2) - 17) + "[bold red]Enter the room password:[/]   ")), sessions_data)
+        
+        return chatroom_name
+        """
+        user needs to be redirected to the chat room
+        """
+
     else:
         """
         JOIN BOX MENU
