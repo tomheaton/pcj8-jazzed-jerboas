@@ -11,8 +11,10 @@ from rich.text import Text
 from rich.live import Live
 from utils import clear, User
 
+
 class MessagePromptStop(Exception):
     pass
+
 
 sio = socketio.AsyncClient()
 console = Console()
@@ -71,10 +73,14 @@ async def main():
     try:
         await sio.connect('http://localhost:8080')
     except ConnectionError as e:
-        print("[CLIENT]: could not connect to server.")
+        print("[CLIENT]: could not connect to server, please restart the application.")
     await asyncio.sleep(2)
     print("[CLIENT]: Running console...")
     await console_loop()
+
+
+async def ping_server():
+    await sio.emit("keep_alive")
 
 
 async def console_loop():
@@ -92,6 +98,7 @@ async def console_loop():
         await asyncio.sleep(0.01)
 
     while True and CONNECTED:
+        task = sio.start_background_task(ping_server)
         console.print("Tip: Hold space to type")
         await asyncio.sleep(2)
         if keyboard.is_pressed("space"):

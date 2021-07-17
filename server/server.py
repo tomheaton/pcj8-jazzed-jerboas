@@ -3,7 +3,7 @@ import socketio
 from aiohttp import web
 from chatroom import Chatroom
 
-sio = socketio.AsyncServer(async_mode="aiohttp", ping_interval=15)
+sio = socketio.AsyncServer(async_mode="aiohttp", ping_interval=16, logger=True, engineio_logger=True)
 app = web.Application()
 sio.attach(app)
 
@@ -61,6 +61,11 @@ async def get_rooms(sid):
     print(room_data)
     return room_data
 
+
+@sio.event
+async def keep_alive(sid):
+    print(f"[SERVER]: {sid} pinging server...")
+    return "OK"
 
 if __name__ == "__main__":
     web.run_app(app)
