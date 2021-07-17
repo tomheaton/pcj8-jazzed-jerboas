@@ -3,7 +3,7 @@ import socketio
 from aiohttp import web
 from chatroom import Chatroom
 
-sio = socketio.AsyncServer(async_mode="aiohttp")
+sio = socketio.AsyncServer(async_mode="aiohttp", ping_interval=15)
 app = web.Application()
 sio.attach(app)
 
