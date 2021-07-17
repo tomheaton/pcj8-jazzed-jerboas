@@ -13,7 +13,7 @@ console = Console()
 CONNECTED: bool = False
 USERNAME = ""
 ROOM = ""
-ROOMS: list = []
+ROOMS: list[dict] = []
 
 messages_to_show: list = []
 
@@ -30,6 +30,10 @@ def set_rooms(data):
 
 async def get_rooms():
     await sio.emit("get_rooms", callback=set_rooms)
+
+
+def get_room_data():
+    return ROOMS
 
 
 @sio.event
