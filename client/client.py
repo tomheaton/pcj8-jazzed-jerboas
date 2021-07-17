@@ -98,6 +98,7 @@ async def console_loop():
         await asyncio.sleep(0.01)
 
     while True and CONNECTED:
+        console.print(rendering.render_menu_screen(rendering.get_message_box_rows([], user)))
         console.print("Tip: Hold space to type")
         await asyncio.sleep(2)
         if keyboard.is_pressed("space"):
