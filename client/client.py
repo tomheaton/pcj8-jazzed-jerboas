@@ -62,8 +62,7 @@ async def receive_message(data):
 async def main():
     print("[CLIENT]: Starting connection...")
     try:
-        # await sio.connect('http://localhost:8080')
-        await sio.connect('http://172.31.24.137:8080')
+        await sio.connect('http://localhost:8080')
     except ConnectionError as e:
         print("[CLIENT]: could not connect to server.")
     await asyncio.sleep(2)
