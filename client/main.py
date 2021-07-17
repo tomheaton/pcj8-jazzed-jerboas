@@ -47,12 +47,11 @@ def main_menu(logged_in: bool = False, logged_in_as=None):
     if logged_in:
         options = {
             "Logged in as " + logged_in_as.username: 1,
-            "Create box": 2,
-            "Join box": 3,
-            "Preferences": 4,
-            "Help/Info": 5,
-            "Credits": 6,
-            "Exit": 7
+            "Create/join a box": 2,
+            "Preferences": 3,
+            "Help/Info": 4,
+            "Credits": 5,
+            "Exit": 6
         }
     if not logged_in:
         options = {
@@ -108,7 +107,7 @@ def main_menu(logged_in: bool = False, logged_in_as=None):
                 if hover_on == 1:
                     try:
                         clear()
-                        return box_interface.create_box_tui(logged_in_as, [[1234]])  # Create box
+                        return logged_in_as  # Create/join box
                         hover_on = 1
                         clear()
                         continue
@@ -119,7 +118,7 @@ def main_menu(logged_in: bool = False, logged_in_as=None):
                 elif hover_on == 2:
                     try:
                         clear()
-                        return box_interface.join_box_tui(logged_in_as, [[1234]])
+                        logged_in_as.preferences.settings()  # Preferences
                         hover_on = 1
                         clear()
                         continue
@@ -130,7 +129,7 @@ def main_menu(logged_in: bool = False, logged_in_as=None):
                 elif hover_on == 3:
                     try:
                         clear()
-                        logged_in_as.preferences.settings()  # Preferences
+                        help_page.help_start_page(logged_in_as)  # Help/Info
                         hover_on = 1
                         clear()
                         continue
@@ -141,17 +140,6 @@ def main_menu(logged_in: bool = False, logged_in_as=None):
                 elif hover_on == 4:
                     try:
                         clear()
-                        help_page.help_start_page(logged_in_as)  # Help/Info
-                        hover_on = 1
-                        clear()
-                        continue
-                    except GoBack:
-                        hover_on = 1
-                        clear()
-                        continue
-                elif hover_on == 5:
-                    try:
-                        clear()
                         credits.credits_rework()  # Credits
                         hover_on = 1
                         clear()
@@ -160,7 +148,7 @@ def main_menu(logged_in: bool = False, logged_in_as=None):
                         hover_on = 1
                         clear()
                         continue
-                elif hover_on == 6:
+                elif hover_on == 5:
                     clear()
                     # exit()  # Replaced by exit function in client so the socket connection is properly closed.
                     exit_client()
