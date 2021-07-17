@@ -5,14 +5,23 @@ import rendering
 import main as main_navigation
 from rich.console import Console
 from rich.prompt import Prompt, Confirm, IntPrompt
-
+from rich.live import Live
+from utils import clear, User
 
 sio = socketio.AsyncClient()
 console = Console()
 CONNECTED: bool = False
 USERNAME = ""
 ROOM = ""
-ROOMS: list = []
+ROOMS: list[dict] = []
+
+messages_to_show: list = []
+
+
+async def exit_client():
+    # print("[CLIENT]: exiting client application.")
+    await sio.disconnect()
+    exit()
 
 
 def set_rooms(data):
@@ -21,6 +30,10 @@ def set_rooms(data):
 
 async def get_rooms():
     await sio.emit("get_rooms", callback=set_rooms)
+
+
+def get_room_data():
+    return ROOMS
 
 
 @sio.event
@@ -42,7 +55,8 @@ async def send_message(sid, data):
 
 @sio.event
 async def receive_message(data):
-    print(f"[{data['username']}]: {data['message']}")
+    global messages_to_show
+    messages_to_show.append([data["username"], data["message"]])
 
 
 async def main():
@@ -57,6 +71,7 @@ async def main():
 
 
 async def console_loop():
+    global messages_to_show
     # TODO: log the user in/make an account
     if CONNECTED:
         client_info = main_navigation.main_menu(logged_in=False, logged_in_as=None)
@@ -66,21 +81,30 @@ async def console_loop():
                 private = True
             else:
                 private = False
-        print(join_or_create)
         if join_or_create == "create":
             await sio.emit("create_room", {"room_name": session_id, "private": private, "password": password, "capacity": room_size_max, "room_owner": user.username})
-            await sio.emit("")
         if join_or_create == "join":
-            rooms = await sio.emit("get_rooms")
-            print(rooms)
+            await sio.emit("join_room")
 
+        clear()
         await asyncio.sleep(0.01)
 
     while True and CONNECTED:
         await asyncio.sleep(2)
-        #message: str = Prompt.ask("enter message")
-        #await asyncio.sleep(0.01)
-        #await sio.emit("send_message", {"username": USERNAME, "message": message, "room_name": ROOM})
+        clear()
+        global messages_to_show
+        if len(messages_to_show) != 0:
+            index_of_i = -1
+            for i in messages_to_show:
+                index_of_i += 1
+                with Live("", refresh_per_second=14) as live:
+                    render_user = User(i[0], "NotImportant", preferences=user.preferences)
+                    rendering.render_message(i[1], render_user, live=live)
+                    messages_to_show.pop(index_of_i)
+            clear()
+        message = rendering.prompt(user)
+        await asyncio.sleep(0.01)
+        await sio.emit("send_message", {"username": user.username, "message": message, "room_name": session_id})
 
 if __name__ == "__main__":
     asyncio.run(main())

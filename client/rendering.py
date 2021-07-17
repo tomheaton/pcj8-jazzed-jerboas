@@ -110,9 +110,9 @@ def get_message_box_rows(message_box: list, user: User) -> list:
 def get_message_box(msg_sender: User, message: str, stage: int) -> list:
     """Returns a list of strings which together assemble the message box that is being displayed in render_message."""
 
-    name_color = client_user.preferences.preference_dict["Name Colour"]
-    message_color = client_user.preferences.preference_dict["Message Colour"]
-    border_color = client_user.preferences.preference_dict["Message Border Colour"]
+    name_color = msg_sender.preferences.preference_dict["Name Colour"]
+    message_color = msg_sender.preferences.preference_dict["Message Colour"]
+    border_color = msg_sender.preferences.preference_dict["Message Border Colour"]
 
     message_lines = textwrap.wrap(message, width=32)
 
@@ -230,13 +230,13 @@ def render_message(message: str, user: User, message_show_time: int = 6, live=Li
         going_down_frames.append(render_menu_screen(get_message_box_rows(going_down_box, user)))
 
     for i in fade_left_frames:
-        live.update(i)
+        live.update(Text.assemble(i, ("\nYou can send messages once messages are done displaying...")))
         time.sleep(0.05)
 
     time.sleep(message_show_time)
 
     for i in going_down_frames:
-        live.update(i)
+        live.update(Text.assemble(i, ("\nYou can send messages once messages are done displaying...")))
         time.sleep(0.07)
 
     return live
@@ -275,3 +275,9 @@ def render_chat_rooms(rows: list, hover_on: int) -> Text:
     for i in range(0, len(logo_rows)):
         new_rows.append(Text.assemble(logo_rows[i], rows[i] + '\n'))
     return Text.assemble(*new_rows)
+
+
+def prompt(user):
+    console = Console()
+    console.print(render_menu_screen(get_message_box_rows([""], user)))
+    return Prompt.ask("Send a message")

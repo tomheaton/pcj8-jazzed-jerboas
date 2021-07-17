@@ -11,9 +11,13 @@ from rich.prompt import Prompt
 from rich.text import Text
 from utils import Preferences, User, clear
 
-
-with open("server/secrets.pkl", "rb") as fp:
-    secrets = pickle.load(fp)
+try:
+    with open("secrets.pkl", "rb") as fp:
+        secrets = pickle.load(fp)
+except FileNotFoundError:
+    print("file not found, creating new file")
+    with open("secrets.pkl", "wb") as fp:
+        pickle.dump({}, fp)
 
 printable_chars = list(string.printable.replace("\n", "").replace(" ", "").replace("    ", ""))
 
@@ -40,7 +44,11 @@ def create_account(username: str, password: str):
     global secrets
     password = hash_pass(password)
     secrets.append(User(username=username, paswrd=password, preferences=Preferences()))
+<<<<<<< HEAD
     with open("../server/secrets.pkl", "wb") as f:
+=======
+    with open("secrets.pkl", "wb") as f:
+>>>>>>> adbb5a9843ee47a80d1c330a7f3c5e61d6508922
         pickle.dump(secrets, f)
 
     user_ob = [x for x in secrets if x.username == username][0]

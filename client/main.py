@@ -5,6 +5,7 @@ from rich.screen import Screen
 from rich.console import Console, RenderGroup
 from rich.align import Align
 import box_interface
+from client import exit_client
 from utils import User, Preferences, GoBack, clear
 from rendering import render_menu_screen, message_demo
 import login
@@ -161,7 +162,8 @@ def main_menu(logged_in: bool = False, logged_in_as=None):
                         continue
                 elif hover_on == 6:
                     clear()
-                    exit()
+                    # exit()  # Replaced by exit function in client so the socket connection is properly closed.
+                    exit_client()
 
             if hover_on == 1:
                 clear()
