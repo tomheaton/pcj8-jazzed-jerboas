@@ -286,4 +286,5 @@ def render_chat_rooms(rows: list, hover_on: int) -> Text:
 def prompt(user):
     console = Console()
     console.print(render_menu_screen(get_message_box_rows([""], user)))
+    time.sleep(1.2)
     return Prompt.ask("Send a message")
