@@ -286,5 +286,10 @@ def render_chat_rooms(rows: list, hover_on: int) -> Text:
 def prompt(user):
     console = Console()
     console.print(render_menu_screen(get_message_box_rows([""], user)))
-    time.sleep(1.2)
-    return Prompt.ask("Send a message")
+    a = ""
+    
+    while a != "":
+        a = Prompt.ask("Send a message")
+        if len(a) > 32*7:
+            console.print("Message too large.")
+    return a
