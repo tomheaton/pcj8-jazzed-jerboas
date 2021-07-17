@@ -1,6 +1,7 @@
 # Client
 import asyncio
 import socketio
+import keyboard
 import rendering
 import main as main_navigation
 from rich.console import Console
@@ -9,6 +10,9 @@ from rich.panel import Panel
 from rich.text import Text
 from rich.live import Live
 from utils import clear, User
+
+class MessagePromptStop(Exception):
+    pass
 
 sio = socketio.AsyncClient()
 console = Console()
@@ -78,6 +82,7 @@ async def console_loop():
     # TODO: log the user in/make an account
     if CONNECTED:
         user = main_navigation.main_menu(logged_in=False, logged_in_as=None)
+        globals().update(USERNAME=user.username)
         console.print(Panel("Enter the name of a box to join \nIf the box doesn't exist a new one will be created", style=user.preferences.preference_dict["Border Colour"], border_style=user.preferences.preference_dict["Border Colour"]))
         name = Prompt.ask(Text.assemble(("╰>", user.preferences.preference_dict["Border Colour"])))
         console.print(Panel(f"Joining {name}", style="green", border_style="green"))
@@ -87,10 +92,15 @@ async def console_loop():
         await asyncio.sleep(0.01)
 
     while True and CONNECTED:
+        console.print("Tip: Hold space to type")
         await asyncio.sleep(2)
-        clear()
+        if keyboard.is_pressed("space"):
+            message = rendering.prompt(user)
+            await asyncio.sleep(0.01)
+            await sio.emit("send_message", {"username": user.username, "message": message, "room_name": name})
         global messages_to_show
         if len(messages_to_show) != 0:
+            clear()
             index_of_i = -1
             for i in messages_to_show:
                 index_of_i += 1
@@ -98,10 +108,7 @@ async def console_loop():
                     render_user = User(i[0], "NotImportant", preferences=user.preferences)
                     rendering.render_message(i[1], render_user, live=live)
                     messages_to_show.pop(index_of_i)
-            clear()
-        message = rendering.prompt(user)
-        await asyncio.sleep(0.01)
-        await sio.emit("send_message", {"username": user.username, "message": message, "room_name": name})
+        clear()
 
 if __name__ == "__main__":
     asyncio.run(main())
