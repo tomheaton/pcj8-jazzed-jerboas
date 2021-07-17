@@ -8,6 +8,7 @@ from rich.console import Console
 from rich.screen import Screen
 from rich.live import Live
 from rich.markup import escape
+from rich.layout import Layout
 from rich.prompt import Prompt
 from utils import clear, User, Preferences
 import time
@@ -265,15 +266,20 @@ def render_chat_rooms(rows: list, hover_on: int) -> Text:
 
     logo_rows = menu_logo.split("\n")
 
-    dummy_rows_to_add = len(rows[:hover_on + 7]) - len(logo_rows)
+    dummy_rows_to_add = len(rows[:hover_on + 7]) - len(logo_rows)  # [:(hover_on + 7) * 4 + 1]
 
     dummy_rows = [Text.assemble(('-' * 34 + "  ", "red")) for _ in range(dummy_rows_to_add)]
     for i in range(dummy_rows_to_add):
         logo_rows.append(dummy_rows[i])
 
     new_rows = []
+
     for i in range(0, len(logo_rows)):
-        new_rows.append(Text.assemble(logo_rows[i], rows[i] + '\n'))
+        try:
+            new_rows.append(Text.assemble(logo_rows[i], rows[i] + '\n'))
+        except IndexError:
+            new_rows.append(Text.assemble(logo_rows[i] + '\n'))
+
     return Text.assemble(*new_rows)
 
 

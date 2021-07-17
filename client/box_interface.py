@@ -12,7 +12,7 @@ from rich.prompt import Prompt
 from rich.panel import Panel
 from rich.layout import Layout
 from rich.text import Text
-from rendering import render_chat_rooms
+from rendering import render_chat_rooms, render_menu_screen
 
 """
 'id, password, size, stype = create_box_tui(User, sessions_data)'
@@ -470,20 +470,24 @@ def chat_rooms_scroll(logged_in_as: User):
             rows.append("")
             rows.append(Text.assemble(("--------------------", "bold blue")))
 
-        console.print(render_chat_rooms(rows[hover_on * 4:], hover_on))
-
+        # while len(rows) < 21:
+        #     rows.append(Text.assemble(("--------------------", "bold red")))
+        # try:
+            console.print(render_chat_rooms(rows[hover_on:], hover_on))
+        # except IndexError:
+        #     console.print(render_menu_screen(rows[-7 * 4:]))
         what_to_do = Prompt.ask(Text.assemble(("1: Scroll up\n", "bold cyan"), ("2: Scroll down\n", "bold cyan"),
                                               ("3: Select\n", "bold purple"), ("back: Back\n", "bold red")),
                                 choices=["1", "2", "3", "back"], default="3")
 
         if what_to_do == "1":
             if hover_on == 0:
-                # clear()
+                clear()
                 continue
             hover_on -= 1
         if what_to_do == "2":
-            if hover_on == len(rows_temp):
-                # clear()
+            if hover_on == len(rows):
+                clear()
                 continue
             hover_on += 1
         if what_to_do == "3":
