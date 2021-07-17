@@ -101,6 +101,7 @@ async def console_loop():
         console.print("Tip: Hold space to type")
         await asyncio.sleep(2)
         if keyboard.is_pressed("space"):
+            clear()
             message = rendering.prompt(user)
             await asyncio.sleep(0.01)
             await sio.emit("send_message", {"username": user.username, "message": message, "room_name": name})
