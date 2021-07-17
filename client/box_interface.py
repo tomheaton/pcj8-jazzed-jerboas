@@ -12,6 +12,7 @@ from rich.prompt import Prompt
 from rich.panel import Panel
 from rich.layout import Layout
 from rich.text import Text
+from rendering import render_chat_rooms
 
 """
 'id, password, size, stype = create_box_tui(User, available_session_data)'
@@ -386,16 +387,19 @@ def chat_rooms_scroll(logged_in_as: User):
         "Preferences": 4,
         "Help/Info": 5,
         "Credits": 6,
-        "Exit": 7
+        "Exit": 7,
+        'boi': 8,
+        'placeholder': 9,
+        'hello': 10,
+        'world': 11,
     }
-    hover_on = 1
+    hover_on = 0
     while not selected:
         rows = []
         rows_temp = [x.center(len("--------------------"), "|") for x in list(options)]
 
-        logged_in_as_msg = rows_temp.pop(0)
-        rows_temp[hover_on - 1] = Text.assemble(
-            (rows_temp[hover_on - 1].center(len("--------------------"), "|"), "bold yellow"))
+        rows_temp[hover_on] = Text.assemble(
+            (rows_temp[hover_on].center(len("--------------------"), "|"), "bold yellow"))
 
         rows.append(Text.assemble(("--------------------", "bold blue")))
         for i in rows_temp:
@@ -404,24 +408,20 @@ def chat_rooms_scroll(logged_in_as: User):
             rows.append("")
             rows.append(Text.assemble(("--------------------", "bold blue")))
 
-        # Fill up unused space.
-        while len(rows) < 21:
-            rows.append(Text.assemble(("--------------------", "bold red")))
-
-        rows.insert(0, Text.assemble((logged_in_as_msg, "bold green")))
+        console.print(render_chat_rooms(rows[hover_on * 4:], hover_on))
 
         what_to_do = Prompt.ask(Text.assemble(("1: Scroll up\n", "bold cyan"), ("2: Scroll down\n", "bold cyan"),
-                                              ("3: Select\n", "bold purple"), ("Back: Back\n", "bold red")),
+                                              ("3: Select\n", "bold purple"), ("back: Back\n", "bold red")),
                                 choices=["1", "2", "3", "back"], default="3")
 
         if what_to_do == "1":
-            if hover_on == 1:
-                clear()
+            if hover_on == 0:
+                # clear()
                 continue
             hover_on -= 1
         if what_to_do == "2":
             if hover_on == len(rows_temp):
-                clear()
+                # clear()
                 continue
             hover_on += 1
         if what_to_do == "3":

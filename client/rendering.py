@@ -253,3 +253,25 @@ def message_demo(user: User):
             mes = "This is a demo message..."
             live = render_message(mes, user, live=live)
             time.sleep(100)
+
+
+def render_chat_rooms(rows: list, hover_on: int) -> Text:
+    """
+    This function gets the Text-object that is shown to the user once in the main_menu or while in a box.
+
+    :param rows: A list of strings that together make a box. (There must be at least 21 rows/items)
+    :return: Text-object which can be printed with console.print().
+    """
+
+    logo_rows = menu_logo.split("\n")
+
+    dummy_rows_to_add = len(rows[:hover_on + 7]) - len(logo_rows)
+
+    dummy_rows = [Text.assemble(('-' * 34 + "  ", "red")) for _ in range(dummy_rows_to_add)]
+    for i in range(dummy_rows_to_add):
+        logo_rows.append(dummy_rows[i])
+
+    new_rows = []
+    for i in range(0, len(logo_rows)):
+        new_rows.append(Text.assemble(logo_rows[i], rows[i] + '\n'))
+    return Text.assemble(*new_rows)
