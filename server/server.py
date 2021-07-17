@@ -23,9 +23,12 @@ async def disconnect(sid):
 
 @sio.event
 async def create_room(sid, data):
-    print(f"{data['username']} joined to {data['room_name']}")
-    rooms.append({"room_name": data['room_name']})
+    global rooms
+    print(f"{data['room_owner']} joined to {data['room_name']}")
+    room_data = {"room_name": data['room_name'], "private": data["private"], "password": data["password"], "capacity": data["capacity"], "room_owner": data["room_owner"]}
+    rooms.append(room_data)
     sio.enter_room(sid, data['room_name'])
+    return room_data
 
 
 @sio.event
@@ -55,6 +58,7 @@ async def receive_message(sid, data):
 async def get_rooms(sid):
     room_data = rooms
     print(f"[SERVER]: getting rooms for {sid}.")
+    print(room_data)
     return room_data
 
 
