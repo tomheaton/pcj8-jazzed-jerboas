@@ -18,6 +18,12 @@ ROOMS: list = []
 messages_to_show: list = []
 
 
+async def exit_client():
+    # print("[CLIENT]: exiting client application.")
+    await sio.disconnect()
+    exit()
+
+
 def set_rooms(data):
     globals().update(ROOMS=data["rooms"])
 

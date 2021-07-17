@@ -137,10 +137,11 @@ sessions_data = [
 ]
 """
 
+
 def is_already_an_id(sessions_data, session_id, server_type="all"):
-    if server_type == False:
+    if not server_type:
         for elem in sessions_data:
-            if elem["private"] == False:
+            if not elem["private"]:
                 if elem["room_name"] == session_id:
                     return True  
     
@@ -151,12 +152,11 @@ def is_already_an_id(sessions_data, session_id, server_type="all"):
 
     else:
         for elem in sessions_data:
-             if elem["private"] == True:
+            if elem["private"]:
                 if elem["room_name"] == session_id:
                     return True
 
     return False
-
 
 
 def is_correct_password(sessions_data, password, session_id):
@@ -318,7 +318,7 @@ def join_box_tui(user: User, sessions_data, select="left"):
                       style=user.preferences.preference_dict['Border Colour'])
 
         for elem in sessions_data:
-            if elem["private"] == False:
+            if not elem["private"]:
                 console.print(Align(Panel("Session ID = " + elem["room_name"] + 
                                         "\nOwner = " + elem["room_owner"] + 
                                         "\nCapacity = " + elem["capacity"], expand=False), align="center"),
@@ -396,8 +396,6 @@ def create_box_tui(user: User, sessions_data, select="left"):
 
         return "create", user, public_session_id, password, room_size, is_private
 
-
-
     elif select == "private":
         clear()
         private_session_id = create_session_id(sessions_data)
@@ -438,4 +436,3 @@ def create_box_tui(user: User, sessions_data, select="left"):
                      f"[{user.preferences.preference_dict['Border Colour']}]\n\n█▀▀ █▀█ █▀▀ ▄▀█ ▀█▀ █▀▀   █▄▄ █▀█ ▀▄▀\n█▄▄ █▀▄ ██▄ █▀█  █  ██▄   █▄█ █▄█ █ █[/]")  # select, "CREATE BOX"
         select = tui_navigation(select, sessions_data)
         return create_box_tui(user, sessions_data, select)
-
