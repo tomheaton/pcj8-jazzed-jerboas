@@ -98,7 +98,6 @@ async def console_loop():
         await asyncio.sleep(0.01)
 
     while True and CONNECTED:
-        task = sio.start_background_task(ping_server)
         console.print("Tip: Hold space to type")
         await asyncio.sleep(2)
         if keyboard.is_pressed("space"):
