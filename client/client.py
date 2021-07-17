@@ -66,16 +66,21 @@ async def console_loop():
                 private = True
             else:
                 private = False
-        
+        print(join_or_create)
         if join_or_create == "create":
-            await sio.emit("create_room", {"room_name": session_id, "private": private, "password": password, "capacity": room_size_max})
+            await sio.emit("create_room", {"room_name": session_id, "private": private, "password": password, "capacity": room_size_max, "room_owner": user.username})
+            await sio.emit("")
+        if join_or_create == "join":
+            rooms = await sio.emit("get_rooms")
+            print(rooms)
+
         await asyncio.sleep(0.01)
 
     while True and CONNECTED:
         await asyncio.sleep(2)
-        message: str = Prompt.ask("enter message")
-        await asyncio.sleep(0.01)
-        await sio.emit("send_message", {"username": USERNAME, "message": message, "room_name": ROOM})
+        #message: str = Prompt.ask("enter message")
+        #await asyncio.sleep(0.01)
+        #await sio.emit("send_message", {"username": USERNAME, "message": message, "room_name": ROOM})
 
 if __name__ == "__main__":
     asyncio.run(main())
