@@ -27,7 +27,6 @@ messages_to_show: list = []
 
 
 async def exit_client():
-    # print("[CLIENT]: exiting client application.")
     await sio.disconnect()
     exit()
 
