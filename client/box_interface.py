@@ -442,6 +442,7 @@ def create_box_tui(user: User, sessions_data, select="left"):
 
 
 def chat_rooms_scroll(logged_in_as: User):
+    clear()
     selected = False
     options = {
         "Never": 1,
@@ -455,6 +456,7 @@ def chat_rooms_scroll(logged_in_as: User):
         'You': 9,
         'Down': 10,
     }
+
     hover_on = 1
     while not selected:
         rows = []
@@ -486,7 +488,7 @@ def chat_rooms_scroll(logged_in_as: User):
                 continue
             hover_on -= 1
         if what_to_do == "2":
-            if hover_on == len(rows):
+            if hover_on == len(rows_temp):
                 clear()
                 continue
             hover_on += 1
