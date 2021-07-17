@@ -231,13 +231,13 @@ def render_message(message: str, user: User, message_show_time: int = 6, live=Li
         going_down_frames.append(render_menu_screen(get_message_box_rows(going_down_box, user)))
 
     for i in fade_left_frames:
-        live.update(Text.assemble(i, ("\nYou can send messages once messages are done displaying...")))
+        live.update(Text.assemble(i, ("\nYou can send messages or exit once messages are done displaying...")))
         time.sleep(0.05)
 
     time.sleep(message_show_time)
 
     for i in going_down_frames:
-        live.update(Text.assemble(i, ("\nYou can send messages once messages are done displaying...")))
+        live.update(Text.assemble(i, ("\nYou can send messages or exit once messages are done displaying...")))
         time.sleep(0.07)
 
     return live
