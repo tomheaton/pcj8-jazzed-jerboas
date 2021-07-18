@@ -133,7 +133,7 @@ def help_messages(user):
     people's messages after you have finished typing.
     
     Messages that you receive are available for some seconds after
-    the message has been sent. Message are not stored and can't be
+    the message has been sent. Messages are not stored and can't be
     retrieved.
     [/]
     """
