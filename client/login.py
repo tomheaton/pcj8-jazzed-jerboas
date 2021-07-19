@@ -17,7 +17,7 @@ try:
 except FileNotFoundError:
     print("file not found, creating new file")
     with open("secrets.pkl", "wb") as fp:
-        pickle.dump({}, fp)
+        pickle.dump([], fp)
 
 printable_chars = list(string.printable.replace("\n", "").replace(" ", "").replace("    ", ""))
 
