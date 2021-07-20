@@ -17,29 +17,31 @@ Introducing **ThaBox**, a text-based `[REDACTED]` application.
 #### Creating the environment
 Create a virtual environment in the folder `clone_of_repo\.venv`.
 ```shell
-$ python -m venv clone_of_repo\.venv
+$ cd 'path/to/clone_of_repo'
+$ python -m venv .venv
 ```
 
 #### Enter the environment
 It will change based on your operating system and shell.
 ```shell
 # Linux, Bash
-$ source clone_of_repo/.venv/bin/activate
+$ source .venv/bin/activate
 # Linux, Fish
-$ source clone_of_repo/.venv/bin/activate.fish
+$ source .venv/bin/activate.fish
 # Linux, Csh
-$ source clone_of_repo/.venv/bin/activate.csh
+$ source .venv/bin/activate.csh
 # Linux, PowerShell Core
-$ clone_of_repo/.venv/bin/Activate.ps1
+$ .venv/bin/Activate.ps1
 # Windows, cmd.exe
-> clone_of_repo\.venv\Scripts\activate.bat
+> .venv\Scripts\activate.bat
 # Windows, PowerShell
-> clone_of_repo\.venv\Scripts\Activate.ps1
+> .venv\Scripts\Activate.ps1
 ```
 
 #### Installing the Dependencies
 Once the environment is created and activated, use this command to install the development dependencies.
 ```shell
+$ cd 'path/to/clone_of_repo'
 $ pip install -r dev-requirements.txt
 ```
 
@@ -48,10 +50,12 @@ $ pip install -r dev-requirements.txt
 
 Use this command to start the server. (Needs to be done before running client)
 ```shell
+$ cd 'path/to/clone_of_repo'
 $ python server/server.py
 ```
 Finally, use this command to start the client interface.
 ```shell
+$ cd 'path/to/clone_of_repo'
 $ python client/client.py
 ```
 
