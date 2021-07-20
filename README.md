@@ -6,7 +6,16 @@ This is the Jazzed Jerboa's submission to the Python Discord Summer Code Jam 202
 
 ## ThaBox
 
-Introducing **ThaBox**, a text-based `[REDACTED]` application.
+Introducing **ThaBox**, a text-based chat application.
+ThaBox is a social media platform in which the conversations between users are for the users only. Not a single message is saved, giving you the utmost privacy.
+
+Chat with strangers in boxes, or have a blast with your friends in boxes.
+
+Messages can be sent to another person in the same box, by simply typing it out when you receive the prompt.
+Messages that you receive are available for several seconds after the message has been sent before disappearing.
+
+Cylce through ThaBox's many options using you keyboard and select from a variety of customisations that can be applied to your boxes.
+The colour scheme of your box can be changed in the preferences page once logged in. Colours can be used to personalise different parts of your box
 
 ![ThaBox](https://github.com/tomheaton/pcj8-jazzed-jerboas/blob/main/images/ThaBox.png?raw=true)
 
