@@ -62,8 +62,10 @@ Testing of the project has to be done locally. (Tom Heathon could not get his se
 
 For testing of the messages you need to terminals up running client/client.py and one terminal runing server/server.py (For client to work the server needs to run in the backround first)
 
-#### Tips
-If you are using windows we reccomend using the new and modern `Windows Terminal` which you can find in the Microsoft Store
+#### Info
+If you are using windows we reccomend using the new and modern `Windows Terminal` which you can find in the Microsoft Store. (This makes animation much smoother)
+
+The project will not work on Linux unless you are root because of how the keyboard module works.
 
 ## Authors
 
