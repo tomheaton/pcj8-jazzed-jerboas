@@ -15,26 +15,26 @@ Introducing **ThaBox**, a text-based `[REDACTED]` application.
 ## How to set up the project
 
 #### Creating the environment
-Create a virtual environment in the folder `.venv`.
+Create a virtual environment in the folder `clone_of_repo\.venv`.
 ```shell
-$ python -m venv .venv
+$ python -m venv path/to/new/venv
 ```
 
 #### Enter the environment
 It will change based on your operating system and shell.
 ```shell
 # Linux, Bash
-$ source .venv/bin/activate
+$ source clone_of_repo/.venv/bin/activate
 # Linux, Fish
-$ source .venv/bin/activate.fish
+$ source clone_of_repo/.venv/bin/activate.fish
 # Linux, Csh
-$ source .venv/bin/activate.csh
+$ source clone_of_repo/.venv/bin/activate.csh
 # Linux, PowerShell Core
-$ .venv/bin/Activate.ps1
+$ clone_of_repo/.venv/bin/Activate.ps1
 # Windows, cmd.exe
-> .venv\Scripts\activate.bat
+> clone_of_repo\.venv\Scripts\activate.bat
 # Windows, PowerShell
-> .venv\Scripts\Activate.ps1
+> clone_of_repo\.venv\Scripts\Activate.ps1
 ```
 
 #### Installing the Dependencies
@@ -44,14 +44,26 @@ $ pip install -r dev-requirements.txt
 ```
 
 #### Starting the Scripts
-Use this command to start the server.
+
+
+Use this command to start the server. (Needs to be done before running client)
 ```shell
-$ python server.py
+$ python server/server.py
 ```
 Finally, use this command to start the client interface.
 ```shell
-$ python client.py
+$ python client/client.py
 ```
+
+## Using the project
+
+#### Testing the project
+Testing of the project has to be done locally. (Tom Heathon could not get his server up :| R.I.P server)
+
+For testing of the messages you need to terminals up running client/client.py and one terminal runing server/server.py (For client to work the server needs to run in the backround first)
+
+#### Tips
+If you are using windows we reccomend using the new and modern `Windows Terminal` which you can find in the Microsoft Store
 
 ## Authors
 
