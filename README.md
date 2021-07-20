@@ -71,7 +71,7 @@ If you are using windows we reccomend using the new and modern `Windows Terminal
 
 The project will not work on Linux unless you are root because of how the keyboard module works.
 
-When typing out password you will not see what you type. (This is to hide )
+When typing out password you will not see what you type. (This is to hide your password from hackers who look over your shoulder while you are typing your password lol)
 
 ## Authors
 
