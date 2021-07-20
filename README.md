@@ -15,7 +15,7 @@ Introducing **ThaBox**, a text-based `[REDACTED]` application.
 ## How to set up the project
 
 #### Creating the environment
-Create a virtual environment in the folder `clone_of_repo\.venv`.
+Create a virtual environment in the folder `.venv`.
 ```shell
 $ cd 'path/to/clone_of_repo'
 $ python -m venv .venv
