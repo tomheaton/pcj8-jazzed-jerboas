@@ -180,7 +180,7 @@ def main_menu(logged_in: bool = False, logged_in_as=None):
                     continue
             elif hover_on == 4:
                 clear()
-                exit()  # Exit, not even implemented yet lol
+                exit_client()
         if what_to_do == "out":
             return main_menu(logged_in=False, logged_in_as=None)
 
