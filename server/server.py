@@ -21,6 +21,12 @@ async def disconnect(sid):
     print(f"[SERVER]: disconnect {sid}")
 
 
+@sio.event 
+async def logger(sid, data):
+    if data["event"] == "left_room":
+        print(f"{data['user']} left {data['room']}")
+
+
 @sio.event
 async def create_room(sid, data):
     global rooms

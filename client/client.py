@@ -22,6 +22,8 @@ CONNECTED: bool = False
 USERNAME = ""
 ROOM = ""
 ROOMS: list[dict] = []
+CLIENT_IN_ROOM: bool = False
+CLIENT_ROOM: str = None # Name of the room client is in.
 
 messages_to_show: list = []
 
@@ -52,13 +54,16 @@ async def connect():
 
 @sio.event
 async def disconnect():
-    print('[CLIENT]: disconnected from server')
-    globals().update(CONNECTED=False)
+    #print('[CLIENT]: disconnected from server')
+    clear()
+    if CLIENT_IN_ROOM:
+        sio.emit("logger", {"event": "left_room", "user": USERNAME, "room": CLIENT_IN_ROOM})
+        await sio.emit("join_room", {"username": USERNAME, "room_name": CLIENT_ROOM})
 
 
 @sio.event
 async def send_message(sid, data):
-    print(f'[CLIENT]: message sent {sid}, data: {data}')
+    return
 
 
 @sio.event
@@ -70,7 +75,7 @@ async def receive_message(data):
 async def main():
     print("[CLIENT]: Starting connection...")
     try:
-        await sio.connect('http://139.162.159.179:8000')
+        await sio.connect('http://thabox.asmul.net:8000')
     except socketio.exceptions.ConnectionError as e:
         print("[CLIENT]: could not connect to server, please restart the application.")
         exit()
@@ -97,6 +102,8 @@ async def console_loop(user=None):
         console.print(Panel(f"Joining {name}", style="green", border_style="green"))
 
         await sio.emit("join_room", {"username": user.username, "room_name": name})
+        globals.update(CLIENT_IN_ROOM=True)
+        globals.update(CLIENT_ROOM=name)
         clear()
         await asyncio.sleep(0.01)
 
